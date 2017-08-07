@@ -19,7 +19,7 @@ namespace OutcastBot
         [Command("newbuild")]
         public async Task NewBuild(CommandContext c, string buildUrl)
         {
-            var grimtoolsPattern = new Regex(@"http://www.grimtools.com/calc/(\w|\d){7}");
+            var grimtoolsPattern = new Regex(@"(http://www.)?grimtools.com/calc/(\w|\d){7}/?");
 
             if (grimtoolsPattern.Match(buildUrl).Success)
             {

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace OutcastBot
 {
+    /// <summary>
+    /// Build object
+    /// </summary>
     class Build
     {
         public DiscordUser Author { get; set; }
@@ -13,7 +16,11 @@ namespace OutcastBot
         public string Description { get; set; }
         public string ForumUrl { get; set; }
         public DiscordAttachment HeaderImage { get; set; }
+        public List<DiscordEmoji> Tags { get; set; }
+        public int UpVotes { get; set; }
+        public int DownVotes { get; set; }
         public string VideoUrl { get; set; }
+        #region Message
         public string Message { get
             {
                 string message = "";
@@ -27,5 +34,6 @@ namespace OutcastBot
 
                 return message;
             } }
+        #endregion
     }
 }

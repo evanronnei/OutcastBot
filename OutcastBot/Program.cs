@@ -19,7 +19,7 @@ namespace OutcastBot
         {
             discord = new DiscordClient(new DiscordConfig
             {
-                Token = "MzQ0MTc4ODU3OTE1NDQ5MzU3.DGo9Gw.beEpo6jpg0tS6mgKIXd__boYWrA",
+                Token = "MzQ0Mjc3MjU0MDYwMjQ0OTkz.DGqYsA.EPzg-jTrABKT_MY8mctlQ5OBUl8",
                 TokenType = TokenType.Bot,
                 UseInternalLogHandler = true,
                 LogLevel = LogLevel.Debug

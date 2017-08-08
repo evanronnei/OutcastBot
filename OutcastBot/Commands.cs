@@ -1,5 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Interactivity;
+using OutcastBot.CommandHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,17 +21,32 @@ namespace OutcastBot
         [Command("newbuild")]
         public async Task NewBuild(CommandContext c, string buildUrl)
         {
+            var interactivity = c.Client.GetInteractivityModule();
+            var helper = new NewBuildHelper(c);
+
             var build = new Build()
             {
                 Author = c.User
             };
 
-            var grimtoolsPattern = new Regex(@"(?<=grimtools.com/calc/)(\w|\d){8}");
+            await helper.GetBuildUrl(buildUrl, build);
 
-            if (grimtoolsPattern.Match(buildUrl).Success)
+            var message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(5));
+
+            if (message != null)
             {
-                build.Url = $"http://www.grimtools.com/calc/{grimtoolsPattern.Match(buildUrl).Value}";
-                await c.RespondAsync($"valid grimtools url {grimtoolsPattern.Match(buildUrl).Value}");
+                build.Title = message.Content;
+                await c.RespondAsync("Do you have a forum post for your build? (OPTIONAL. Type \"No\" to skip this step)");
+            }
+
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(5));
+
+            if (message != null)
+            {
+                if (!message.Content.ToLower().StartsWith("no"))
+                {
+                    var gdForumsRegex = new Regex(@"(?=<grimdawn.com/forums/showthread.php?t=)\d*");
+                } 
             }
         }
     }

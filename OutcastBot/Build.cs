@@ -11,17 +11,28 @@ namespace OutcastBot
     class Build
     {
         public DiscordUser Author { get; set; }
+
+        // required fields
         public string Url { get; set; }
+        public string GameVersion { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        // optional fields
         public DiscordAttachment HeaderImage { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
         public List<DiscordEmoji> Tags { get; set; }
+
+        // votes
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
+
+        // output message for a Discord channel
         #region Message
-        public string Message { get
+        public string Message
+        {
+            get
             {
                 string message = "";
 
@@ -33,7 +44,8 @@ namespace OutcastBot
                 if (VideoUrl != null) message += $"{VideoUrl}\n";
 
                 return message;
-            } }
+            }
+        }
         #endregion
     }
 }

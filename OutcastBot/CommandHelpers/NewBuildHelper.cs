@@ -15,7 +15,7 @@ namespace OutcastBot.CommandHelpers
     {
         public static string GetBuildUrl(string message)
         {
-            var grimtoolsRegex = new Regex(@"(?<=grimtools.com/calc/)(\w|\d){8}");
+            var grimtoolsRegex = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}");
             var match = grimtoolsRegex.Match(message);
             
             if (match.Success)

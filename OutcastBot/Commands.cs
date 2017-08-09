@@ -22,9 +22,13 @@ namespace OutcastBot
             var msg = await interactivity.WaitForMessageAsync(xm => xm.Author.Id == c.User.Id && xm.Content.ToLower() == "how are you?", TimeSpan.FromMinutes(1));
             if (msg != null) await c.RespondAsync("I'm fine, thank you!");
         }
+    }
 
-        [Command("newbuild")]
-        public async Task NewBuild(CommandContext c, string buildUrl)
+    [Group("build")]
+    public class BuildCommands
+    {
+        [Command("new")]
+        public async Task NewBuild(CommandContext c)
         {
             var interactivity = c.Client.GetInteractivityModule();
 
@@ -33,31 +37,48 @@ namespace OutcastBot
                 Author = c.User
             };
 
-            //if ((build.Url = helper.GetBuildUrl(buildUrl)) == null) {
-            //    await c.RespondAsync("Invalid grimtools URL");
-            //    return;
-            //}
+            // PatchVersion
+            await c.RespondAsync("(REQUIRED) What patch is this build from? (i.e. 1.0.1.1)");
+            var message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null) build.PatchVersion = NewBuildHelper.GetPatchVersion(message.Content);
 
-            build.Url = NewBuildHelper.GetBuildUrl(buildUrl);
-            //await c.RespondAsync(build.Url);
-
+            // Title
             await c.RespondAsync("(REQUIRED) What is the title of your build? (100 characters maximum)");
-            var message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(5));
-            if (message != null)
-            {
-                build.Title = NewBuildHelper.GetTitle(message.Content);
-                
-                await c.RespondAsync(build.Title);
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(2));
+            if (message != null) build.Title = NewBuildHelper.GetTitle(message.Content);
 
-                //await c.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step");
-                //message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(5));
-                //if (message != null)
-                //{
-                //    build.ForumUrl = helper.GetForumUrl(message.Content);
+            // HeaderImage
+            await c.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(2));
+            if (message != null && message.Content.ToLower() != "no") build.HeaderImage = message.Attachments[0];
 
-                //    await c.RespondAsync(build.ForumUrl);
-                //}
-            }
+            // BuildUrl
+            await c.RespondAsync("(REQUIRED) What is the grimtools URL for your build?");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(1));
+            build.BuildUrl = NewBuildHelper.GetBuildUrl(message.Content);
+
+            // ForumUrl
+            await c.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step.");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null && message.Content.ToLower() != "no") build.ForumUrl = NewBuildHelper.GetForumUrl(message.Content);
+
+            // Description
+            await c.RespondAsync("(REQUIRED) What is the description of your build? (1000 characters maximum)");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(5));
+            if (message != null) build.Description = NewBuildHelper.GetDescription(message.Content);
+
+            // VideoUrl
+            await c.RespondAsync("(OPTIONAL) Do you have a video link for your build? Type \"No\" to skip this step.");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null && message.Content.ToLower() != "no") build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
+
+            // Tags
+            await c.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emotes) Type \"No\" to skip this step.");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == c.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null && message.Content.ToLower() != "no") build.Tags = NewBuildHelper.GetTags(message.Content, c);
+
+            // Post Build
+            await NewBuildHelper.PostBuild(build, c);
         }
     }
 }

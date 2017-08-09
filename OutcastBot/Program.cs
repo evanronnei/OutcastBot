@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
 using System;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace OutcastBot
     {
         static DiscordClient discord;
         static CommandsNextModule commands;
+        static InteractivityModule interactivity;
 
         static void Main(string[] args)
         {
@@ -25,12 +27,15 @@ namespace OutcastBot
                 LogLevel = LogLevel.Debug
             });
 
+            interactivity = discord.UseInteractivity();
+
             commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefix = "!"
             });
 
             commands.RegisterCommands<Commands>();
+            commands.RegisterCommands<BuildCommands>();
 
             discord.MessageCreated += async e =>
             {
@@ -39,6 +44,21 @@ namespace OutcastBot
                     await e.Message.CreateReactionAsync(DiscordEmoji.FromName(discord, ":thinking:"));
                 }
             };
+
+            //discord.MessageReactionAdd += async e =>
+            //{
+            //    if (e.Channel.Name == "builds")
+            //    {
+            //        if (e.Emoji.Equals(DiscordEmoji.FromName(discord, ":arrow_up:")))
+            //        {
+
+            //        }
+            //        else if (e.Emoji.Equals(DiscordEmoji.FromName(discord, ":arrow_down:")))
+            //        {
+
+            //        }
+            //    }
+            //};
 
             await discord.ConnectAsync();
             await Task.Delay(-1);

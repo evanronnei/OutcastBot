@@ -10,35 +10,37 @@ namespace OutcastBot
     /// </summary>
     class Build
     {
+        #region Automatically Generated Properties
         public DiscordUser Author { get; set; }
+        public int UpVotes { get; set; }
+        public int DownVotes { get; set; }
+        public ulong MessageId { get; set; }
+        #endregion
 
-        // required fields
-        public string Url { get; set; }
-        public string GameVersion { get; set; }
+        #region User Input Properties
+        // required
+        public string BuildUrl { get; set; }
+        public string PatchVersion { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
-        // optional fields
+        // optional
         public DiscordAttachment HeaderImage { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
         public List<DiscordEmoji> Tags { get; set; }
+        #endregion
 
-        // votes
-        public int UpVotes { get; set; }
-        public int DownVotes { get; set; }
-
-        // output message for a Discord channel
-        #region Message
+        #region Discord Message
         public string Message
         {
             get
             {
                 string message = "";
 
-                message += $"**{Title}** by {Author.Mention}\n\n";
+                message += $"**[{PatchVersion}] {Title}** by {Author.Mention}\n\n";
                 if (HeaderImage != null) message += $"{HeaderImage.Url}\n\n";
-                message += $"`Build:` {Url}\n";
+                message += $"`Build Link:` {BuildUrl}\n";
                 if (ForumUrl != null) message += $"`Forum Link:` {ForumUrl}\n";
                 message += $"```{Description}```";
                 if (VideoUrl != null) message += $"{VideoUrl}\n";

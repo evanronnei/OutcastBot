@@ -30,8 +30,6 @@ namespace OutcastBot.Commands
         [Command("new")]
         public async Task NewBuild(CommandContext context)
         {
-            var interactivity = context.Client.GetInteractivityModule();
-
             var build = new Build()
             {
                 AuthorId = context.User.Id,
@@ -41,7 +39,7 @@ namespace OutcastBot.Commands
 
             // PatchVersion
             await context.RespondAsync("(REQUIRED) What patch is this build from? (i.e. 1.0.1.1)");
-            var message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
                 build.PatchVersion = await NewBuildHelper.GetPatchVersion(context, message.Content);
@@ -54,7 +52,7 @@ namespace OutcastBot.Commands
 
             // Title
             await context.RespondAsync("(REQUIRED) What is the title of your build? (100 characters maximum)");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null)
             {
                 build.Title = await NewBuildHelper.GetTitle(context, message.Content);
@@ -67,7 +65,7 @@ namespace OutcastBot.Commands
 
             // HeaderImage
             await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null && message.Content.ToLower() != "no")
             {
                 build.HeaderImageUrl = message.Attachments[0].Url;
@@ -79,7 +77,7 @@ namespace OutcastBot.Commands
 
             // BuildUrl
             await context.RespondAsync("(REQUIRED) What is the grimtools URL for your build?");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
                 build.BuildUrl = await NewBuildHelper.GetBuildUrl(context, message.Content);
@@ -92,7 +90,7 @@ namespace OutcastBot.Commands
 
             // ForumUrl
             await context.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step.");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
                 build.ForumUrl = await NewBuildHelper.GetForumUrl(context, message.Content);
@@ -104,7 +102,7 @@ namespace OutcastBot.Commands
 
             // VideoUrl
             await context.RespondAsync("(OPTIONAL) Do you have a video link for your build? Type \"No\" to skip this step.");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
                 build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
@@ -116,7 +114,7 @@ namespace OutcastBot.Commands
 
             // Description
             await context.RespondAsync("(REQUIRED) What is the description of your build? (1000 characters maximum)");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
             if (message != null)
             {
                 build.Description = await NewBuildHelper.GetDescription(context, message.Content);
@@ -129,7 +127,7 @@ namespace OutcastBot.Commands
 
             // Tags
             await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emojis) Separate each emoji with a space. Type \"No\" to skip this step.");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
                 build.Tags = NewBuildHelper.GetTags(context, message.Content);

@@ -42,7 +42,7 @@ namespace OutcastBot
             {
                 string message = "";
 
-                message += $"**[{PatchVersion}] {Title}** by {GetDiscordUser(Shared.Client).GetAwaiter().GetResult().Mention}\n\n";
+                message += $"**[{PatchVersion}] {Title}** by {GetDiscordUser().GetAwaiter().GetResult().Mention}\n\n";
                 if (HeaderImageUrl != null) message += $"{HeaderImageUrl}\n\n";
                 message += $"`Build Link:` {BuildUrl}\n";
                 if (ForumUrl != null) message += $"`Forum Link:` {ForumUrl}\n";
@@ -54,9 +54,9 @@ namespace OutcastBot
         }
         #endregion
 
-        public async Task<DiscordUser> GetDiscordUser(DiscordClient client)
+        public async Task<DiscordUser> GetDiscordUser()
         {
-            return await client.GetUserAsync(AuthorId);
+            return await Program.Client.GetUserAsync(AuthorId);
         }
     }
 }

@@ -58,4 +58,10 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Build.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="OutcastBotDatabase.refactorlog" />
+  </ItemGroup>
 </Project>

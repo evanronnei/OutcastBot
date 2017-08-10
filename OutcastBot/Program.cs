@@ -3,12 +3,13 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.Interactivity;
 using System;
 using System.Threading.Tasks;
+using OutcastBot.Commands;
 
 namespace OutcastBot
 {
     class Program
     {
-        static DiscordClient discord;
+        static DiscordClient client;
         static CommandsNextModule commands;
         static InteractivityModule interactivity;
 
@@ -19,7 +20,7 @@ namespace OutcastBot
 
         static async Task MainAsync(string[] args)
         {
-            discord = new DiscordClient(new DiscordConfig
+            client = new DiscordClient(new DiscordConfig
             {
                 Token = "MzQ0Mjc3MjU0MDYwMjQ0OTkz.DGqYsA.EPzg-jTrABKT_MY8mctlQ5OBUl8",
                 TokenType = TokenType.Bot,
@@ -27,40 +28,40 @@ namespace OutcastBot
                 LogLevel = LogLevel.Debug
             });
 
-            interactivity = discord.UseInteractivity();
+            interactivity = client.UseInteractivity();
 
-            commands = discord.UseCommandsNext(new CommandsNextConfiguration
+            commands = client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefix = "!"
             });
 
-            commands.RegisterCommands<Commands>();
+            commands.RegisterCommands<Commands.Commands>();
             commands.RegisterCommands<BuildCommands>();
 
-            discord.MessageCreated += async e =>
+            client.MessageCreated += async e =>
             {
-                if (e.Message.Content.Contains(DiscordEmoji.FromName(discord, ":thinking:").ToString()))
+                if (e.Message.Content.Contains(DiscordEmoji.FromName(client, ":thinking:").ToString()))
                 {
-                    await e.Message.CreateReactionAsync(DiscordEmoji.FromName(discord, ":thinking:"));
+                    await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":thinking:"));
                 }
             };
 
-            //discord.MessageReactionAdd += async e =>
+            //client.MessageReactionAdd += async e =>
             //{
             //    if (e.Channel.Name == "builds")
             //    {
-            //        if (e.Emoji.Equals(DiscordEmoji.FromName(discord, ":arrow_up:")))
+            //        if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_up:")))
             //        {
 
             //        }
-            //        else if (e.Emoji.Equals(DiscordEmoji.FromName(discord, ":arrow_down:")))
+            //        else if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_down:")))
             //        {
 
             //        }
             //    }
             //};
 
-            await discord.ConnectAsync();
+            await client.ConnectAsync();
             await Task.Delay(-1);
         }
     }

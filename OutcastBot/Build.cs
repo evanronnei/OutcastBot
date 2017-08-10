@@ -42,8 +42,8 @@ namespace OutcastBot
                 if (HeaderImage != null) message += $"{HeaderImage.Url}\n\n";
                 message += $"`Build Link:` {BuildUrl}\n";
                 if (ForumUrl != null) message += $"`Forum Link:` {ForumUrl}\n";
-                message += $"```{Description}```";
-                if (VideoUrl != null) message += $"{VideoUrl}\n";
+                if (VideoUrl != null) message += $"`Video Link:` {VideoUrl}\n";
+                message += $"```{Description}```";               
 
                 return message;
             }

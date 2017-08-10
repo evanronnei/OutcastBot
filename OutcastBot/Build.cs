@@ -10,14 +10,14 @@ namespace OutcastBot
     /// </summary>
     class Build
     {
-        #region Automatically Generated Properties
+        #region Automatically Filled Properties
         public DiscordUser Author { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public ulong MessageId { get; set; }
         #endregion
 
-        #region User Input Properties
+        #region User Filled Properties
         // required
         public string BuildUrl { get; set; }
         public string PatchVersion { get; set; }

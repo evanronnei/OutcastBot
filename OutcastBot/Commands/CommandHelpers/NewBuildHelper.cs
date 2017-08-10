@@ -28,6 +28,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
                 var msg = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
                 return await GetBuildUrl(context, msg.Content);
             }
         }
@@ -47,6 +48,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Invalid patch version, please re-enter your patch version.");
                 var msg = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
                 return await GetPatchVersion(context, msg.Content);
             }
         }
@@ -59,6 +61,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 100 characters.");
                 var msg = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
                 return await GetTitle(context, msg.Content);
             }
             else
@@ -75,6 +78,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync($"Description is too long ({message.Length}). Please shorten your description to 1000 characters.");
                 var msg = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
                 return await GetDescription(context, msg.Content);
             }
             else
@@ -98,6 +102,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Invalid forum URL, please re-enter your forum URL.");
                 var msg = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
                 return await GetForumUrl(context, msg.Content);
             }
         }
@@ -129,6 +134,8 @@ namespace OutcastBot.Commands.CommandHelpers
             var channel = c.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
+            Shared.Builds.Add(build);
+
             await channel.SendMessageAsync(build.Message);
             await Task.Delay(100);
 
@@ -136,6 +143,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var buildMessage = await channel.GetMessageAsync(build.MessageId);
             await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":arrow_up:"));
+            await Task.Delay(100);
             await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":arrow_down:"));
             foreach (var tag in build.Tags)
             {

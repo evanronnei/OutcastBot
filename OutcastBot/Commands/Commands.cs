@@ -34,50 +34,110 @@ namespace OutcastBot.Commands
 
             var build = new Build()
             {
-                Author = context.User
+                Author = context.User,
+                UpVotes = 0,
+                DownVotes = 0
             };
 
             // PatchVersion
             await context.RespondAsync("(REQUIRED) What patch is this build from? (i.e. 1.0.1.1)");
             var message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (message != null) build.PatchVersion = await NewBuildHelper.GetPatchVersion(context, message.Content);
+            if (message != null)
+            {
+                build.PatchVersion = await NewBuildHelper.GetPatchVersion(context, message.Content);
+            }
+            else if (message == null || build.PatchVersion == null)
+            {
+                await context.RespondAsync("Command Timeout");
+                return;
+            }
 
             // Title
             await context.RespondAsync("(REQUIRED) What is the title of your build? (100 characters maximum)");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-            if (message != null) build.Title = await NewBuildHelper.GetTitle(context, message.Content);
+            if (message != null)
+            {
+                build.Title = await NewBuildHelper.GetTitle(context, message.Content);
+            }
+            else if (message == null || build.Title == null)
+            {
+                await context.RespondAsync("Command Timeout");
+                return;
+            }
 
             // HeaderImage
             await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-            if (message != null && message.Content.ToLower() != "no") build.HeaderImage = message.Attachments[0];
+            if (message != null && message.Content.ToLower() != "no")
+            {
+                build.HeaderImage = message.Attachments[0];
+            }
+            else if (message == null || build.HeaderImage == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
 
             // BuildUrl
             await context.RespondAsync("(REQUIRED) What is the grimtools URL for your build?");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            build.BuildUrl = await NewBuildHelper.GetBuildUrl(context, message.Content);
+            if (message != null)
+            {
+                build.BuildUrl = await NewBuildHelper.GetBuildUrl(context, message.Content);
+            }
+            else if (message == null || build.BuildUrl == null)
+            {
+                await context.RespondAsync("Command Timeout");
+                return;
+            }
 
             // ForumUrl
             await context.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step.");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (message != null && message.Content.ToLower() != "no") build.ForumUrl = await NewBuildHelper.GetForumUrl(context, message.Content);
-
-            // Description
-            await context.RespondAsync("(REQUIRED) What is the description of your build? (1000 characters maximum)");
-            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
-            if (message != null) build.Description = await NewBuildHelper.GetDescription(context, message.Content);
+            if (message != null && message.Content.ToLower() != "no")
+            {
+                build.ForumUrl = await NewBuildHelper.GetForumUrl(context, message.Content);
+            }
+            else if (message == null || build.ForumUrl == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
 
             // VideoUrl
             await context.RespondAsync("(OPTIONAL) Do you have a video link for your build? Type \"No\" to skip this step.");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (message != null && message.Content.ToLower() != "no") build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
+            if (message != null && message.Content.ToLower() != "no")
+            {
+                build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
+            }
+            else if (message == null || build.VideoUrl == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            // Description
+            await context.RespondAsync("(REQUIRED) What is the description of your build? (1000 characters maximum)");
+            message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
+            if (message != null)
+            {
+                build.Description = await NewBuildHelper.GetDescription(context, message.Content);
+            }
+            else if (message == null || build.Description == null)
+            {
+                await context.RespondAsync("Command Timeout");
+                return;
+            }
 
             // Tags
             await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emotes) Type \"No\" to skip this step.");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (message != null && message.Content.ToLower() != "no") build.Tags = NewBuildHelper.GetTags(message.Content, context);
-
-            Shared.Builds.Add(build);
+            if (message != null && message.Content.ToLower() != "no")
+            {
+                build.Tags = NewBuildHelper.GetTags(message.Content, context);
+            }
+            else if (message == null || build.Tags == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
 
             // Post Build
             await NewBuildHelper.PostBuild(build, context);

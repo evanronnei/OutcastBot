@@ -20,9 +20,8 @@ namespace OutcastBot.Commands.CommandHelpers
             var match = grimtoolsRegex.Match(message);
             
             if (match.Success)
-            {
-                message = $"http://www.grimtools.com/calc/{match.Value}";                
-                return message;
+            {             
+                return $"http://www.grimtools.com/calc/{match.Value}";
             }
             else
             {
@@ -42,7 +41,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (match.Success)
             {
-                return message;
+                return match.Value;
             }
             else
             {
@@ -112,26 +111,14 @@ namespace OutcastBot.Commands.CommandHelpers
             return message;
         }
 
-        public static List<DiscordEmoji> GetTags(string message, CommandContext c)
+        public static List<string> GetTags(CommandContext context, string message)
         {
-            List<DiscordEmoji> tags = new List<DiscordEmoji>();
-
-            var converter = new DiscordEmojiConverter();
-
-            var temp = message.Split(' ');
-
-            foreach (string s in temp)
-            {
-                var emoji = new DiscordEmoji();
-                if (converter.TryConvert(s, c, out emoji)) tags.Add(emoji);
-            }
-
-            return tags;
+            return message.Split(' ').ToList();
         }
 
-        public static async Task PostBuild(Build build, CommandContext c)
+        public static async Task PostBuild(CommandContext context, Build build)
         {
-            var channel = c.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
+            var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
             Shared.Builds.Add(build);
@@ -142,13 +129,19 @@ namespace OutcastBot.Commands.CommandHelpers
             build.MessageId = channel.LastMessageId;
 
             var buildMessage = await channel.GetMessageAsync(build.MessageId);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":arrow_up:"));
+            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
             await Task.Delay(100);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":arrow_down:"));
+            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
+
+            var converter = new DiscordEmojiConverter();
             foreach (var tag in build.Tags)
             {
-                await buildMessage.CreateReactionAsync(tag);
-                await Task.Delay(100);
+                var emoji = new DiscordEmoji();
+                if(converter.TryConvert(tag, context, out emoji))
+                {
+                    await buildMessage.CreateReactionAsync(emoji);
+                    await Task.Delay(100);
+                }
             }
         }
     }

@@ -11,19 +11,14 @@ namespace OutcastBot
 {
     class Program
     {
-        static DiscordClient client;
+        //static DiscordClient client;
         static CommandsNextModule commands;
         static InteractivityModule interactivity;
 
         static void Main(string[] args)
         {
             Shared.Builds = new List<Build>();
-            MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        static async Task MainAsync(string[] args)
-        {
-            client = new DiscordClient(new DiscordConfig
+            Shared.Client = new DiscordClient(new DiscordConfig
             {
                 Token = "MzQ0Mjc3MjU0MDYwMjQ0OTkz.DGqYsA.EPzg-jTrABKT_MY8mctlQ5OBUl8",
                 TokenType = TokenType.Bot,
@@ -31,9 +26,14 @@ namespace OutcastBot
                 LogLevel = LogLevel.Debug
             });
 
-            interactivity = client.UseInteractivity();
+            MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
 
-            commands = client.UseCommandsNext(new CommandsNextConfiguration
+        static async Task MainAsync(string[] args)
+        {
+            interactivity = Shared.Client.UseInteractivity();
+
+            commands = Shared.Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefix = "!"
             });
@@ -41,18 +41,18 @@ namespace OutcastBot
             commands.RegisterCommands<Commands.Commands>();
             commands.RegisterCommands<BuildCommands>();
 
-            client.MessageCreated += async e =>
+            Shared.Client.MessageCreated += async e =>
             {
-                if (e.Message.Content.Contains(DiscordEmoji.FromName(client, ":thinking:").ToString()))
+                if (e.Message.Content.Contains(DiscordEmoji.FromName(Shared.Client, ":thinking:").ToString()))
                 {
-                    await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":thinking:"));
+                    await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Shared.Client, ":thinking:"));
                 }
             };
 
-            client.MessageReactionAdd += BuildVoteAddHandler;
-            client.MessageReactionRemove += BuildVoteRemoveHandler;
+            Shared.Client.MessageReactionAdd += BuildVoteAddHandler;
+            Shared.Client.MessageReactionRemove += BuildVoteRemoveHandler;
 
-            await client.ConnectAsync();
+            await Shared.Client.ConnectAsync();
             await Task.Delay(-1);
         }
 
@@ -63,11 +63,11 @@ namespace OutcastBot
                 var build = Shared.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                 if (build == null) return;
 
-                if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_up:")))
+                if (e.Emoji.Equals(DiscordEmoji.FromName(Shared.Client, ":arrow_up:")))
                 {
                     build.UpVotes++;
                 }
-                else if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_down:")))
+                else if (e.Emoji.Equals(DiscordEmoji.FromName(Shared.Client, ":arrow_down:")))
                 {
                     build.DownVotes++;
                 }
@@ -83,11 +83,11 @@ namespace OutcastBot
                 var build = Shared.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                 if (build == null) return Task.CompletedTask;
 
-                if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_up:")))
+                if (e.Emoji.Equals(DiscordEmoji.FromName(Shared.Client, ":arrow_up:")))
                 {
                     build.UpVotes--;
                 }
-                else if (e.Emoji.Equals(DiscordEmoji.FromName(client, ":arrow_down:")))
+                else if (e.Emoji.Equals(DiscordEmoji.FromName(Shared.Client, ":arrow_down:")))
                 {
                     build.DownVotes--;
                 }

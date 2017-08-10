@@ -1,17 +1,20 @@
 ﻿using DSharpPlus;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OutcastBot
 {
     /// <summary>
     /// Build object
     /// </summary>
-    class Build
+    public class Build
     {
         #region Automatically Filled Properties
-        public DiscordUser Author { get; set; }
+        public ulong AuthorId { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public ulong MessageId { get; set; }
@@ -25,10 +28,10 @@ namespace OutcastBot
         public string Description { get; set; }
 
         // optional
-        public DiscordAttachment HeaderImage { get; set; }
+        public string HeaderImageUrl { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
-        public List<DiscordEmoji> Tags { get; set; }
+        public List<string> Tags { get; set; }
         #endregion
 
         #region Discord Message
@@ -38,8 +41,8 @@ namespace OutcastBot
             {
                 string message = "";
 
-                message += $"**[{PatchVersion}] {Title}** by {Author.Mention}\n\n";
-                if (HeaderImage != null) message += $"{HeaderImage.Url}\n\n";
+                message += $"**[{PatchVersion}] {Title}** by {GetDiscordUser(Shared.Client).GetAwaiter().GetResult().Mention}\n\n";
+                if (HeaderImageUrl != null) message += $"{HeaderImageUrl}\n\n";
                 message += $"`Build Link:` {BuildUrl}\n";
                 if (ForumUrl != null) message += $"`Forum Link:` {ForumUrl}\n";
                 if (VideoUrl != null) message += $"`Video Link:` {VideoUrl}\n";
@@ -49,5 +52,10 @@ namespace OutcastBot
             }
         }
         #endregion
+
+        public async Task<DiscordUser> GetDiscordUser(DiscordClient client)
+        {
+            return await client.GetUserAsync(AuthorId);
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace OutcastBot.Commands
 
             var build = new Build()
             {
-                Author = context.User,
+                AuthorId = context.User.Id,
                 UpVotes = 0,
                 DownVotes = 0
             };
@@ -70,9 +70,9 @@ namespace OutcastBot.Commands
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.HeaderImage = message.Attachments[0];
+                build.HeaderImageUrl = message.Attachments[0].Url;
             }
-            else if (message == null || build.HeaderImage == null)
+            else if (message == null)
             {
                 await context.RespondAsync("Option Timeout");
             }
@@ -97,7 +97,7 @@ namespace OutcastBot.Commands
             {
                 build.ForumUrl = await NewBuildHelper.GetForumUrl(context, message.Content);
             }
-            else if (message == null || build.ForumUrl == null)
+            else if (message == null)
             {
                 await context.RespondAsync("Option Timeout");
             }
@@ -109,7 +109,7 @@ namespace OutcastBot.Commands
             {
                 build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
             }
-            else if (message == null || build.VideoUrl == null)
+            else if (message == null)
             {
                 await context.RespondAsync("Option Timeout");
             }
@@ -128,19 +128,19 @@ namespace OutcastBot.Commands
             }
 
             // Tags
-            await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emotes) Type \"No\" to skip this step.");
+            await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emojis) Separate each emoji with a space. Type \"No\" to skip this step.");
             message = await interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.Tags = NewBuildHelper.GetTags(message.Content, context);
+                build.Tags = NewBuildHelper.GetTags(context, message.Content);
             }
-            else if (message == null || build.Tags == null)
+            else if (message == null)
             {
                 await context.RespondAsync("Option Timeout");
             }
 
             // Post Build
-            await NewBuildHelper.PostBuild(build, context);
+            await NewBuildHelper.PostBuild(context, build);
         }
     }
 }

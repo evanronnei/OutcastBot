@@ -14,6 +14,7 @@ namespace OutcastBot
     public class Build
     {
         #region Automatically Filled Properties
+        public int Id { get; set; }
         public ulong AuthorId { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }

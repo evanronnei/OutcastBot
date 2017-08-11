@@ -69,10 +69,5 @@ namespace OutcastBot
         {
             return await Program.Client.GetUserAsync(AuthorId);
         }
-
-        public void InsertBuild()
-        {
-
-        }
     }
 }

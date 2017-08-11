@@ -149,7 +149,7 @@ namespace OutcastBot.Commands
             var buildList = "Which build would you like to delete?";
             for (int i = 0; i < builds.Count(); i++)
             {
-                buildList += $"\n[{i}] {builds[i].Title}";
+                buildList += $"\n{{{i}}} **[{builds[i].PatchVersion}] {builds[i].Title}**";
             }
 
             await context.RespondAsync(buildList);

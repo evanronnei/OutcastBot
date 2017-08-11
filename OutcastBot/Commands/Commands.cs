@@ -140,5 +140,44 @@ namespace OutcastBot.Commands
             // Post Build
             await NewBuildHelper.PostBuild(context, build);
         }
+
+        [Command("delete")]
+        public async Task DeleteBuild(CommandContext context)
+        {
+            var builds = Program.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+
+            var buildList = "Which build would you like to delete?";
+            for (int i = 0; i < builds.Count(); i++)
+            {
+                buildList += $"\n[{i}] {builds[i].Title}";
+            }
+
+            await context.RespondAsync(buildList);
+            var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null)
+            {
+                var index = await DeleteBuildHelper.ValidateIndex(context, message.Content, builds.Count);
+                if (index == null)
+                {
+                    await context.RespondAsync("Command Timeout");
+                    return;
+                }
+
+                var build = builds[(int)index];
+
+                var delete = await context.Guild.Channels.FirstOrDefault(c => c.Name == "builds")
+                    .GetMessageAsync(build.MessageId);
+                await delete.DeleteAsync();
+
+                await context.RespondAsync($"Deletd build **[{build.PatchVersion}] {build.Title}**");
+
+                Program.Builds.Remove(build);
+            }
+            else
+            {
+                await context.RespondAsync("Command Timeout");
+                return;
+            }
+        }
     }
 }

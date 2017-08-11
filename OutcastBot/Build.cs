@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -8,6 +9,16 @@ using System.Threading.Tasks;
 
 namespace OutcastBot
 {
+    public class BuildContext : DbContext
+    {
+        public DbSet<Build> Builds { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=OutcastBotDatabase.db");
+        }
+    }
+
     /// <summary>
     /// Build object
     /// </summary>
@@ -57,6 +68,11 @@ namespace OutcastBot
         public async Task<DiscordUser> GetDiscordUser()
         {
             return await Program.Client.GetUserAsync(AuthorId);
+        }
+
+        public void InsertBuild()
+        {
+
         }
     }
 }

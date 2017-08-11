@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutcastBot", "OutcastBot\OutcastBot.csproj", "{99790B4D-AB54-4AF9-8B17-01CFEBC025E7}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OutcastBotDatabase", "OutcastBotDatabase\OutcastBotDatabase.sqlproj", "{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +15,6 @@ Global
 		{99790B4D-AB54-4AF9-8B17-01CFEBC025E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99790B4D-AB54-4AF9-8B17-01CFEBC025E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99790B4D-AB54-4AF9-8B17-01CFEBC025E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34DF9C7C-B922-4F39-96FF-DC06ED35CD30}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

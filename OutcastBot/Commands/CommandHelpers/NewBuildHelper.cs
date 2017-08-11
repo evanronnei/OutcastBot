@@ -14,8 +14,7 @@ namespace OutcastBot.Commands.CommandHelpers
     {
         public static async Task<string> GetBuildUrl(CommandContext context, string message)
         {
-            var grimtoolsRegex = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}");
-            var match = grimtoolsRegex.Match(message);
+            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(message);
             
             if (match.Success)
             {             
@@ -32,8 +31,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
         public static async Task<string> GetPatchVersion(CommandContext context, string message)
         {
-            var patchRegex = new Regex(@"\d\.\d\.\d\.\d");
-            var match = patchRegex.Match(message);
+            var match = new Regex(@"\d\.\d\.\d\.\d").Match(message);
 
             if (match.Success)
             {
@@ -80,8 +78,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
         public static async Task<string> GetForumUrl(CommandContext context, string message)
         {
-            var gdForumRegex = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d*");
-            var match = gdForumRegex.Match(message);
+            var match = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d*").Match(message);
 
             if (match.Success)
             {

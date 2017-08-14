@@ -4,9 +4,9 @@ A bot for the Grim Dawn Discord server
 TODO:
 
 1. Builds
-  * new
+  * ~new~
   * edit
-  * delete
+  * ~delete~
   * top
 
 2. Crab

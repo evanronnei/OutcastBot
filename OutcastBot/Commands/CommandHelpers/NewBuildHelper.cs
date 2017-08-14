@@ -98,22 +98,21 @@ namespace OutcastBot.Commands.CommandHelpers
             return message;
         }
 
-        public static List<string> GetTags(CommandContext context, string message)
-        {
-            return message.Split(' ').ToList();
-        }
-
         public static async Task PostBuild(CommandContext context, Build build)
         {
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
-            Program.Builds.Add(build);
-
             await channel.SendMessageAsync(build.Message);
             await Task.Delay(500);
 
             build.MessageId = channel.LastMessageId;
+
+            using (var db = new BuildContext())
+            {
+                db.Builds.Add(build);
+                await db.SaveChangesAsync();
+            }
 
             var buildMessage = await channel.GetMessageAsync(build.MessageId);
             await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
@@ -121,7 +120,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
 
             var converter = new DiscordEmojiConverter();
-            foreach (var tag in build.Tags)
+            foreach (var tag in build.Tags.Split(' ').ToList())
             {
                 var emoji = new DiscordEmoji();
                 if(converter.TryConvert(tag, context, out emoji))

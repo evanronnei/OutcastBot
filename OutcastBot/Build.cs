@@ -17,6 +17,11 @@ namespace OutcastBot
         {
             optionsBuilder.UseSqlite("Data Source=OutcastBotDatabase.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Build>().Ignore(b => b.Message);
+        }
     }
 
     /// <summary>
@@ -25,7 +30,7 @@ namespace OutcastBot
     public class Build
     {
         #region Automatically Filled Properties
-        public int Id { get; set; }
+        public int BuildId { get; set; }
         public ulong AuthorId { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
@@ -43,7 +48,7 @@ namespace OutcastBot
         public string HeaderImageUrl { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
-        public List<string> Tags { get; set; }
+        public string Tags { get; set; }
         #endregion
 
         #region Discord Message

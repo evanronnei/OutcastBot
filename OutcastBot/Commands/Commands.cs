@@ -130,7 +130,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.Tags = NewBuildHelper.GetTags(context, message.Content);
+                build.Tags = message.Content;
             }
             else if (message == null)
             {
@@ -144,7 +144,11 @@ namespace OutcastBot.Commands
         [Command("delete")]
         public async Task DeleteBuild(CommandContext context)
         {
-            var builds = Program.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+            var builds = new List<Build>();
+            using (var db = new BuildContext())
+            {
+                builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+            }
 
             var buildList = "Which build would you like to delete?";
             for (int i = 0; i < builds.Count(); i++)
@@ -169,9 +173,13 @@ namespace OutcastBot.Commands
                     .GetMessageAsync(build.MessageId);
                 await delete.DeleteAsync();
 
-                await context.RespondAsync($"Deletd build **[{build.PatchVersion}] {build.Title}**");
+                using (var db = new BuildContext())
+                {
+                    db.Builds.Remove(build);
+                    await db.SaveChangesAsync();
+                }
 
-                Program.Builds.Remove(build);
+                await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
             }
             else
             {

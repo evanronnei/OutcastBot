@@ -14,12 +14,9 @@ namespace OutcastBot
         public static DiscordClient Client { get; set; }
         public static InteractivityModule Interactivity { get; set; }
         public static CommandsNextModule Commands { get; set; }
-        public static List<Build> Builds { get; set; }
 
         static void Main(string[] args)
         {
-            Builds = new List<Build>();
-
             RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
@@ -62,48 +59,62 @@ namespace OutcastBot
         {
             if (e.Channel.Name == "builds")
             {
-                var build = Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
-                if (build == null) return;
-
-                if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
+                using (var db = new BuildContext())
                 {
-                    build.UpVotes++;
-                }
-                else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
-                {
-                    build.DownVotes++;
-                }
+                    var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
+                    if (build == null) return;
 
-                await DeleteDownvotedBuild(build, e.Message);
+                    if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
+                    {
+                        build.UpVotes++;
+                    }
+                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
+                    {
+                        build.DownVotes++;
+                    }
+
+                    db.Update(build);
+                    await db.SaveChangesAsync();
+
+                    await DeleteDownvotedBuild(build, e.Message);
+                }
             }
         }
 
-        private static Task BuildVoteRemoveHandler(MessageReactionRemoveEventArgs e)
+        private static async Task BuildVoteRemoveHandler(MessageReactionRemoveEventArgs e)
         {
             if (e.Channel.Name == "builds")
             {
-                var build = Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
-                if (build == null) return Task.CompletedTask;
+                using (var db = new BuildContext())
+                {
+                    var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
+                    if (build == null) return;
 
-                if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
-                {
-                    build.UpVotes--;
-                }
-                else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
-                {
-                    build.DownVotes--;
+                    if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
+                    {
+                        build.UpVotes--;
+                    }
+                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
+                    {
+                        build.DownVotes--;
+                    }
+
+                    db.Update(build);
+                    await db.SaveChangesAsync();
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private static async Task DeleteDownvotedBuild(Build build, DiscordMessage message)
         {
             if (build.UpVotes + build.DownVotes >= 10 && build.UpVotes / build.DownVotes <= 0.42)
             {
-                await message.DeleteAsync();
-                Builds.Remove(build);
+                using (var db = new BuildContext())
+                {
+                    await message.DeleteAsync();
+                    db.Remove(build);
+                    await db.SaveChangesAsync();
+                }
             }
         }
     }

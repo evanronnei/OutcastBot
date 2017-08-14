@@ -158,6 +158,8 @@ namespace OutcastBot.Commands
             await context.RespondAsync(editList);
 
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+
+            var build = new Build();
             if (message != null)
             {
                 var index = await BuildHelper.ValidateIndex(context, message.Content, builds.Count);
@@ -166,8 +168,31 @@ namespace OutcastBot.Commands
                     await context.RespondAsync("Command Timeout");
                     return;
                 }
+                build = builds[(int)index];
+            }
 
-                await context.RespondAsync("Which property would you like to edit?");
+            // TODO come up with a better solution to this
+            var propertyList = "Which property would you like to edit?";
+            propertyList += "0 - Patch Version";
+            propertyList += "1 - Title";
+            propertyList += "2 - Build URL";
+            propertyList += "3 - Description";
+            propertyList += "4 - Header Image";
+            propertyList += "5 - Forum URL";
+            propertyList += "6 - Video URL";
+            await context.RespondAsync(propertyList);
+
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null)
+            {
+                var index = await BuildHelper.ValidateIndex(context, message.Content, 7);
+                if (index == null)
+                {
+                    await context.RespondAsync("Command Timeout");
+                    return;
+                }
+
+                // choose case here
             }
         }
 

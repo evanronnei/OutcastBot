@@ -39,9 +39,9 @@ namespace OutcastBot
 
         #region User Filled Properties
         // required
-        public string BuildUrl { get; set; }
         public string PatchVersion { get; set; }
         public string Title { get; set; }
+        public string BuildUrl { get; set; }
         public string Description { get; set; }
 
         // optional

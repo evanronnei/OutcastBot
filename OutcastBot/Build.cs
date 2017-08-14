@@ -70,7 +70,7 @@ namespace OutcastBot
         }
         #endregion
 
-        public async Task<DiscordUser> GetDiscordUser()
+        private async Task<DiscordUser> GetDiscordUser()
         {
             return await Program.Client.GetUserAsync(AuthorId);
         }

@@ -155,7 +155,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (!match.Success)
             {
-                await context.RespondAsync("Invalid input. Use the index of the build to select it.");
+                await context.RespondAsync("Invalid input. Use the index to select.");
                 var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (msg == null) return null;
                 return await ValidateIndex(context, msg.Content, count);
@@ -165,7 +165,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (index >= count || index < 0)
             {
-                await context.RespondAsync("Invalid build. Please select a valid build");
+                await context.RespondAsync("Invalid selection.");
                 var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (msg == null) return null;
                 return await ValidateIndex(context, msg.Content, count);

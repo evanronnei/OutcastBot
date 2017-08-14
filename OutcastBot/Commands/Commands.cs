@@ -166,6 +166,8 @@ namespace OutcastBot.Commands
                     await context.RespondAsync("Command Timeout");
                     return;
                 }
+
+                await context.RespondAsync("Which property would you like to edit?");
             }
         }
 

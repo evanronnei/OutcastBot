@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OutcastBot.Commands.CommandHelpers
 {
-    class NewBuildHelper
+    class BuildHelper
     {
         public static async Task<string> GetBuildUrl(CommandContext context, string message)
         {
@@ -98,6 +98,24 @@ namespace OutcastBot.Commands.CommandHelpers
             return message;
         }
 
+        public static string GetTags(CommandContext context, string message)
+        {
+            var output = "";
+            var tags = message.Split(' ').ToList();
+
+            var converter = new DiscordEmojiConverter();
+            foreach (var tag in tags)
+            {
+                var emoji = new DiscordEmoji();
+                if (converter.TryConvert(tag, context, out emoji))
+                {
+                    output += $"{tag} ";
+                }
+            }
+
+            return output;
+        }
+
         public static async Task PostBuild(CommandContext context, Build build)
         {
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
@@ -128,6 +146,33 @@ namespace OutcastBot.Commands.CommandHelpers
                     await buildMessage.CreateReactionAsync(emoji);
                     await Task.Delay(250);
                 }
+            }
+        }
+
+        public static async Task<int?> ValidateIndex(CommandContext context, string message, int count)
+        {
+            var match = new Regex(@"\b\d+\b").Match(message);
+
+            if (!match.Success)
+            {
+                await context.RespondAsync("Invalid input. Use the index of the build to select it.");
+                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
+                return await ValidateIndex(context, msg.Content, count);
+            }
+
+            var index = Convert.ToInt32(message);
+
+            if (index >= count || index < 0)
+            {
+                await context.RespondAsync("Invalid build. Please select a valid build");
+                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (msg == null) return null;
+                return await ValidateIndex(context, msg.Content, count);
+            }
+            else
+            {
+                return index;
             }
         }
     }

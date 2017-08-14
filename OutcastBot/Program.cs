@@ -107,7 +107,7 @@ namespace OutcastBot
 
         private static async Task DeleteDownvotedBuild(Build build, DiscordMessage message)
         {
-            if (build.UpVotes + build.DownVotes >= 10 && build.UpVotes / build.DownVotes <= 0.42)
+            if (build.UpVotes + build.DownVotes >= 10 && build.DownVotes / (build.UpVotes + build.DownVotes) >= 0.70)
             {
                 using (var db = new BuildContext())
                 {

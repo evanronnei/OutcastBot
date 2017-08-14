@@ -24,10 +24,10 @@ namespace OutcastBot.Commands
         }
     }
 
-    [Group("build")]
+    [Group("build"), Description("Commands for interacting with builds")]
     public class BuildCommands
     {
-        [Command("new")]
+        [Command("new"), Description("Create a new build")]
         public async Task NewBuild(CommandContext context)
         {
             var build = new Build()
@@ -42,7 +42,7 @@ namespace OutcastBot.Commands
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
-                build.PatchVersion = await NewBuildHelper.GetPatchVersion(context, message.Content);
+                build.PatchVersion = await BuildHelper.GetPatchVersion(context, message.Content);
             }
             else if (message == null || build.PatchVersion == null)
             {
@@ -55,7 +55,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null)
             {
-                build.Title = await NewBuildHelper.GetTitle(context, message.Content);
+                build.Title = await BuildHelper.GetTitle(context, message.Content);
             }
             else if (message == null || build.Title == null)
             {
@@ -80,7 +80,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
-                build.BuildUrl = await NewBuildHelper.GetBuildUrl(context, message.Content);
+                build.BuildUrl = await BuildHelper.GetBuildUrl(context, message.Content);
             }
             else if (message == null || build.BuildUrl == null)
             {
@@ -93,7 +93,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.ForumUrl = await NewBuildHelper.GetForumUrl(context, message.Content);
+                build.ForumUrl = await BuildHelper.GetForumUrl(context, message.Content);
             }
             else if (message == null)
             {
@@ -105,7 +105,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.VideoUrl = NewBuildHelper.GetVideoUrl(message.Content);
+                build.VideoUrl = BuildHelper.GetVideoUrl(message.Content);
             }
             else if (message == null)
             {
@@ -117,7 +117,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
             if (message != null)
             {
-                build.Description = await NewBuildHelper.GetDescription(context, message.Content);
+                build.Description = await BuildHelper.GetDescription(context, message.Content);
             }
             else if (message == null || build.Description == null)
             {
@@ -130,7 +130,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.Tags = message.Content;
+                build.Tags = BuildHelper.GetTags(context, message.Content);
             }
             else if (message == null)
             {
@@ -138,10 +138,38 @@ namespace OutcastBot.Commands
             }
 
             // Post Build
-            await NewBuildHelper.PostBuild(context, build);
+            await BuildHelper.PostBuild(context, build);
         }
 
-        [Command("delete")]
+        [Command("edit"), Description("Edit an existing build")]
+        public async Task EditBuild(CommandContext context)
+        {
+            var builds = new List<Build>();
+            using (var db = new BuildContext())
+            {
+                builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+            }
+
+            var editList = "Which build would you like to edit?";
+            for (int i = 0; i < builds.Count(); i++)
+            {
+                editList += $"\n{i} - **[{builds[i].PatchVersion}] {builds[i].Title}**";
+            }
+            await context.RespondAsync(editList);
+
+            var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (message != null)
+            {
+                var index = await BuildHelper.ValidateIndex(context, message.Content, builds.Count);
+                if (index == null)
+                {
+                    await context.RespondAsync("Command Timeout");
+                    return;
+                }
+            }
+        }
+
+        [Command("delete"), Description("Delete an existing build")]
         public async Task DeleteBuild(CommandContext context)
         {
             var builds = new List<Build>();
@@ -150,17 +178,17 @@ namespace OutcastBot.Commands
                 builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
             }
 
-            var buildList = "Which build would you like to delete?";
+            var deleteList = "Which build would you like to delete?";
             for (int i = 0; i < builds.Count(); i++)
             {
-                buildList += $"\n{{{i}}} **[{builds[i].PatchVersion}] {builds[i].Title}**";
+                deleteList += $"\n{i} - **[{builds[i].PatchVersion}] {builds[i].Title}**";
             }
+            await context.RespondAsync(deleteList);
 
-            await context.RespondAsync(buildList);
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
-                var index = await DeleteBuildHelper.ValidateIndex(context, message.Content, builds.Count);
+                var index = await BuildHelper.ValidateIndex(context, message.Content, builds.Count);
                 if (index == null)
                 {
                     await context.RespondAsync("Command Timeout");

@@ -265,6 +265,7 @@ namespace OutcastBot.Commands
                 var build = builds[i - 1];
                 var author = await Program.Client.GetUserAsync(build.AuthorId);
                 buildList.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
+                await Task.Delay(100);
             }
 
             var embed = new DiscordEmbed()

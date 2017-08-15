@@ -88,7 +88,7 @@ namespace OutcastBot
                     {
                         build.UpVotes--;
                     }
-                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
+                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
                     {
                         build.DownVotes--;
                     }
@@ -101,11 +101,12 @@ namespace OutcastBot
 
         private static async Task DeleteDownvotedBuild(Build build, DiscordMessage message)
         {
-            if (build.UpVotes + build.DownVotes >= 10 && build.DownVotes / (build.UpVotes + build.DownVotes) >= 0.70)
+            if (build.UpVotes + build.DownVotes >= 10 && (double)build.DownVotes / (double)(build.UpVotes + build.DownVotes) >= 0.70)
             {
+                await message.DeleteAsync();
+
                 using (var db = new BuildContext())
                 {
-                    await message.DeleteAsync();
                     db.Remove(build);
                     await db.SaveChangesAsync();
                 }

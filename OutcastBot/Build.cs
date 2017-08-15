@@ -63,7 +63,7 @@ namespace OutcastBot
 
             embed.Description = Description;
 
-            embed.Color = new Random().Next(0, 0xFFFFFF);
+            embed.Color = new Random().Next(0xFFFFFF);
 
             return embed;
         }

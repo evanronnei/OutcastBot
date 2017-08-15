@@ -3,12 +3,12 @@ A bot for the Grim Dawn Discord server
 
 TODO:
 
-1. Builds
+1. ~Builds~
   * ~new~
-  * edit
+  * ~edit~
   * ~delete~
-  * top
+  * ~top~
 
-2. Crab
+2. ~Crab~
 3. sheepster quote
-4. Report issue
+4. ~Report issue~

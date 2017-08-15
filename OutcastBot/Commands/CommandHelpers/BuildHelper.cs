@@ -250,7 +250,7 @@ namespace OutcastBot.Commands.CommandHelpers
                     message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
                     if (message != null)
                     {
-                        build.Description = await BuildHelper.ValidateDescription(context, message.Content);
+                        build.Description = await ValidateDescription(context, message.Content);
                     }
                     else if (message == null || build.Description == null)
                     {
@@ -277,7 +277,7 @@ namespace OutcastBot.Commands.CommandHelpers
                     message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                     if (message != null)
                     {
-                        build.ForumUrl = await BuildHelper.ValidateForumUrl(context, message.Content);
+                        build.ForumUrl = await ValidateForumUrl(context, message.Content);
                     }
                     else if (message == null)
                     {

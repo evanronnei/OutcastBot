@@ -7,17 +7,23 @@ using System.Threading.Tasks;
 using OutcastBot.Commands;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace OutcastBot
 {
     class Program
     {
+        public static IConfigurationRoot Configuration { get; set; }
         public static DiscordClient Client { get; set; }
         public static InteractivityModule Interactivity { get; set; }
         public static CommandsNextModule Commands { get; set; }
 
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+
             RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
@@ -25,7 +31,7 @@ namespace OutcastBot
         {
             Client = new DiscordClient(new DiscordConfig
             {
-                Token = "MzQ0Mjc3MjU0MDYwMjQ0OTkz.DGqYsA.EPzg-jTrABKT_MY8mctlQ5OBUl8",
+                Token = Configuration["Token"],
                 TokenType = TokenType.Bot,
                 UseInternalLogHandler = true,
                 LogLevel = LogLevel.Debug
@@ -35,7 +41,7 @@ namespace OutcastBot
 
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefix = "!"
+                StringPrefix = Configuration["CommandPrefix"]
             });
 
             Commands.RegisterCommands<Commands.Commands>();

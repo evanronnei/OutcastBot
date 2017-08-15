@@ -244,5 +244,36 @@ namespace OutcastBot.Commands
                 return;
             }
         }
+
+        [Command("top"), Description("Shows the top builds")]
+        public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max)")]int count = 5)
+        {
+            if (count > 10 || count < 1)
+            {
+                await context.RespondAsync("Invalid input");
+                return;
+            }
+
+            var builds = new List<Build>();
+            using (var db = new BuildContext())
+            {
+                builds = db.Builds.OrderByDescending(b => b.UpVotes).ThenBy(b => b.DownVotes).Take(count).ToList();
+            }
+
+            var buildList = new StringBuilder();
+            for (int i = 1; i <= builds.Count; i++)
+            {
+                var build = builds[i - 1];
+                var author = await Program.Client.GetUserAsync(build.AuthorId);
+                buildList.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
+            }
+
+            var embed = new DiscordEmbed()
+            {
+                Title = $"Top {builds.Count} build(s)",
+                Description = buildList.ToString()
+            };
+            await context.RespondAsync("", false, embed);
+        }
     }
 }

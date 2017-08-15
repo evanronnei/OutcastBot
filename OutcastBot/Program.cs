@@ -1,14 +1,12 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Interactivity;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using OutcastBot.Commands;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
+using OutcastBot.Commands;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace OutcastBot
 {

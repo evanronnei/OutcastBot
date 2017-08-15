@@ -51,7 +51,7 @@ namespace OutcastBot.Commands
             }
 
             // Title
-            await context.RespondAsync("(REQUIRED) What is the title of your build? (100 characters maximum)");
+            await context.RespondAsync("(REQUIRED) What is the title of your build? (246 characters maximum)");
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null)
             {
@@ -113,8 +113,8 @@ namespace OutcastBot.Commands
             }
 
             // Description
-            await context.RespondAsync("(REQUIRED) What is the description of your build? (1000 characters maximum)");
-            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
+            await context.RespondAsync("(REQUIRED) What is the description of your build? (2048 characters maximum)");
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
             if (message != null)
             {
                 build.Description = await BuildHelper.ValidateDescription(context, message.Content);
@@ -156,12 +156,13 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            var editList = "Which build would you like to edit?";
+            var editList = new StringBuilder();
             for (int i = 0; i < builds.Count(); i++)
             {
-                editList += $"\n{i} - **[{builds[i].PatchVersion}] {builds[i].Title}**";
+                editList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
-            await context.RespondAsync(editList);
+            var embed = new DiscordEmbed() { Description = editList.ToString() };
+            await context.RespondAsync("Which build would you like to edit?", false, embed);
 
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
@@ -183,7 +184,7 @@ namespace OutcastBot.Commands
             if (channel == null) return;
 
             var msg = await channel.GetMessageAsync(build.MessageId);
-            await msg.EditAsync(build.Message);
+            await msg.EditAsync("", await build.GetEmbed());
 
             using (var db = new BuildContext())
             {

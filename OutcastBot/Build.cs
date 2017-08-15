@@ -17,11 +17,6 @@ namespace OutcastBot
         {
             optionsBuilder.UseSqlite("Data Source=OutcastBotDatabase.db");
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Build>().Ignore(b => b.Message);
-        }
     }
 
     /// <summary>
@@ -51,28 +46,26 @@ namespace OutcastBot
         public string Tags { get; set; }
         #endregion
 
-        #region Discord Message
-        public string Message
+        public async Task<DiscordEmbed> GetEmbed()
         {
-            get
-            {
-                string message = "";
+            var embed = new DiscordEmbed();
 
-                message += $"**[{PatchVersion}] {Title}** by {GetDiscordUser().GetAwaiter().GetResult().Mention}\n\n";
-                if (HeaderImageUrl != null) message += $"{HeaderImageUrl}\n\n";
-                message += $"`Build Link:` {BuildUrl}\n";
-                if (ForumUrl != null) message += $"`Forum Link:` {ForumUrl}\n";
-                if (VideoUrl != null) message += $"`Video Link:` {VideoUrl}\n";
-                message += $"```{Description}```";               
+            var author = await Program.Client.GetUserAsync(AuthorId);
 
-                return message;
-            }
-        }
-        #endregion
+            if (HeaderImageUrl != null) embed.Image = new DiscordEmbedImage() { Url = HeaderImageUrl };
 
-        private async Task<DiscordUser> GetDiscordUser()
-        {
-            return await Program.Client.GetUserAsync(AuthorId);
+            embed.Title = $"[{PatchVersion}] {Title}";
+
+            embed.Fields.Add(new DiscordEmbedField() { Name = "Author", Value = author.Mention });
+            embed.Fields.Add(new DiscordEmbedField() { Name = "Build Link", Value = BuildUrl });
+            if (ForumUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Forum Link", Value = ForumUrl });
+            if (VideoUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Video Link", Value = VideoUrl });
+
+            embed.Description = Description;
+
+            embed.Color = new Random().Next(0, 0xFFFFFF);
+
+            return embed;
         }
     }
 }

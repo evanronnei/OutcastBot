@@ -5,6 +5,7 @@ using DSharpPlus.Interactivity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -48,9 +49,9 @@ namespace OutcastBot.Commands.CommandHelpers
 
         public static async Task<string> ValidateTitle(CommandContext context, string message)
         {
-            if (message.Length > 100)
+            if (message.Length > 246)
             {
-                await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 100 characters.");
+                await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 246 characters.");
                 var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (msg == null) return null;
                 return await ValidateTitle(context, msg.Content);
@@ -63,9 +64,9 @@ namespace OutcastBot.Commands.CommandHelpers
 
         public static async Task<string> ValidateDescription(CommandContext context, string message)
         {
-            if (message.Length > 1000)
+            if (message.Length > 2048)
             {
-                await context.RespondAsync($"Description is too long ({message.Length}). Please shorten your description to 1000 characters.");
+                await context.RespondAsync($"Description is too long ({message.Length}). Please shorten your description to 2048 characters.");
                 var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (msg == null) return null;
                 return await ValidateDescription(context, msg.Content);
@@ -121,7 +122,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
-            await channel.SendMessageAsync(build.Message);
+            await channel.SendMessageAsync("", false, await build.GetEmbed());
             await Task.Delay(500);
 
             build.MessageId = channel.LastMessageId;
@@ -179,15 +180,16 @@ namespace OutcastBot.Commands.CommandHelpers
         public static async Task EditProperty(CommandContext context, Build build)
         {
             // TODO come up with a better solution to this
-            var propertyList = "Which property would you like to edit?\n";
-            propertyList += "0 - Patch Version\n";
-            propertyList += "1 - Title\n";
-            propertyList += "2 - Build URL\n";
-            propertyList += "3 - Description\n";
-            propertyList += "4 - Header Image\n";
-            propertyList += "5 - Forum URL\n";
-            propertyList += "6 - Video URL";
-            await context.RespondAsync(propertyList);
+            var propertyList = new StringBuilder();
+            propertyList.AppendLine("**0** - Patch Version");
+            propertyList.AppendLine("**1** - Title");
+            propertyList.AppendLine("**2** - Build URL");
+            propertyList.AppendLine("**3** - Description");
+            propertyList.AppendLine("**4** - Header Image");
+            propertyList.AppendLine("**5** - Forum URL");
+            propertyList.AppendLine("**6** - Video URL");
+            var embed = new DiscordEmbed() { Description = propertyList.ToString() };
+            await context.RespondAsync("Which property would you like to edit?", false, embed);
 
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
@@ -215,7 +217,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 }
                 else if (index == 1) // Title
                 {
-                    await context.RespondAsync("What is the title of your build? (100 characters maximum)");
+                    await context.RespondAsync("What is the title of your build? (246 characters maximum)");
                     message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
                     if (message != null)
                     {
@@ -243,7 +245,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 }
                 else if (index == 3) // Description
                 {
-                    await context.RespondAsync("What is the description of your build? (1000 characters maximum)");
+                    await context.RespondAsync("What is the description of your build? (2048 characters maximum)");
                     message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
                     if (message != null)
                     {

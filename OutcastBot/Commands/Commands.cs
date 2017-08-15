@@ -14,13 +14,11 @@ namespace OutcastBot.Commands
 {
     public class Commands
     {
-        [Command("hi")]
-        public async Task Hi(CommandContext c)
+        [Command("bug"), Description("Report a bug or give feedback about the bot")]
+        [Aliases("feedback")]
+        public async Task ReportBug(CommandContext context)
         {
-            var interactivity = c.Client.GetInteractivityModule();
-            await c.RespondAsync("sup");
-            var msg = await interactivity.WaitForMessageAsync(xm => xm.Author.Id == c.User.Id && xm.Content.ToLower() == "how are you?", TimeSpan.FromMinutes(1));
-            if (msg != null) await c.RespondAsync("I'm fine, thank you!");
+            await context.RespondAsync("Bugs and feedback are tracked on GitHub. <https://github.com/evanronnei/OutcastBot/issues>");
         }
     }
 

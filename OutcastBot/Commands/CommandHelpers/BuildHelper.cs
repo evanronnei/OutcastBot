@@ -122,10 +122,9 @@ namespace OutcastBot.Commands.CommandHelpers
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
-            await channel.SendMessageAsync("", false, await build.GetEmbed());
-            await Task.Delay(500);
+            var message = await channel.SendMessageAsync("", false, await build.GetEmbed());
 
-            build.MessageId = channel.LastMessageId;
+            build.MessageId = message.Id;
 
             using (var db = new BuildContext())
             {
@@ -133,19 +132,21 @@ namespace OutcastBot.Commands.CommandHelpers
                 await db.SaveChangesAsync();
             }
 
-            var buildMessage = await channel.GetMessageAsync(build.MessageId);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromUnicode(context.Client, "⬆️"));
+            await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
             await Task.Delay(250);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromUnicode(context.Client, "⬇️"));
+            await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
 
-            var converter = new DiscordEmojiConverter();
-            foreach (var tag in build.Tags.Split(' ').ToList())
+            if (build.Tags != null)
             {
-                var emoji = new DiscordEmoji();
-                if(converter.TryConvert(tag, context, out emoji))
+                var converter = new DiscordEmojiConverter();
+                foreach (var tag in build.Tags.Split(' ').ToList())
                 {
-                    await buildMessage.CreateReactionAsync(emoji);
-                    await Task.Delay(250);
+                    var emoji = new DiscordEmoji();
+                    if (converter.TryConvert(tag, context, out emoji))
+                    {
+                        await message.CreateReactionAsync(emoji);
+                        await Task.Delay(250);
+                    }
                 }
             }
         }
@@ -185,7 +186,7 @@ namespace OutcastBot.Commands.CommandHelpers
             propertyList.AppendLine("**1** - Title");
             propertyList.AppendLine("**2** - Build URL");
             propertyList.AppendLine("**3** - Description");
-            propertyList.AppendLine("**4** - Header Image");
+            propertyList.AppendLine("**4** - Thumbnail Image");
             propertyList.AppendLine("**5** - Forum URL");
             propertyList.AppendLine("**6** - Video URL");
             var embed = new DiscordEmbed() { Description = propertyList.ToString() };
@@ -257,13 +258,13 @@ namespace OutcastBot.Commands.CommandHelpers
                         return;
                     }
                 }
-                else if (index == 4) // HeaderImageUrl
+                else if (index == 4) // ImageUrl
                 {
-                    await context.RespondAsync("What would you like for the header image for your build? (Upload attachment)");
+                    await context.RespondAsync("What would you like for the thumbnail image for your build? (Upload attachment)");
                     message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
                     if (message != null)
                     {
-                        build.HeaderImageUrl = message.Attachments[0].Url;
+                        build.ImageUrl = message.Attachments[0].Url;
                     }
                     else if (message == null)
                     {

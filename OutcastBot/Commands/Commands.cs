@@ -87,12 +87,12 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            // HeaderImageUrl
-            await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
+            // ImageUrl
+            await context.RespondAsync("(OPTIONAL) Do you have a thumbnail image for your build? (Upload attachment) Type \"No\" to skip this step.");
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.HeaderImageUrl = message.Attachments[0].Url;
+                build.ImageUrl = message.Attachments[0].Url;
             }
             else if (message == null)
             {
@@ -245,7 +245,7 @@ namespace OutcastBot.Commands
         }
 
         [Command("top"), Description("Shows the top builds")]
-        public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max)")]int count = 5)
+        public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max).")]int count = 5)
         {
             if (count > 10 || count < 1)
             {

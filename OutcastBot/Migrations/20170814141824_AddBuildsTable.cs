@@ -19,7 +19,7 @@ namespace OutcastBot.Migrations
                     Description = table.Column<string>(nullable: false),
                     DownVotes = table.Column<int>(nullable: false),
                     ForumUrl = table.Column<string>(nullable: true),
-                    HeaderImageUrl = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
                     MessageId = table.Column<ulong>(nullable: false),
                     PatchVersion = table.Column<string>(nullable: false),
                     Tags = table.Column<string>(nullable: true),

@@ -30,7 +30,7 @@ namespace OutcastBot.Migrations
 
                     b.Property<string>("ForumUrl");
 
-                    b.Property<string>("HeaderImageUrl");
+                    b.Property<string>("ImageUrl");
 
                     b.Property<ulong>("MessageId");
 

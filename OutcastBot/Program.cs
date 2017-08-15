@@ -41,14 +41,6 @@ namespace OutcastBot
             Commands.RegisterCommands<Commands.Commands>();
             Commands.RegisterCommands<BuildCommands>();
 
-            Client.MessageCreated += async e =>
-            {
-                if (e.Message.Content.Contains(DiscordEmoji.FromName(Client, ":thinking:").ToString()))
-                {
-                    await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Client, ":thinking:"));
-                }
-            };
-
             Client.MessageReactionAdd += BuildVoteAddHandler;
             Client.MessageReactionRemove += BuildVoteRemoveHandler;
             Client.MessageCreated += CrabHandler;
@@ -92,11 +84,11 @@ namespace OutcastBot
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                     if (build == null) return;
 
-                    if (e.Emoji.Equals(DiscordEmoji.FromUnicode(Client, "⬆️")))
+                    if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
                     {
                         build.UpVotes--;
                     }
-                    else if (e.Emoji.Equals(DiscordEmoji.FromUnicode(Client, "⬇️")))
+                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
                     {
                         build.DownVotes--;
                     }

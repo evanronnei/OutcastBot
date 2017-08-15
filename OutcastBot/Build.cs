@@ -40,7 +40,7 @@ namespace OutcastBot
         public string Description { get; set; }
 
         // optional
-        public string HeaderImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
         public string Tags { get; set; }
@@ -52,7 +52,7 @@ namespace OutcastBot
 
             var author = await Program.Client.GetUserAsync(AuthorId);
 
-            if (HeaderImageUrl != null) embed.Image = new DiscordEmbedImage() { Url = HeaderImageUrl };
+            if (ImageUrl != null) embed.Thumbnail = new DiscordEmbedThumbnail() { Url = ImageUrl };
 
             embed.Title = $"[{PatchVersion}] {Title}";
 

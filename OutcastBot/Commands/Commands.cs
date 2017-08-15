@@ -42,7 +42,7 @@ namespace OutcastBot.Commands
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
-                build.PatchVersion = await BuildHelper.GetPatchVersion(context, message.Content);
+                build.PatchVersion = await BuildHelper.ValidatePatchVersion(context, message.Content);
             }
             else if (message == null || build.PatchVersion == null)
             {
@@ -55,7 +55,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null)
             {
-                build.Title = await BuildHelper.GetTitle(context, message.Content);
+                build.Title = await BuildHelper.ValidateTitle(context, message.Content);
             }
             else if (message == null || build.Title == null)
             {
@@ -63,7 +63,7 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            // HeaderImage
+            // HeaderImageUrl
             await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (message != null && message.Content.ToLower() != "no")
@@ -80,7 +80,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null)
             {
-                build.BuildUrl = await BuildHelper.GetBuildUrl(context, message.Content);
+                build.BuildUrl = await BuildHelper.ValidateBuildUrl(context, message.Content);
             }
             else if (message == null || build.BuildUrl == null)
             {
@@ -93,7 +93,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.ForumUrl = await BuildHelper.GetForumUrl(context, message.Content);
+                build.ForumUrl = await BuildHelper.ValidateForumUrl(context, message.Content);
             }
             else if (message == null)
             {
@@ -105,7 +105,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.VideoUrl = BuildHelper.GetVideoUrl(message.Content);
+                build.VideoUrl = BuildHelper.ValidateVideoUrl(message.Content);
             }
             else if (message == null)
             {
@@ -117,7 +117,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
             if (message != null)
             {
-                build.Description = await BuildHelper.GetDescription(context, message.Content);
+                build.Description = await BuildHelper.ValidateDescription(context, message.Content);
             }
             else if (message == null || build.Description == null)
             {
@@ -130,7 +130,7 @@ namespace OutcastBot.Commands
             message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (message != null && message.Content.ToLower() != "no")
             {
-                build.Tags = BuildHelper.GetTags(context, message.Content);
+                build.Tags = BuildHelper.ValidateTags(context, message.Content);
             }
             else if (message == null)
             {
@@ -150,6 +150,12 @@ namespace OutcastBot.Commands
                 builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
             }
 
+            if (builds.Count == 0)
+            {
+                await context.RespondAsync("You have no builds to edit");
+                return;
+            }
+
             var editList = "Which build would you like to edit?";
             for (int i = 0; i < builds.Count(); i++)
             {
@@ -158,6 +164,8 @@ namespace OutcastBot.Commands
             await context.RespondAsync(editList);
 
             var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+
+            var build = new Build();
             if (message != null)
             {
                 var index = await BuildHelper.ValidateIndex(context, message.Content, builds.Count);
@@ -166,6 +174,21 @@ namespace OutcastBot.Commands
                     await context.RespondAsync("Command Timeout");
                     return;
                 }
+                build = builds[(int)index];
+            }
+
+            await BuildHelper.EditProperty(context, build);
+
+            var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
+            if (channel == null) return;
+
+            var msg = await channel.GetMessageAsync(build.MessageId);
+            await msg.EditAsync(build.Message);
+
+            using (var db = new BuildContext())
+            {
+                db.Builds.Update(build);
+                await db.SaveChangesAsync();
             }
         }
 
@@ -176,6 +199,12 @@ namespace OutcastBot.Commands
             using (var db = new BuildContext())
             {
                 builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+            }
+
+            if (builds.Count == 0)
+            {
+                await context.RespondAsync("You have no builds to delete");
+                return;
             }
 
             var deleteList = "Which build would you like to delete?";

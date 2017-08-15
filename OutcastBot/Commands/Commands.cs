@@ -61,16 +61,17 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            // HeaderImageUrl
-            await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
-            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-            if (message != null && message.Content.ToLower() != "no")
+            // Description
+            await context.RespondAsync("(REQUIRED) What is the description of your build? (2048 characters maximum)");
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
+            if (message != null)
             {
-                build.HeaderImageUrl = message.Attachments[0].Url;
+                build.Description = await BuildHelper.ValidateDescription(context, message.Content);
             }
-            else if (message == null)
+            else if (message == null || build.Description == null)
             {
-                await context.RespondAsync("Option Timeout");
+                await context.RespondAsync("Command Timeout");
+                return;
             }
 
             // BuildUrl
@@ -84,6 +85,18 @@ namespace OutcastBot.Commands
             {
                 await context.RespondAsync("Command Timeout");
                 return;
+            }
+
+            // HeaderImageUrl
+            await context.RespondAsync("(OPTIONAL) Do you have a header image for your build? (Upload attachment) Type \"No\" to skip this step.");
+            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            if (message != null && message.Content.ToLower() != "no")
+            {
+                build.HeaderImageUrl = message.Attachments[0].Url;
+            }
+            else if (message == null)
+            {
+                await context.RespondAsync("Option Timeout");
             }
 
             // ForumUrl
@@ -108,19 +121,6 @@ namespace OutcastBot.Commands
             else if (message == null)
             {
                 await context.RespondAsync("Option Timeout");
-            }
-
-            // Description
-            await context.RespondAsync("(REQUIRED) What is the description of your build? (2048 characters maximum)");
-            message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
-            if (message != null)
-            {
-                build.Description = await BuildHelper.ValidateDescription(context, message.Content);
-            }
-            else if (message == null || build.Description == null)
-            {
-                await context.RespondAsync("Command Timeout");
-                return;
             }
 
             // Tags

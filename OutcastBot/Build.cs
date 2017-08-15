@@ -57,9 +57,9 @@ namespace OutcastBot
             embed.Title = $"[{PatchVersion}] {Title}";
 
             embed.Fields.Add(new DiscordEmbedField() { Name = "Author", Value = author.Mention });
-            embed.Fields.Add(new DiscordEmbedField() { Name = "Build Link", Value = BuildUrl });
-            if (ForumUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Forum Link", Value = ForumUrl });
-            if (VideoUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Video Link", Value = VideoUrl });
+            embed.Fields.Add(new DiscordEmbedField() { Name = "Build", Value = BuildUrl });
+            if (ForumUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Forum Post", Value = ForumUrl });
+            if (VideoUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Video", Value = VideoUrl });
 
             embed.Description = Description;
 

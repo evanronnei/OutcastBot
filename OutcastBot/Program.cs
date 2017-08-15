@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OutcastBot.Commands;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace OutcastBot
 {
@@ -50,6 +51,7 @@ namespace OutcastBot
 
             Client.MessageReactionAdd += BuildVoteAddHandler;
             Client.MessageReactionRemove += BuildVoteRemoveHandler;
+            Client.MessageCreated += CrabHandler;
 
             await Client.ConnectAsync();
             await Task.Delay(-1);
@@ -90,11 +92,11 @@ namespace OutcastBot
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                     if (build == null) return;
 
-                    if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_up:")))
+                    if (e.Emoji.Equals(DiscordEmoji.FromUnicode(Client, "⬆️")))
                     {
                         build.UpVotes--;
                     }
-                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Client, ":arrow_down:")))
+                    else if (e.Emoji.Equals(DiscordEmoji.FromUnicode(Client, "⬇️")))
                     {
                         build.DownVotes--;
                     }
@@ -115,6 +117,16 @@ namespace OutcastBot
                     db.Remove(build);
                     await db.SaveChangesAsync();
                 }
+            }
+        }
+
+        private static async Task CrabHandler(MessageCreateEventArgs e)
+        {
+            if (!e.Author.IsBot)
+            {
+                var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?\b").Match(e.Message.Content.ToLower());
+
+                if (match.Success) await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Client, "🦀"));
             }
         }
     }

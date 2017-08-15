@@ -134,9 +134,9 @@ namespace OutcastBot.Commands.CommandHelpers
             }
 
             var buildMessage = await channel.GetMessageAsync(build.MessageId);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
+            await buildMessage.CreateReactionAsync(DiscordEmoji.FromUnicode(context.Client, "⬆️"));
             await Task.Delay(250);
-            await buildMessage.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
+            await buildMessage.CreateReactionAsync(DiscordEmoji.FromUnicode(context.Client, "⬇️"));
 
             var converter = new DiscordEmojiConverter();
             foreach (var tag in build.Tags.Split(' ').ToList())

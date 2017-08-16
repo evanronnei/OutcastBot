@@ -13,7 +13,7 @@ namespace OutcastBot.Commands
 {
     public class Commands
     {
-        [Command("bug"), Description("Report a bug or give feedback about the bot")]
+        [Command("bug"), Description("Report a bug or give feedback on the bot")]
         [Aliases("feedback")]
         public async Task ReportBug(CommandContext context)
         {
@@ -35,29 +35,29 @@ namespace OutcastBot.Commands
             };
 
             // PatchVersion
-            build.PatchVersion = await BuildHelper.GetPatchVersion(context);
+            build.PatchVersion = await BuildHelper.GetPatchVersion(BuildHelper.CommandType.New, context);
             if (build.PatchVersion == null) return;
 
             // Title
-            build.Title = await BuildHelper.GetTitle(context);
+            build.Title = await BuildHelper.GetTitle(BuildHelper.CommandType.New, context);
             if (build.Title == null) return;
 
             // Description
-            build.Description = await BuildHelper.GetDescription(context);
+            build.Description = await BuildHelper.GetDescription(BuildHelper.CommandType.New, context);
             if (build.Description == null) return;
 
             // BuildUrl
-            build.BuildUrl = await BuildHelper.GetBuildUrl(context);
+            build.BuildUrl = await BuildHelper.GetBuildUrl(BuildHelper.CommandType.New, context);
             if (build.BuildUrl == null) return;
 
             // ImageUrl
-            build.ImageUrl = await BuildHelper.GetImageUrl(context);
+            build.ImageUrl = await BuildHelper.GetImageUrl(BuildHelper.CommandType.New, context);
 
             // ForumUrl
-            build.ForumUrl = await BuildHelper.GetForumUrl(context);
+            build.ForumUrl = await BuildHelper.GetForumUrl(BuildHelper.CommandType.New, context);
 
             // VideoUrl
-            build.VideoUrl = await BuildHelper.GetVidoeUrl(context);
+            build.VideoUrl = await BuildHelper.GetVideoUrl(BuildHelper.CommandType.New, context);
 
             // Tags
             build.Tags = await BuildHelper.GetTags(context);
@@ -103,21 +103,21 @@ namespace OutcastBot.Commands
                 build = builds[(int)index];
             }
 
+            await message.DeleteAsync();
+
             await EditBuildHelper.EditProperty(context, build);
 
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
-            var msg = await channel.GetMessageAsync(build.MessageId);
-            await msg.EditAsync("", await build.GetEmbed());
+            var buildMessage = await channel.GetMessageAsync(build.MessageId);
+            await buildMessage.EditAsync("", await build.GetEmbed());
 
             using (var db = new BuildContext())
             {
                 db.Builds.Update(build);
                 await db.SaveChangesAsync();
             }
-
-            await message.DeleteAsync();
         }
 
         [Command("delete"), Description("Delete an existing build")]
@@ -190,7 +190,6 @@ namespace OutcastBot.Commands
                 var build = builds[i - 1];
                 var author = await Program.Client.GetUserAsync(build.AuthorId);
                 message.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
-                await Task.Delay(100);
             }
 
             var embed = new DiscordEmbed()

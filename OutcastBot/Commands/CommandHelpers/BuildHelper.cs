@@ -10,11 +10,32 @@ namespace OutcastBot.Commands.CommandHelpers
 {
     class BuildHelper
     {
-        public static async Task<string> GetPatchVersion(CommandContext context)
+        private static string _required = "(REQUIRED)";
+        private static string _skip = "0";
+        private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step)";
+        private static string _delete = $"(Type \"{_skip}\" to remove this property)";
+
+        public enum CommandType
+        {
+            New,
+            Edit
+        }
+
+        public static async Task<string> GetPatchVersion(CommandType commandType, CommandContext context)
         {
             string patchVersion = null;
 
-            var message = await context.RespondAsync("(REQUIRED) What patch is this build from? (i.e. 1.0.1.1)");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_required} What patch is this build for? (i.e. 1.0.0.0)";
+            }
+            else
+            {
+                outMessage = "What patch is this build for? (i.e. 1.0.0.0)";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
             {
@@ -47,11 +68,21 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetTitle(CommandContext context)
+        public static async Task<string> GetTitle(CommandType commandType, CommandContext context)
         {
             string title = null;
 
-            var message = await context.RespondAsync("(REQUIRED) What is the title of your build? (246 characters maximum)");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_required} What is the title of your build? (246 characters maximum)";
+            }
+            else
+            {
+                outMessage = $"What is the title of your build? (246 characters maximum)";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             if (response != null)
             {
@@ -82,11 +113,21 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetDescription(CommandContext context)
+        public static async Task<string> GetDescription(CommandType commandType, CommandContext context)
         {
             string description = null;
 
-            var message = await context.RespondAsync("(REQUIRED) What is the description of your build? (2048 characters maximum)");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_required} What is the description of your build? (2048 characters maximum)";
+            }
+            else
+            {
+                outMessage = $"What is the description of your build? (2048 characters maximum)";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
             if (response != null)
             {
@@ -117,11 +158,21 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetBuildUrl(CommandContext context)
+        public static async Task<string> GetBuildUrl(CommandType commandType, CommandContext context)
         {
             string buildUrl = null;
 
-            var message = await context.RespondAsync("(REQUIRED) What is the grimtools URL for your build?");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_required} What is the grimtools URL for your build?";
+            }
+            else
+            {
+                outMessage = $"What is the grimtools URL for your build?";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
             {
@@ -154,13 +205,23 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetImageUrl(CommandContext context)
+        public static async Task<string> GetImageUrl(CommandType commandType, CommandContext context)
         {
             string imageUrl = null;
 
-            var message = await context.RespondAsync("(OPTIONAL) Do you have a thumbnail image for your build? (Upload attachment) Type \"No\" to skip this step.");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_optional} What is the thumbnail image for your build? (Upload attachment)";
+            }
+            else
+            {
+                outMessage = $"What is the thumbnail image for your build? (Upload attachment) {_delete}";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-            if (response != null && response.Attachments.Count > 0 && response.Content.ToLower() != "no")
+            if (response != null && response.Attachments.Count > 0 && response.Content.ToLower() != _skip)
             {
                 imageUrl = response.Attachments[0].Url;
             }
@@ -174,13 +235,23 @@ namespace OutcastBot.Commands.CommandHelpers
             return imageUrl;
         }
 
-        public static async Task<string> GetForumUrl(CommandContext context)
+        public static async Task<string> GetForumUrl(CommandType commandType, CommandContext context)
         {
             string forumUrl = null;
 
-            var message = await context.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step.");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_optional} What is the forum link for your build?";
+            }
+            else
+            {
+                outMessage = $"What is the forum link for your build? {_delete}";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (response != null && response.Content.ToLower() != "no")
+            if (response != null && response.Content.ToLower() != _skip)
             {
                 forumUrl = await ValidateForumUrl(context, response.Content);
             }
@@ -211,13 +282,23 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetVidoeUrl(CommandContext context)
+        public static async Task<string> GetVideoUrl(CommandType commandType, CommandContext context)
         {
             string videoUrl = null;
 
-            var message = await context.RespondAsync("(OPTIONAL) Do you have a video link for your build? Type \"No\" to skip this step.");
+            string outMessage;
+            if (commandType == CommandType.New)
+            {
+                outMessage = $"{_optional} What is the video link for your build?";
+            }
+            else
+            {
+                outMessage = $"What is the video link for your build? {_delete}";
+            }
+
+            var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (response != null && response.Content.ToLower() != "no")
+            if (response != null && response.Content.ToLower() != _skip)
             {
                 videoUrl = ValidateVideoUrl(response.Content);
             }
@@ -241,9 +322,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string tags = null;
 
-            var message = await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emojis) Separate each emoji with a space. Type \"No\" to skip this step.");
+            var message = await context.RespondAsync($"{_optional} What are the tags (emojis) to your build? (Separate each emoji with a space)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (response != null && response.Content.ToLower() != "no")
+            if (response != null && response.Content.ToLower() != _skip)
             {
                 tags = ValidateTags(context, response.Content);
             }

@@ -37,6 +37,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            await message.DeleteAsync();
             if (response != null)
             {
                 patchVersion = await ValidatePatchVersion(context, response.Content);
@@ -45,8 +46,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Command Timeout");
             }
-
-            await message.DeleteAsync();
 
             return patchVersion;
         }
@@ -61,8 +60,9 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                await context.RespondAsync("Invalid patch version, please re-enter your patch version.");
+                var msg = await context.RespondAsync("Invalid patch version, please re-enter the patch version. (i.e. 1.0.0.0)");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                await msg.DeleteAsync();
                 if (response == null) return null;
                 return await ValidatePatchVersion(context, response.Content);
             }
@@ -84,6 +84,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            await message.DeleteAsync();
             if (response != null)
             {
                 title = await ValidateTitle(context, response.Content);
@@ -93,8 +94,6 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.RespondAsync("Command Timeout");
             }
 
-            await message.DeleteAsync();
-
             return title;
         }
 
@@ -102,8 +101,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             if (message.Length > 246)
             {
-                await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 246 characters.");
+                var msg = await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                await msg.DeleteAsync();
                 if (response == null) return null;
                 return await ValidateTitle(context, response.Content);
             }
@@ -120,42 +120,26 @@ namespace OutcastBot.Commands.CommandHelpers
             string outMessage;
             if (commandType == CommandType.New)
             {
-                outMessage = $"{_required} What is the description of your build? (2048 characters maximum)";
+                outMessage = $"{_required} What is the description of your build?";
             }
             else
             {
-                outMessage = $"What is the description of your build? (2048 characters maximum)";
+                outMessage = $"What is the description of your build?";
             }
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
+            await message.DeleteAsync();
             if (response != null)
             {
-                description = await ValidateDescription(context, response.Content);
+                description = response.Content;
             }
             else if (response == null)
             {
                 await context.RespondAsync("Command Timeout");
             }
 
-            await message.DeleteAsync();
-
             return description;
-        }
-
-        private static async Task<string> ValidateDescription(CommandContext context, string message)
-        {
-            if (message.Length > 2048)
-            {
-                await context.RespondAsync($"Description is too long ({message.Length}). Please shorten your description to 2048 characters.");
-                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (response == null) return null;
-                return await ValidateDescription(context, response.Content);
-            }
-            else
-            {
-                return message;
-            }
         }
 
         public static async Task<string> GetBuildUrl(CommandType commandType, CommandContext context)
@@ -174,6 +158,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            await message.DeleteAsync();
             if (response != null)
             {
                 buildUrl = await ValidateBuildUrl(context, response.Content);
@@ -182,8 +167,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Command Timeout");
             }
-
-            await message.DeleteAsync();
 
             return buildUrl;
         }
@@ -198,8 +181,9 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
+                var msg = await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                await msg.DeleteAsync();
                 if (response == null) return null;
                 return await ValidateBuildUrl(context, response.Content);
             }
@@ -221,6 +205,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            await message.DeleteAsync();
             if (response != null && response.Attachments.Count > 0 && response.Content.ToLower() != _skip)
             {
                 imageUrl = response.Attachments[0].Url;
@@ -229,8 +214,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Option Timeout");
             }
-
-            await message.DeleteAsync();
 
             return imageUrl;
         }
@@ -251,6 +234,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            await message.DeleteAsync();
             if (response != null && response.Content.ToLower() != _skip)
             {
                 forumUrl = await ValidateForumUrl(context, response.Content);
@@ -259,8 +243,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Option Timeout");
             }
-
-            await message.DeleteAsync();
 
             return forumUrl;
         }
@@ -275,8 +257,9 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                await context.RespondAsync("Invalid forum URL, please re-enter your forum URL.");
+                var msg = await context.RespondAsync("Invalid forum URL, please re-enter your forum URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                await msg.DeleteAsync();
                 if (response == null) return null;
                 return await ValidateForumUrl(context, response.Content);
             }
@@ -298,6 +281,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            await message.DeleteAsync();
             if (response != null && response.Content.ToLower() != _skip)
             {
                 videoUrl = ValidateVideoUrl(response.Content);
@@ -306,8 +290,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Option Timeout");
             }
-
-            await message.DeleteAsync();
 
             return videoUrl;
         }
@@ -324,6 +306,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{_optional} What are the tags (emojis) to your build? (Separate each emoji with a space)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            await message.DeleteAsync();
             if (response != null && response.Content.ToLower() != _skip)
             {
                 tags = ValidateTags(context, response.Content);
@@ -332,8 +315,6 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await context.RespondAsync("Option Timeout");
             }
-
-            await message.DeleteAsync();
 
             return tags;
         }

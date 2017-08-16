@@ -3,7 +3,6 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using System;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -11,21 +10,24 @@ namespace OutcastBot.Commands.CommandHelpers
 {
     class BuildHelper
     {
-        public static async Task<string> ValidateBuildUrl(CommandContext context, string message)
+        public static async Task<string> GetPatchVersion(CommandContext context)
         {
-            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(message);
-            
-            if (match.Success)
-            {             
-                return $"http://www.grimtools.com/calc/{match.Value}";
-            }
-            else
+            string patchVersion = null;
+
+            var message = await context.RespondAsync("(REQUIRED) What patch is this build from? (i.e. 1.0.1.1)");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (response != null)
             {
-                await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateBuildUrl(context, msg.Content);
+                patchVersion = await ValidatePatchVersion(context, response.Content);
             }
+            else if (response == null)
+            {
+                await context.RespondAsync("Command Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return patchVersion;
         }
 
         public static async Task<string> ValidatePatchVersion(CommandContext context, string message)
@@ -39,10 +41,30 @@ namespace OutcastBot.Commands.CommandHelpers
             else
             {
                 await context.RespondAsync("Invalid patch version, please re-enter your patch version.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidatePatchVersion(context, msg.Content);
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (response == null) return null;
+                return await ValidatePatchVersion(context, response.Content);
             }
+        }
+
+        public static async Task<string> GetTitle(CommandContext context)
+        {
+            string title = null;
+
+            var message = await context.RespondAsync("(REQUIRED) What is the title of your build? (246 characters maximum)");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            if (response != null)
+            {
+                title = await ValidateTitle(context, response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Command Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return title;
         }
 
         public static async Task<string> ValidateTitle(CommandContext context, string message)
@@ -50,9 +72,9 @@ namespace OutcastBot.Commands.CommandHelpers
             if (message.Length > 246)
             {
                 await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 246 characters.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateTitle(context, msg.Content);
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (response == null) return null;
+                return await ValidateTitle(context, response.Content);
             }
             else
             {
@@ -60,19 +82,116 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
+        public static async Task<string> GetDescription(CommandContext context)
+        {
+            string description = null;
+
+            var message = await context.RespondAsync("(REQUIRED) What is the description of your build? (2048 characters maximum)");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
+            if (response != null)
+            {
+                description = await ValidateDescription(context, response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Command Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return description;
+        }
+
         public static async Task<string> ValidateDescription(CommandContext context, string message)
         {
             if (message.Length > 2048)
             {
                 await context.RespondAsync($"Description is too long ({message.Length}). Please shorten your description to 2048 characters.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateDescription(context, msg.Content);
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (response == null) return null;
+                return await ValidateDescription(context, response.Content);
             }
             else
             {
                 return message;
             }
+        }
+
+        public static async Task<string> GetBuildUrl(CommandContext context)
+        {
+            string buildUrl = null;
+
+            var message = await context.RespondAsync("(REQUIRED) What is the grimtools URL for your build?");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (response != null)
+            {
+                buildUrl = await ValidateBuildUrl(context, response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Command Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return buildUrl;
+        }
+
+        public static async Task<string> ValidateBuildUrl(CommandContext context, string message)
+        {
+            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(message);
+
+            if (match.Success)
+            {
+                return $"http://www.grimtools.com/calc/{match.Value}";
+            }
+            else
+            {
+                await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (response == null) return null;
+                return await ValidateBuildUrl(context, response.Content);
+            }
+        }
+
+        public static async Task<string> GetImageUrl(CommandContext context)
+        {
+            string imageUrl = null;
+
+            var message = await context.RespondAsync("(OPTIONAL) Do you have a thumbnail image for your build? (Upload attachment) Type \"No\" to skip this step.");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            if (response != null && response.Attachments.Count > 0 && response.Content.ToLower() != "no")
+            {
+                imageUrl = response.Attachments[0].Url;
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return imageUrl;
+        }
+
+        public static async Task<string> GetForumUrl(CommandContext context)
+        {
+            string forumUrl = null;
+
+            var message = await context.RespondAsync("(OPTIONAL) Do you have a forum link for your build? Type \"No\" to skip this step.");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (response != null && response.Content.ToLower() != "no")
+            {
+                forumUrl = await ValidateForumUrl(context, response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return forumUrl;
         }
 
         public static async Task<string> ValidateForumUrl(CommandContext context, string message)
@@ -86,15 +205,56 @@ namespace OutcastBot.Commands.CommandHelpers
             else
             {
                 await context.RespondAsync("Invalid forum URL, please re-enter your forum URL.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateForumUrl(context, msg.Content);
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                if (response == null) return null;
+                return await ValidateForumUrl(context, response.Content);
             }
         }
 
+        public static async Task<string> GetVidoeUrl(CommandContext context)
+        {
+            string videoUrl = null;
+
+            var message = await context.RespondAsync("(OPTIONAL) Do you have a video link for your build? Type \"No\" to skip this step.");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (response != null && response.Content.ToLower() != "no")
+            {
+                videoUrl = ValidateVideoUrl(response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return videoUrl;
+        }
+
+        // TODO implement video URL validation
         public static string ValidateVideoUrl(string message)
         {
             return message;
+        }
+
+        public static async Task<string> GetTags(CommandContext context)
+        {
+            string tags = null;
+
+            var message = await context.RespondAsync("(OPTIONAL) Would you like to add any tags to your build? (Emojis) Separate each emoji with a space. Type \"No\" to skip this step.");
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            if (response != null && response.Content.ToLower() != "no")
+            {
+                tags = ValidateTags(context, response.Content);
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            await message.DeleteAsync();
+
+            return tags;
         }
 
         public static string ValidateTags(CommandContext context, string message)
@@ -113,193 +273,6 @@ namespace OutcastBot.Commands.CommandHelpers
             }
 
             return output;
-        }
-
-        public static async Task PostBuild(CommandContext context, Build build)
-        {
-            var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
-            if (channel == null) return;
-
-            var message = await channel.SendMessageAsync("", false, await build.GetEmbed());
-
-            build.MessageId = message.Id;
-
-            using (var db = new BuildContext())
-            {
-                db.Builds.Add(build);
-                await db.SaveChangesAsync();
-            }
-
-            await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
-            await Task.Delay(250);
-            await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
-
-            if (build.Tags != null)
-            {
-                var converter = new DiscordEmojiConverter();
-                foreach (var tag in build.Tags.Split(' ').ToList())
-                {
-                    var emoji = new DiscordEmoji();
-                    if (converter.TryConvert(tag, context, out emoji))
-                    {
-                        await message.CreateReactionAsync(emoji);
-                        await Task.Delay(250);
-                    }
-                }
-            }
-        }
-
-        public static async Task<int?> ValidateIndex(CommandContext context, string message, int count)
-        {
-            var match = new Regex(@"\b\d+\b").Match(message);
-
-            if (!match.Success)
-            {
-                await context.RespondAsync("Invalid input. Use the index to select.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateIndex(context, msg.Content, count);
-            }
-
-            var index = Convert.ToInt32(message);
-
-            if (index >= count || index < 0)
-            {
-                await context.RespondAsync("Invalid selection.");
-                var msg = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (msg == null) return null;
-                return await ValidateIndex(context, msg.Content, count);
-            }
-            else
-            {
-                return index;
-            }
-        }
-
-        public static async Task EditProperty(CommandContext context, Build build)
-        {
-            // TODO come up with a better solution to this
-            var propertyList = new StringBuilder();
-            propertyList.AppendLine("**0** - Patch Version");
-            propertyList.AppendLine("**1** - Title");
-            propertyList.AppendLine("**2** - Build URL");
-            propertyList.AppendLine("**3** - Description");
-            propertyList.AppendLine("**4** - Thumbnail Image");
-            propertyList.AppendLine("**5** - Forum URL");
-            propertyList.AppendLine("**6** - Video URL");
-            var embed = new DiscordEmbed() { Description = propertyList.ToString() };
-            await context.RespondAsync("Which property would you like to edit?", false, embed);
-
-            var message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (message != null)
-            {
-                var index = await ValidateIndex(context, message.Content, 7);
-                if (index == null)
-                {
-                    await context.RespondAsync("Command Timeout");
-                    return;
-                }
-
-                if (index == 0) // PatchVersion
-                {
-                    await context.RespondAsync("What patch is this build from? (i.e. 1.0.1.1)");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                    if (message != null)
-                    {
-                        build.PatchVersion = await ValidatePatchVersion(context, message.Content);
-                    }
-                    else if (message == null || build.PatchVersion == null)
-                    {
-                        await context.RespondAsync("Command Timeout");
-                        return;
-                    }
-                }
-                else if (index == 1) // Title
-                {
-                    await context.RespondAsync("What is the title of your build? (246 characters maximum)");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-                    if (message != null)
-                    {
-                        build.Title = await ValidateTitle(context, message.Content);
-                    }
-                    else if (message == null || build.Title == null)
-                    {
-                        await context.RespondAsync("Command Timeout");
-                        return;
-                    }
-                }
-                else if (index == 2) // BuildUrl
-                {
-                    await context.RespondAsync("What is the grimtools URL for your build?");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                    if (message != null)
-                    {
-                        build.BuildUrl = await ValidateBuildUrl(context, message.Content);
-                    }
-                    else if (message == null || build.BuildUrl == null)
-                    {
-                        await context.RespondAsync("Command Timeout");
-                        return;
-                    }
-                }
-                else if (index == 3) // Description
-                {
-                    await context.RespondAsync("What is the description of your build? (2048 characters maximum)");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(5));
-                    if (message != null)
-                    {
-                        build.Description = await ValidateDescription(context, message.Content);
-                    }
-                    else if (message == null || build.Description == null)
-                    {
-                        await context.RespondAsync("Command Timeout");
-                        return;
-                    }
-                }
-                else if (index == 4) // ImageUrl
-                {
-                    await context.RespondAsync("What would you like for the thumbnail image for your build? (Upload attachment)");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-                    if (message != null)
-                    {
-                        build.ImageUrl = message.Attachments[0].Url;
-                    }
-                    else if (message == null)
-                    {
-                        await context.RespondAsync("Option Timeout");
-                    }
-                }
-                else if (index == 5) // ForumUrl
-                {
-                    await context.RespondAsync("What would you life for the forum link for your build?");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                    if (message != null)
-                    {
-                        build.ForumUrl = await ValidateForumUrl(context, message.Content);
-                    }
-                    else if (message == null)
-                    {
-                        await context.RespondAsync("Option Timeout");
-                    }
-                }
-                else if (index == 6) // VideoUrl
-                {
-                    await context.RespondAsync("What would you like video link for your build?");
-                    message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                    if (message != null)
-                    {
-                        build.VideoUrl = ValidateVideoUrl(message.Content);
-                    }
-                    else if (message == null)
-                    {
-                        await context.RespondAsync("Option Timeout");
-                    }
-                }
-
-                await context.RespondAsync("Would you like to edit another property? (Y/N)");
-                message = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-                if (message != null && message.Content.ToLower().StartsWith("y")) await EditProperty(context, build);
-            }
         }
     }
 }

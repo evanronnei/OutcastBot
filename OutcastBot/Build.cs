@@ -44,24 +44,24 @@ namespace OutcastBot
 
         public async Task<DiscordEmbed> GetEmbed()
         {
-            var embed = new DiscordEmbed();
+            var embed = new DiscordEmbedBuilder();
 
             var author = await Program.Client.GetUserAsync(AuthorId);
 
-            if (ImageUrl != null) embed.Thumbnail = new DiscordEmbedThumbnail() { Url = ImageUrl };
+            if (ImageUrl != null) embed.ThumbnailUrl = ImageUrl;
 
             embed.Title = $"[{PatchVersion}] {Title}";
 
-            embed.Fields.Add(new DiscordEmbedField() { Name = "Author", Value = author.Mention });
-            embed.Fields.Add(new DiscordEmbedField() { Name = "Build", Value = BuildUrl });
-            if (ForumUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Forum Post", Value = ForumUrl });
-            if (VideoUrl != null) embed.Fields.Add(new DiscordEmbedField() { Name = "Video", Value = VideoUrl });
+            embed.AddField( "Author", author.Mention);
+            embed.AddField("Build", BuildUrl);
+            if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);
+            if (VideoUrl != null) embed.AddField("Video", VideoUrl);
 
             embed.Description = Description;
 
-            embed.Color = new Random().Next(0xFFFFFF);
+            embed.Color = new DiscordColor(new Random().Next(0xFFFFFF));
 
-            return embed;
+            return embed.Build();
         }
     }
 }

@@ -19,8 +19,8 @@ namespace OutcastBot.Commands.CommandHelpers
             propertyList.AppendLine("**4** - Thumbnail Image");
             propertyList.AppendLine("**5** - Forum URL");
             propertyList.AppendLine("**6** - Video URL");
-            var embed = new DiscordEmbed() { Description = propertyList.ToString() };
-            var message = await context.RespondAsync("Which property would you like to edit?", false, embed);
+            var embed = new DiscordEmbedBuilder() { Description = propertyList.ToString() };
+            var message = await context.RespondAsync("Which property would you like to edit?", false, embed.Build());
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)

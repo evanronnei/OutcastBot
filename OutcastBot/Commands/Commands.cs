@@ -86,8 +86,8 @@ namespace OutcastBot.Commands
             {
                 editList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
-            var embed = new DiscordEmbed() { Description = editList.ToString() };
-            var message = await context.RespondAsync("Which build would you like to edit?", false, embed);
+            var embed = new DiscordEmbedBuilder() { Description = editList.ToString() };
+            var message = await context.RespondAsync("Which build would you like to edit?", false, embed.Build());
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
@@ -140,8 +140,8 @@ namespace OutcastBot.Commands
             {
                 deleteList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
-            var embed = new DiscordEmbed() { Description = deleteList.ToString() };
-            var message = await context.RespondAsync("Which build would you like to delete?", false, embed);
+            var embed = new DiscordEmbedBuilder() { Description = deleteList.ToString() };
+            var message = await context.RespondAsync("Which build would you like to delete?", false, embed.Build());
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
@@ -190,16 +190,15 @@ namespace OutcastBot.Commands
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
                 message.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
-                await Task.Delay(2000);
             }
 
-            var embed = new DiscordEmbed()
+            var embed = new DiscordEmbedBuilder()
             {
                 Title = $"Top {builds.Count} build(s)",
                 Description = message.ToString()
             };
 
-            await context.RespondAsync("", false, embed);
+            await context.RespondAsync("", false, embed.Build());
         }
     }
 }

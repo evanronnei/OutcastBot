@@ -32,8 +32,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var converter = new DiscordEmojiConverter();
                 foreach (var tag in build.Tags.Split(' ').ToList())
                 {
-                    var emoji = new DiscordEmoji();
-                    if (converter.TryConvert(tag, context, out emoji))
+                    if (converter.TryConvert(tag, context, out DiscordEmoji emoji))
                     {
                         await message.CreateReactionAsync(emoji);
                         await Task.Delay(1000);

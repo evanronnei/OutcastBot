@@ -327,8 +327,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var converter = new DiscordEmojiConverter();
             foreach (var tag in tags)
             {
-                var emoji = new DiscordEmoji();
-                if (converter.TryConvert(tag, context, out emoji))
+                if (converter.TryConvert(tag, context, out DiscordEmoji emoji))
                 {
                     output += $"{tag} ";
                 }

@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DSharpPlus" Version="2.5.4" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="2.5.4" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="2.5.4" />
+    <PackageReference Include="DSharpPlus" Version="2.5.5-beta-00187" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="2.5.5-beta-00187" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="2.5.5-beta-00187" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />

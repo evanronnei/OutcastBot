@@ -51,7 +51,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return patchVersion;
         }
 
-        public static async Task<string> ValidatePatchVersion(CommandContext context, string message)
+        private static async Task<string> ValidatePatchVersion(CommandContext context, string message)
         {
             var match = new Regex(@"\d\.\d\.\d\.\d").Match(message);
 
@@ -98,7 +98,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return title;
         }
 
-        public static async Task<string> ValidateTitle(CommandContext context, string message)
+        private static async Task<string> ValidateTitle(CommandContext context, string message)
         {
             if (message.Length > 246)
             {
@@ -143,7 +143,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return description;
         }
 
-        public static async Task<string> ValidateDescription(CommandContext context, string message)
+        private static async Task<string> ValidateDescription(CommandContext context, string message)
         {
             if (message.Length > 2048)
             {
@@ -188,7 +188,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return buildUrl;
         }
 
-        public static async Task<string> ValidateBuildUrl(CommandContext context, string message)
+        private static async Task<string> ValidateBuildUrl(CommandContext context, string message)
         {
             var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(message);
 
@@ -265,7 +265,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return forumUrl;
         }
 
-        public static async Task<string> ValidateForumUrl(CommandContext context, string message)
+        private static async Task<string> ValidateForumUrl(CommandContext context, string message)
         {
             var match = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d*").Match(message);
 
@@ -313,7 +313,7 @@ namespace OutcastBot.Commands.CommandHelpers
         }
 
         // TODO implement video URL validation
-        public static string ValidateVideoUrl(string message)
+        private static string ValidateVideoUrl(string message)
         {
             return message;
         }
@@ -338,7 +338,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return tags;
         }
 
-        public static string ValidateTags(CommandContext context, string message)
+        private static string ValidateTags(CommandContext context, string message)
         {
             var output = "";
             var tags = message.Split(' ').ToList();

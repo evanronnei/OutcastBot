@@ -188,8 +188,9 @@ namespace OutcastBot.Commands
             for (int i = 1; i <= builds.Count; i++)
             {
                 var build = builds[i - 1];
-                var author = await Program.Client.GetUserAsync(build.AuthorId);
+                var author = await context.Client.GetUserAsync(build.AuthorId);
                 message.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
+                await Task.Delay(2000);
             }
 
             var embed = new DiscordEmbed()

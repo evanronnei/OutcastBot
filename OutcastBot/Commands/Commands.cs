@@ -87,7 +87,7 @@ namespace OutcastBot.Commands
                 editList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
             var embed = new DiscordEmbed() { Description = editList.ToString() };
-            await context.RespondAsync("Which build would you like to edit?", false, embed);
+            var message = await context.RespondAsync("Which build would you like to edit?", false, embed);
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
@@ -116,6 +116,8 @@ namespace OutcastBot.Commands
                 db.Builds.Update(build);
                 await db.SaveChangesAsync();
             }
+
+            await message.DeleteAsync();
         }
 
         [Command("delete"), Description("Delete an existing build")]
@@ -133,12 +135,13 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            var deleteList = "Which build would you like to delete?";
+            var deleteList = new StringBuilder();
             for (int i = 0; i < builds.Count(); i++)
             {
-                deleteList += $"\n{i} - **[{builds[i].PatchVersion}] {builds[i].Title}**";
+                deleteList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
-            await context.RespondAsync(deleteList);
+            var embed = new DiscordEmbed() { Description = deleteList.ToString() };
+            var message = await context.RespondAsync("Which build would you like to delete?", false, embed);
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
@@ -156,19 +159,14 @@ namespace OutcastBot.Commands
                     .GetMessageAsync(build.MessageId);
                 await delete.DeleteAsync();
 
-                using (var db = new BuildContext())
-                {
-                    db.Builds.Remove(build);
-                    await db.SaveChangesAsync();
-                }
-
                 await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
             }
             else
             {
                 await context.RespondAsync("Command Timeout");
-                return;
             }
+
+            await message.DeleteAsync();
         }
 
         [Command("top"), Description("Shows the top builds")]

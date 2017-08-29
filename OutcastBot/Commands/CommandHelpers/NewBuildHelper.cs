@@ -24,7 +24,6 @@ namespace OutcastBot.Commands.CommandHelpers
             }
 
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
-            await Task.Delay(1000);
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
 
             if (build.Tags != null)
@@ -35,7 +34,6 @@ namespace OutcastBot.Commands.CommandHelpers
                     if (converter.TryConvert(tag, context, out DiscordEmoji emoji))
                     {
                         await message.CreateReactionAsync(emoji);
-                        await Task.Delay(1000);
                     }
                 }
             }

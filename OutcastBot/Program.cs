@@ -47,6 +47,7 @@ namespace OutcastBot
             Client.MessageReactionRemove += EventHandler.BuildVoteRemoveHandler;
             Client.MessageCreated += EventHandler.CrabHandler;
             Client.MessageDelete += EventHandler.BuildDeleteHandler;
+            Client.MessageDelete += EventHandler.JanitorDeleteHandler;
 
             await Client.ConnectAsync();
             await Task.Delay(-1);

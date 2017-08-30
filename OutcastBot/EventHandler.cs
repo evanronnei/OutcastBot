@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -81,6 +82,24 @@ namespace OutcastBot
                 var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?\b").Match(e.Message.Content.ToLower());
 
                 if (match.Success) await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
+            }
+        }
+
+        public static async Task JanitorDeleteHandler(MessageDeleteEventArgs e)
+        {
+            if (e.Channel.Name == "trade" || e.Channel.Name == "searching-players")
+            {
+                var embed = new DiscordEmbedBuilder()
+                {
+                    Description = e.Message.Content,
+                    Timestamp = e.Message.Timestamp,
+                    Color = new DiscordColor(255, 0, 0)
+                };
+                embed.WithAuthor($"{e.Message.Author.Username}#{e.Message.Author.Discriminator}", null, e.Message.Author.AvatarUrl);
+
+                var channel = e.Guild.Channels.FirstOrDefault(c => c.Name == "broomcloset");
+                if (channel == null) return;
+                await channel.SendMessageAsync($"Message deleted from {e.Channel.Mention}:", false, embed.Build());
             }
         }
     }

@@ -87,7 +87,7 @@ namespace OutcastBot.Commands
                 editList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
             var embed = new DiscordEmbedBuilder() { Description = editList.ToString() };
-            var message = await context.RespondAsync("Which build would you like to edit?", false, embed.Build());
+            var message = await context.RespondAsync("Select a build to edit.", false, embed.Build());
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
@@ -141,7 +141,7 @@ namespace OutcastBot.Commands
                 deleteList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
             }
             var embed = new DiscordEmbedBuilder() { Description = deleteList.ToString() };
-            var message = await context.RespondAsync("Which build would you like to delete?", false, embed.Build());
+            var message = await context.RespondAsync("Select a build to delete.", false, embed.Build());
 
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
@@ -174,7 +174,7 @@ namespace OutcastBot.Commands
         {
             if (count > 10 || count < 1)
             {
-                await context.RespondAsync("Invalid input");
+                await context.RespondAsync("Invalid build amount (0-10)");
                 return;
             }
 

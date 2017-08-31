@@ -10,10 +10,10 @@ namespace OutcastBot.Commands.CommandHelpers
 {
     class BuildHelper
     {
-        private static string _required = "(REQUIRED)";
+        private static string _required = "(REQUIRED) ";
         private static string _skip = "0";
-        private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step)";
-        private static string _delete = $"(Type \"{_skip}\" to remove this property)";
+        private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step) ";
+        private static string _delete = $" (Type \"{_skip}\" to remove this property)";
 
         public enum CommandType
         {
@@ -25,15 +25,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string patchVersion = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_required} What patch is this build for? (i.e. 1.0.0.0)";
-            }
-            else
-            {
-                outMessage = "What patch is this build for? (i.e. 1.0.0.0)";
-            }
+            var prefix = "";
+            if (commandType == CommandType.New) prefix = _required;
+            var outMessage = $"{prefix}Enter the patch version of the build. (i.e. 1.0.0.0)";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -72,15 +66,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string title = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_required} What is the title of your build? (246 characters maximum)";
-            }
-            else
-            {
-                outMessage = $"What is the title of your build? (246 characters maximum)";
-            }
+            var prefix = "";
+            if (commandType == CommandType.New) prefix = _required;
+            var outMessage = $"{prefix}Enter the title of the build. (246 characters maximum)";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
@@ -117,15 +105,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string description = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_required} What is the description of your build?";
-            }
-            else
-            {
-                outMessage = $"What is the description of your build?";
-            }
+            var prefix = "";
+            if (commandType == CommandType.New) prefix = _required;
+            var outMessage = $"{prefix}Enter the description of the build.";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
@@ -146,15 +128,9 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string buildUrl = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_required} What is the grimtools URL for your build?";
-            }
-            else
-            {
-                outMessage = $"What is the grimtools URL for your build?";
-            }
+            var prefix = "";
+            if (commandType == CommandType.New) prefix = _required;
+            var outMessage = $"{prefix}Enter the http://www.grimtools.com/calc/ of the build";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -193,15 +169,11 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string imageUrl = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_optional} What is the thumbnail image for your build? (Upload attachment)";
-            }
-            else
-            {
-                outMessage = $"What is the thumbnail image for your build? (Upload attachment) {_delete}";
-            }
+            var prefix = "";
+            var suffix = "";
+            if (commandType == CommandType.New) prefix = _optional;
+            else if (commandType == CommandType.Edit) suffix = _delete;
+            var outMessage = $"{prefix}Enter the thumbnail image of the build. (Upload attachment){suffix}";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
@@ -222,15 +194,11 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string forumUrl = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_optional} What is the forum link for your build?";
-            }
-            else
-            {
-                outMessage = $"What is the forum link for your build? {_delete}";
-            }
+            var prefix = "";
+            var suffix = "";
+            if (commandType == CommandType.New) prefix = _optional;
+            else if (commandType == CommandType.Edit) suffix = _delete;
+            var outMessage = $"{prefix}Enter the forum URL of the build.{suffix}";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -269,22 +237,18 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             string videoUrl = null;
 
-            string outMessage;
-            if (commandType == CommandType.New)
-            {
-                outMessage = $"{_optional} What is the video link for your build?";
-            }
-            else
-            {
-                outMessage = $"What is the video link for your build? {_delete}";
-            }
+            var prefix = "";
+            var suffix = "";
+            if (commandType == CommandType.New) prefix = _optional;
+            else if (commandType == CommandType.Edit) suffix = _delete;
+            var outMessage = $"{prefix}Enter the video URL of the build.{suffix}";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
             if (response != null && response.Content.ToLower() != _skip)
             {
-                videoUrl = ValidateVideoUrl(response.Content);
+                videoUrl = await ValidateVideoUrl(context, response.Content);
             }
             else if (response == null)
             {
@@ -294,17 +258,34 @@ namespace OutcastBot.Commands.CommandHelpers
             return videoUrl;
         }
 
-        // TODO implement video URL validation
-        private static string ValidateVideoUrl(string message)
+        private static async Task<string> ValidateVideoUrl(CommandContext context, string message)
         {
-            return message;
+            var youTube = new Regex(@"(?<=youtu\.be\/|youtube\.com/(embed/|v/|watch\?v=|watch\?.+&v=))((\w|-){11})").Match(message);
+            var streamable = new Regex(@"(?>=streamable\.com/)[a-z0-9]{5}").Match(message);
+
+            if (youTube.Success)
+            {
+                return $"https://youtu.be/{youTube.Value}";
+            }
+            else if (streamable.Success)
+            {
+                return $"https://streamable.com/{streamable.Value}";
+            }
+            else
+            {
+                var msg = await context.RespondAsync("Invalid video URL, please re-enter your video URL.");
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                await msg.DeleteAsync();
+                if (response == null) return null;
+                return await ValidateForumUrl(context, response.Content);
+            }
         }
 
         public static async Task<string> GetTags(CommandContext context)
         {
             string tags = null;
 
-            var message = await context.RespondAsync($"{_optional} What are the tags (emojis) to your build? (Separate each emoji with a space)");
+            var message = await context.RespondAsync($"{_optional}Enter the tags (emojis) for the build. (Separate each emoji with a space)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
             if (response != null && response.Content.ToLower() != _skip)

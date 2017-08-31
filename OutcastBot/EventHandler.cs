@@ -90,16 +90,16 @@ namespace OutcastBot
             if (e.Channel.Name == "trade" || e.Channel.Name == "searching-players")
             {
                 var embed = new DiscordEmbedBuilder()
-                {
+                {          
                     Description = e.Message.Content,
                     Timestamp = e.Message.Timestamp,
                     Color = new DiscordColor(255, 0, 0)
                 };
-                embed.WithAuthor($"{e.Message.Author.Username}#{e.Message.Author.Discriminator}", null, e.Message.Author.AvatarUrl);
+                embed.WithAuthor($"{e.Message.Author.Username}#{e.Message.Author.Discriminator} in #{e.Channel.Name}", null, e.Message.Author.AvatarUrl);
 
                 var channel = e.Guild.Channels.FirstOrDefault(c => c.Name == "broomcloset");
                 if (channel == null) return;
-                await channel.SendMessageAsync($"Message deleted from {e.Channel.Mention}:", false, embed.Build());
+                await channel.SendMessageAsync($"Deleted message:", false, embed.Build());
             }
         }
     }

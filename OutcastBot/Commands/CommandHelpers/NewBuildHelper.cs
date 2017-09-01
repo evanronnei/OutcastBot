@@ -1,6 +1,6 @@
-﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
+using DSharpPlus.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 

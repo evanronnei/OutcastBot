@@ -1,5 +1,5 @@
-﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
             {
-                var index = await CommandHelper.ValidateIndex(context, response.Content, 7);
+                var index = await CommandHelper.ValidateIndex(context, response.Message.Content, 7);
                 if (index == null)
                 {
                     await context.RespondAsync("Command Timeout");
@@ -66,7 +66,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 message = await context.RespondAsync("Would you like to edit another property? (Y/N)");
                 response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await message.DeleteAsync();
-                if (response != null && response.Content.ToLower().StartsWith("y"))
+                if (response != null && response.Message.Content.ToLower().StartsWith("y"))
                 {
                     await EditProperty(context, build);
                 }

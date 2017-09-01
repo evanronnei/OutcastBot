@@ -1,5 +1,5 @@
-﻿using DSharpPlus;
-using System;
+﻿using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;

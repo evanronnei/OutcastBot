@@ -1,6 +1,6 @@
-﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
+using DSharpPlus.Entities;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -34,7 +34,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                patchVersion = await ValidatePatchVersion(context, response.Content);
+                patchVersion = await ValidatePatchVersion(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -58,7 +58,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidatePatchVersion(context, response.Content);
+                return await ValidatePatchVersion(context, response.Message.Content);
             }
         }
 
@@ -75,7 +75,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                title = await ValidateTitle(context, response.Content);
+                title = await ValidateTitle(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -93,7 +93,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateTitle(context, response.Content);
+                return await ValidateTitle(context, response.Message.Content);
             }
             else
             {
@@ -114,7 +114,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                description = response.Content;
+                description = response.Message.Content;
             }
             else if (response == null)
             {
@@ -137,7 +137,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                buildUrl = await ValidateBuildUrl(context, response.Content);
+                buildUrl = await ValidateBuildUrl(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -161,7 +161,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateBuildUrl(context, response.Content);
+                return await ValidateBuildUrl(context, response.Message.Content);
             }
         }
 
@@ -178,9 +178,9 @@ namespace OutcastBot.Commands.CommandHelpers
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             await message.DeleteAsync();
-            if (response != null && response.Attachments.Count > 0 && response.Content.ToLower() != _skip)
+            if (response != null && response.Message.Attachments.Count > 0 && response.Message.Content.ToLower() != _skip)
             {
-                imageUrl = response.Attachments[0].Url;
+                imageUrl = response.Message.Attachments[0].Url;
             }
             else if (response == null)
             {
@@ -203,9 +203,9 @@ namespace OutcastBot.Commands.CommandHelpers
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
-            if (response != null && response.Content.ToLower() != _skip)
+            if (response != null && response.Message.Content.ToLower() != _skip)
             {
-                forumUrl = await ValidateForumUrl(context, response.Content);
+                forumUrl = await ValidateForumUrl(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -229,7 +229,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateForumUrl(context, response.Content);
+                return await ValidateForumUrl(context, response.Message.Content);
             }
         }
 
@@ -246,9 +246,9 @@ namespace OutcastBot.Commands.CommandHelpers
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
-            if (response != null && response.Content.ToLower() != _skip)
+            if (response != null && response.Message.Content.ToLower() != _skip)
             {
-                videoUrl = await ValidateVideoUrl(context, response.Content);
+                videoUrl = await ValidateVideoUrl(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -277,7 +277,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateForumUrl(context, response.Content);
+                return await ValidateForumUrl(context, response.Message.Content);
             }
         }
 
@@ -288,9 +288,9 @@ namespace OutcastBot.Commands.CommandHelpers
             var message = await context.RespondAsync($"{_optional}Enter the tags (emojis) for the build. (Separate each emoji with a space)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
-            if (response != null && response.Content.ToLower() != _skip)
+            if (response != null && response.Message.Content.ToLower() != _skip)
             {
-                tags = ValidateTags(context, response.Content);
+                tags = ValidateTags(context, response.Message.Content);
             }
             else if (response == null)
             {

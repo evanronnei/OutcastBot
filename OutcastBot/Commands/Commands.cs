@@ -1,6 +1,6 @@
-﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using OutcastBot.Commands.CommandHelpers;
 using System;
 using System.Collections.Generic;
@@ -94,7 +94,7 @@ namespace OutcastBot.Commands
             var build = new Build();
             if (response != null)
             {
-                var index = await CommandHelper.ValidateIndex(context, response.Content, builds.Count);
+                var index = await CommandHelper.ValidateIndex(context, response.Message.Content, builds.Count);
                 if (index == null)
                 {
                     await context.RespondAsync("Command Timeout");
@@ -111,7 +111,7 @@ namespace OutcastBot.Commands
             if (channel == null) return;
 
             var buildMessage = await channel.GetMessageAsync(build.MessageId);
-            await buildMessage.EditAsync("", await build.GetEmbed());
+            await buildMessage.ModifyAsync("", await build.GetEmbed());
 
             using (var db = new BuildContext())
             {
@@ -146,7 +146,7 @@ namespace OutcastBot.Commands
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             if (response != null)
             {
-                var index = await CommandHelper.ValidateIndex(context, response.Content, builds.Count);
+                var index = await CommandHelper.ValidateIndex(context, response.Message.Content, builds.Count);
                 if (index == null)
                 {
                     await context.RespondAsync("Command Timeout");

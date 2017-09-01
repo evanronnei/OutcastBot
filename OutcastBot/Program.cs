@@ -43,11 +43,11 @@ namespace OutcastBot
             Commands.RegisterCommands<Commands.Commands>();
             Commands.RegisterCommands<BuildCommands>();
 
-            Client.MessageReactionAdd += EventHandler.BuildVoteAddHandler;
-            Client.MessageReactionRemove += EventHandler.BuildVoteRemoveHandler;
+            Client.MessageReactionAdded += EventHandler.BuildVoteAddHandler;
+            Client.MessageReactionRemoved += EventHandler.BuildVoteRemoveHandler;
             Client.MessageCreated += EventHandler.CrabHandler;
-            Client.MessageDelete += EventHandler.BuildDeleteHandler;
-            Client.MessageDelete += EventHandler.JanitorDeleteHandler;
+            Client.MessageDeleted += EventHandler.BuildDeleteHandler;
+            Client.MessageDeleted += EventHandler.JanitorDeleteHandler;
 
             await Client.ConnectAsync();
             await Task.Delay(-1);

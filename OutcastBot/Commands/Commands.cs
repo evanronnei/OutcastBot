@@ -174,7 +174,7 @@ namespace OutcastBot.Commands
         {
             if (count > 10 || count < 1)
             {
-                await context.RespondAsync("Invalid build amount (0-10)");
+                await context.RespondAsync("Invalid build amount (1-10)");
                 return;
             }
 
@@ -184,19 +184,14 @@ namespace OutcastBot.Commands
                 builds = db.Builds.OrderByDescending(b => b.UpVotes).ThenBy(b => b.DownVotes).Take(count).ToList();
             }
 
-            var message = new StringBuilder();
+            var embed = new DiscordEmbedBuilder() { Title = $"Top {builds.Count} build(s)" };
+
             for (int i = 1; i <= builds.Count; i++)
             {
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
-                message.AppendLine($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title} by {author.Username} - {build.BuildUrl}");
+                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
             }
-
-            var embed = new DiscordEmbedBuilder()
-            {
-                Title = $"Top {builds.Count} build(s)",
-                Description = message.ToString()
-            };
 
             await context.RespondAsync("", false, embed.Build());
         }

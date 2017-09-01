@@ -16,7 +16,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.RespondAsync("Invalid input. Use the index to select and object.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (response == null) return null;
-                return await ValidateIndex(context, response.Content, count);
+                return await ValidateIndex(context, response.Message.Content, count);
             }
 
             var index = Convert.ToInt32(message);
@@ -26,7 +26,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.RespondAsync("Invalid selection.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (response == null) return null;
-                return await ValidateIndex(context, response.Content, count);
+                return await ValidateIndex(context, response.Message.Content, count);
             }
             else
             {

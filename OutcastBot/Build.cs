@@ -59,8 +59,6 @@ namespace OutcastBot
 
             embed.Description = Description;
 
-            embed.Color = new DiscordColor(new Random().Next(0xFFFFFF));
-
             return embed.Build();
         }
     }

@@ -181,7 +181,7 @@ namespace OutcastBot.Commands
             var builds = new List<Build>();
             using (var db = new BuildContext())
             {
-                builds = db.Builds.OrderByDescending(b => b.UpVotes).ThenBy(b => b.DownVotes).Take(count).ToList();
+                builds = db.Builds.OrderByDescending(b => b.UpVotes - b.DownVotes).ThenByDescending(b => b.UpVotes).Take(count).ToList();
             }
 
             var embed = new DiscordEmbedBuilder() { Title = $"Top {builds.Count} build(s)" };

@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using Microsoft.Extensions.Configuration;
 using OutcastBot.Commands;
@@ -48,6 +49,11 @@ namespace OutcastBot
             Client.MessageCreated += EventHandler.CrabHandler;
             Client.MessageDeleted += EventHandler.BuildDeleteHandler;
             Client.MessageDeleted += EventHandler.JanitorDeleteHandler;
+
+            Client.Ready += async e =>
+            {
+                await Client.UpdateStatusAsync(new Game($"{Configuration["CommandPrefix"]}help"));
+            };
 
             await Client.ConnectAsync();
             await Task.Delay(-1);

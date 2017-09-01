@@ -9,7 +9,7 @@ namespace OutcastBot.Commands.CommandHelpers
     {
         public static async Task<int?> ValidateIndex(CommandContext context, string message, int count)
         {
-            var match = new Regex(@"\b\d+").Match(message);
+            var match = new Regex(@"\b\d+\b").Match(message);
 
             if (!match.Success)
             {

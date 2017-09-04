@@ -187,7 +187,16 @@ namespace OutcastBot.Commands
             }
             else
             {
-                var id = Convert.ToUInt64(new Regex(@"\d+").Match(user).Value);
+                var match = new Regex(@"\d+").Match(user);
+
+                if (!match.Success)
+                {
+                    await context.RespondAsync("Invalid user");
+                    return;
+                }
+
+                var id = Convert.ToUInt64(match.Value);
+
                 using (var db = new BuildContext())
                 {
                     builds = db.Builds.Where(b => b.AuthorId == id).ToList();

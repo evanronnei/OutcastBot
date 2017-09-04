@@ -89,7 +89,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             if (message.Length > 246)
             {
-                var msg = await context.RespondAsync($"Title is too long ({message.Length}). Please shorten your title to 246 characters.");
+                var msg = await context.RespondAsync($"Title is too long ({message.Length}). Please shorten the title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
@@ -130,7 +130,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var prefix = "";
             if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the http://www.grimtools.com/calc/ of the build";
+            var outMessage = $"{prefix}Enter the http://www.grimtools.com/calc/ for the build";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -157,7 +157,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var msg = await context.RespondAsync("Invalid grimtools URL, please re-enter your grimtools URL.");
+                var msg = await context.RespondAsync("Invalid grimtools URL, please re-enter the grimtools URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
@@ -225,7 +225,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var msg = await context.RespondAsync("Invalid forum URL, please re-enter your forum URL.");
+                var msg = await context.RespondAsync("Invalid forum URL, please re-enter the forum URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
@@ -273,7 +273,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var msg = await context.RespondAsync("Invalid video URL, please re-enter your video URL.");
+                var msg = await context.RespondAsync("Invalid video URL, please re-enter the video URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;

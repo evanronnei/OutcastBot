@@ -44,20 +44,22 @@ namespace OutcastBot
 
         public async Task<DiscordEmbed> GetEmbed()
         {
-            var embed = new DiscordEmbedBuilder();
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = $"[{PatchVersion}] {Title}",
+                Description = Description
+            };
 
             var author = await Program.Client.GetUserAsync(AuthorId);
 
             if (ImageUrl != null) embed.ThumbnailUrl = ImageUrl;
-
-            embed.Title = $"[{PatchVersion}] {Title}";
 
             embed.AddField( "Author", author.Mention);
             embed.AddField("Build", BuildUrl);
             if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);
             if (VideoUrl != null) embed.AddField("Video", VideoUrl);
 
-            embed.Description = Description;
+            embed.WithFooter($"ID: {BuildId}");
 
             return embed.Build();
         }

@@ -26,7 +26,7 @@ namespace OutcastBot
 
         static async Task RunAsync()
         {
-            Client = new DiscordClient(new DiscordConfig
+            Client = new DiscordClient(new DiscordConfiguration
             {
                 Token = Configuration["Token"],
                 TokenType = TokenType.Bot,

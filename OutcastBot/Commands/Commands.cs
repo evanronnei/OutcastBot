@@ -5,7 +5,6 @@ using OutcastBot.Commands.CommandHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -21,9 +20,26 @@ namespace OutcastBot.Commands
         }
     }
 
-    [Group("build"), Description("Commands for interacting with builds")]
+    [Group("build", CanInvokeWithoutSubcommand = true), Description("Commands for interacting with builds")]
     public class BuildCommands
     {
+        public async Task ExecuteGroupAsync(CommandContext context, [Description("ID of the build to get")]int id)
+        {
+            var build = new Build();
+            using (var db = new BuildContext())
+            {
+                build = db.Builds.FirstOrDefault(b => b.BuildId == id);
+            }
+
+            if (build == null)
+            {
+                await context.RespondAsync("Invalid build ID");
+                return;
+            }
+
+            await context.RespondAsync("", false, await build.GetEmbed());
+        } 
+
         [Command("new"), Description("Create a new build")]
         public async Task NewBuild(CommandContext context)
         {
@@ -67,43 +83,25 @@ namespace OutcastBot.Commands
         }
 
         [Command("edit"), Description("Edit an existing build")]
-        public async Task EditBuild(CommandContext context)
+        public async Task EditBuild(CommandContext context, [Description("ID of the build to edit")]int id)
         {
-            var builds = new List<Build>();
+            var build = new Build();
             using (var db = new BuildContext())
             {
-                builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+                build = db.Builds.FirstOrDefault(b => b.BuildId == id);
             }
 
-            if (builds.Count == 0)
+            if (build == null)
             {
-                await context.RespondAsync("You have no builds to edit");
+                await context.RespondAsync("Invalid build ID");
                 return;
             }
 
-            var editList = new StringBuilder();
-            for (int i = 0; i < builds.Count(); i++)
+            if (build.AuthorId != context.User.Id)
             {
-                editList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
+                await context.RespondAsync("This build does not belong to you");
+                return;
             }
-            var embed = new DiscordEmbedBuilder() { Description = editList.ToString() };
-            var message = await context.RespondAsync("Select a build to edit.", false, embed.Build());
-
-            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-
-            var build = new Build();
-            if (response != null)
-            {
-                var index = await CommandHelper.ValidateIndex(context, response.Message.Content, builds.Count);
-                if (index == null)
-                {
-                    await context.RespondAsync("Command Timeout");
-                    return;
-                }
-                build = builds[(int)index];
-            }
-
-            await message.DeleteAsync();
 
             await EditBuildHelper.EditProperty(context, build);
 
@@ -121,55 +119,34 @@ namespace OutcastBot.Commands
         }
 
         [Command("delete"), Description("Delete an existing build")]
-        public async Task DeleteBuild(CommandContext context)
+        public async Task DeleteBuild(CommandContext context, [Description("ID of the build to delete")]int id)
         {
-            var builds = new List<Build>();
+            var build = new Build();
             using (var db = new BuildContext())
             {
-                builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+                build = db.Builds.FirstOrDefault(b => b.BuildId == id);
             }
 
-            if (builds.Count == 0)
+            if (build == null)
             {
-                await context.RespondAsync("You have no builds to delete");
+                await context.RespondAsync("Invalid build ID");
                 return;
             }
 
-            var deleteList = new StringBuilder();
-            for (int i = 0; i < builds.Count(); i++)
+            if (build.AuthorId != context.User.Id)
             {
-                deleteList.AppendLine($"**{i}** - [{builds[i].PatchVersion}] {builds[i].Title}");
-            }
-            var embed = new DiscordEmbedBuilder() { Description = deleteList.ToString() };
-            var message = await context.RespondAsync("Select a build to delete.", false, embed.Build());
-
-            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            if (response != null)
-            {
-                var index = await CommandHelper.ValidateIndex(context, response.Message.Content, builds.Count);
-                if (index == null)
-                {
-                    await context.RespondAsync("Command Timeout");
-                    return;
-                }
-
-                var build = builds[(int)index];
-
-                var delete = await context.Guild.Channels.FirstOrDefault(c => c.Name == "builds")
-                    .GetMessageAsync(build.MessageId);
-                await delete.DeleteAsync();
-
-                await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
-            }
-            else
-            {
-                await context.RespondAsync("Command Timeout");
+                await context.RespondAsync("This build does not belong to you");
+                return;
             }
 
+            var message = await context.Guild.Channels.FirstOrDefault(c => c.Name == "builds")
+                .GetMessageAsync(build.MessageId);
             await message.DeleteAsync();
+
+            await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
         }
 
-        [Command("top"), Description("Shows the top builds")]
+        [Command("top"), Description("Displays the top builds")]
         public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max).")]int count = 5)
         {
             if (count > 10 || count < 1)
@@ -191,6 +168,46 @@ namespace OutcastBot.Commands
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
                 embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
+            }
+
+            await context.RespondAsync("", false, embed.Build());
+        }
+
+        [Command("mybuilds"), Description("Displays your builds")]
+        public async Task MyBuilds(CommandContext context, [Description("User mention")]string user = null)
+        {
+            var builds = new List<Build>();
+
+            if (user == null)
+            {
+                using (var db = new BuildContext())
+                {
+                    builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
+                }
+            }
+            else
+            {
+                var id = Convert.ToUInt64(new Regex(@"\d+").Match(user).Value);
+                using (var db = new BuildContext())
+                {
+                    builds = db.Builds.Where(b => b.AuthorId == id).ToList();
+                }
+            }
+
+            if (builds.Count == 0)
+            {
+                await context.RespondAsync("User hasn't created any builds");
+                return;
+            }
+
+            var author = await context.Client.GetUserAsync(builds[0].AuthorId);
+
+            var embed = new DiscordEmbedBuilder();
+            embed.WithAuthor($"{author.Username}#{author.Discriminator}", null, author.AvatarUrl);
+
+            foreach (var build in builds)
+            {
+                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", build.BuildUrl);
             }
 
             await context.RespondAsync("", false, embed.Build());

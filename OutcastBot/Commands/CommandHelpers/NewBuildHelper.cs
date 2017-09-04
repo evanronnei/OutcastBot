@@ -23,6 +23,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await db.SaveChangesAsync();
             }
 
+            await message.ModifyAsync("", await build.GetEmbed());
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
 

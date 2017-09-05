@@ -18,6 +18,14 @@ namespace OutcastBot.Commands
         {
             await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub. <https://github.com/evanronnei/OutcastBot/issues>");
         }
+
+        [Command("f"), Description("Pay respects")]
+        [Aliases("payrespects")]
+        public async Task PayRespects(CommandContext context)
+        {
+            var message = await context.RespondAsync($"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects.");
+            await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));
+        }
     }
 
     [Group("build", CanInvokeWithoutSubcommand = true), Description("Commands for interacting with builds")]

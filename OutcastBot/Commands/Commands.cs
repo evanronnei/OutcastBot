@@ -12,17 +12,18 @@ namespace OutcastBot.Commands
 {
     public class Commands
     {
-        [Command("bug"), Description("Report a bug or give feedback on the bot")]
-        [Aliases("feedback")]
+        [Command("bug"), Description("Report a bug, give feedback, and/or offer a suggestion")]
+        [Aliases("feedback", "suggestion")]
         public async Task ReportBug(CommandContext context)
         {
-            await context.RespondAsync("Bugs and feedback are tracked on GitHub. <https://github.com/evanronnei/OutcastBot/issues>");
+            await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub. <https://github.com/evanronnei/OutcastBot/issues>");
         }
     }
 
     [Group("build", CanInvokeWithoutSubcommand = true), Description("Commands for interacting with builds")]
     public class BuildCommands
     {
+        // Get an existing build
         public async Task ExecuteGroupAsync(CommandContext context, [Description("ID of the build to get")]int id)
         {
             var build = new Build();
@@ -139,8 +140,9 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            var message = await context.Guild.Channels.FirstOrDefault(c => c.Name == "builds")
-                .GetMessageAsync(build.MessageId);
+            var channel = context.Guild.Channels.FirstOrDefault(c => c.Name == "builds");
+            if (channel == null) return;                
+            var message = await channel.GetMessageAsync(build.MessageId);
             await message.DeleteAsync();
 
             await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
@@ -187,7 +189,7 @@ namespace OutcastBot.Commands
             }
             else
             {
-                var match = new Regex(@"\d+").Match(user);
+                var match = new Regex(@"(?<=<@)\d+(?=>)").Match(user);
 
                 if (!match.Success)
                 {

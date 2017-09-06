@@ -13,7 +13,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (!match.Success)
             {
-                await context.RespondAsync("Invalid input. Use the index to select and object.");
+                await context.RespondAsync("Invalid input. Use the index to select an object.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 if (response == null) return null;
                 return await ValidateIndex(context, response.Message.Content, count);

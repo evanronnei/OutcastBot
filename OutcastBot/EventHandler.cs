@@ -79,9 +79,13 @@ namespace OutcastBot
         {
             if (!e.Author.IsBot)
             {
-                var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?\b").Match(e.Message.Content.ToLower());
+                var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?\b")
+                    .Match(e.Message.Content.ToLower());
 
-                if (match.Success) await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
+                if (match.Success)
+                {
+                    await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
+                }
             }
         }
 

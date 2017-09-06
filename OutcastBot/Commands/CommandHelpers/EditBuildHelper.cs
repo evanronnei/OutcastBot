@@ -63,10 +63,13 @@ namespace OutcastBot.Commands.CommandHelpers
                     build.VideoUrl = await BuildHelper.GetVideoUrl(BuildHelper.CommandType.Edit, context);
                 }
 
-                message = await context.RespondAsync("Would you like to edit another property? (Y/N)");
-                response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+                message = await context.RespondAsync("Would you like to edit another property?");
+                await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇾"));
+                await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇳"));
+                var reaction = await Program.Interactivity.WaitForMessageReactionAsync(e => e == DiscordEmoji.FromUnicode("🇾") || e == DiscordEmoji.FromUnicode("🇳"), 
+                    message, TimeSpan.FromMinutes(1), context.User.Id);
                 await message.DeleteAsync();
-                if (response != null && response.Message.Content.ToLower().StartsWith("y"))
+                if (reaction != null && reaction.Emoji == DiscordEmoji.FromUnicode("🇾"))
                 {
                     await EditProperty(context, build);
                 }

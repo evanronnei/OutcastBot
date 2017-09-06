@@ -171,8 +171,14 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New) prefix = _optional;
-            else if (commandType == CommandType.Edit) suffix = _delete;
+            if (commandType == CommandType.New)
+            {
+                prefix = _optional;
+            }
+            else if (commandType == CommandType.Edit)
+            {
+                suffix = _delete;
+            }
             var outMessage = $"{prefix}Upload the thumbnail image for the build. (Upload attachment){suffix}";
 
             var message = await context.RespondAsync(outMessage);
@@ -196,8 +202,14 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New) prefix = _optional;
-            else if (commandType == CommandType.Edit) suffix = _delete;
+            if (commandType == CommandType.New)
+            {
+                prefix = _optional;
+            }
+            else if (commandType == CommandType.Edit)
+            {
+                suffix = _delete;
+            }
             var outMessage = $"{prefix}Enter the forum URL for the build.{suffix}";
 
             var message = await context.RespondAsync(outMessage);
@@ -239,8 +251,14 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New) prefix = _optional;
-            else if (commandType == CommandType.Edit) suffix = _delete;
+            if (commandType == CommandType.New)
+            {
+                prefix = _optional;
+            }
+            else if (commandType == CommandType.Edit)
+            {
+                suffix = _delete;
+            }
             var outMessage = $"{prefix}Enter the video URL for the build.{suffix}";
 
             var message = await context.RespondAsync(outMessage);

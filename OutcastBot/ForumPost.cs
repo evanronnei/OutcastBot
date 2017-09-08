@@ -86,7 +86,7 @@ namespace OutcastBot
         {
             var postDate = new Regex(@"\d{2}-\d{2}-\d{4},\s\d{2}:\d{2}\s\w{2}")
                 .Match(_content);
-            PostDate = DateTimeOffset.ParseExact(postDate.Value, "MM-dd-yyyy, hh:mm tt", null);
+            PostDate = DateTimeOffset.ParseExact($"{postDate.Value}+0", "MM-dd-yyyy, hh:mm ttz", null);
         }
     }
 }

@@ -229,7 +229,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
         private static async Task<string> ValidateForumUrl(CommandContext context, string message)
         {
-            var match = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d*").Match(message);
+            var match = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d+").Match(message);
 
             if (match.Success)
             {

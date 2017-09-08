@@ -19,7 +19,12 @@ namespace OutcastBot
         public ForumPost(string url)
         {
             _url = url;
-            using (var client = new WebClient()) _content = client.DownloadString(_url);
+
+            using (var client = new WebClient())
+            {
+                _content = client.DownloadString(_url);
+            }
+
             Parse();
         }
 

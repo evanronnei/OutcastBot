@@ -109,13 +109,13 @@ namespace OutcastBot
 
         public static async Task GrimDawnForumHandler(MessageCreateEventArgs e)
         {
-            var match = new Regex(@"http://grimdawn.com/forums/showthread.php\?t=\d+").Match(e.Message.Content);
+            var match = new Regex(@"http://www.grimdawn.com/forums/showthread.php\?t=\d+").Match(e.Message.Content);
 
             if (match.Success)
             {
                 var forumPost = new ForumPost(match.Value);
 
-                await e.Message.ModifyAsync(e.Message.Content, forumPost.GetEmbed());
+                await e.Channel.SendMessageAsync("", false, forumPost.GetEmbed());
             }
         }
     }

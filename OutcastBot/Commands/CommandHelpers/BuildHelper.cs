@@ -279,7 +279,7 @@ namespace OutcastBot.Commands.CommandHelpers
         private static async Task<string> ValidateVideoUrl(CommandContext context, string message)
         {
             var youTube = new Regex(@"(?<=youtu\.be\/|youtube\.com/(embed/|v/|watch\?v=|watch\?.+&v=))((\w|-){11})").Match(message);
-            var streamable = new Regex(@"(?>=streamable\.com/)[a-z0-9]{5}").Match(message);
+            var streamable = new Regex(@"(?<=streamable\.com/)[a-z0-9]{5}").Match(message);
 
             if (youTube.Success)
             {
@@ -295,7 +295,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateForumUrl(context, response.Message.Content);
+                return await ValidateVideoUrl(context, response.Message.Content);
             }
         }
 

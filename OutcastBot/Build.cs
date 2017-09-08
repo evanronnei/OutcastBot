@@ -45,9 +45,11 @@ namespace OutcastBot
         {
             var embed = new DiscordEmbedBuilder
             {
-                Title = $"[{PatchVersion}] {Title}",
+                Title = $"{Title}",
                 Description = Description
             };
+
+            embed.WithAuthor($"[{PatchVersion}]");
 
             var author = await Program.Client.GetUserAsync(AuthorId);
 

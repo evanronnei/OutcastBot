@@ -68,7 +68,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var prefix = "";
             if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the title of the build. (246 characters maximum)";
+            var outMessage = $"{prefix}Enter the title of the build. (256 characters maximum)";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
@@ -87,7 +87,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
         private static async Task<string> ValidateTitle(CommandContext context, string message)
         {
-            if (message.Length > 246)
+            if (message.Length > 256)
             {
                 var msg = await context.RespondAsync($"Title is too long ({message.Length}). Please shorten the title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));

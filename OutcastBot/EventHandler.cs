@@ -109,7 +109,7 @@ namespace OutcastBot
 
         public static async Task GrimDawnForumHandler(MessageCreateEventArgs e)
         {
-            var match = new Regex(@"http://grimdawn.com/forums/showthread.php\?t=\d*").Match(e.Message.Content);
+            var match = new Regex(@"http://grimdawn.com/forums/showthread.php\?t=\d+").Match(e.Message.Content);
 
             if (match.Success)
             {

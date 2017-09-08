@@ -11,7 +11,7 @@ namespace OutcastBot
         public string Author { get; set; }
         public string AuthorAvatarUrl { get; set; }
         public int ReplyCount { get; set; }
-        public string PostDate { get; set; }
+        public DateTimeOffset PostDate { get; set; }
 
         private string _url;
         private string _content;
@@ -35,7 +35,7 @@ namespace OutcastBot
 
             embed.AddField("Replies", ReplyCount.ToString());
 
-            embed.WithFooter(PostDate);
+            embed.WithTimestamp(PostDate);
 
             return embed.Build();
         }
@@ -86,7 +86,7 @@ namespace OutcastBot
         {
             var postDate = new Regex(@"\d{2}-\d{2}-\d{4},\s\d{2}:\d{2}\s\w{2}")
                 .Match(_content);
-            PostDate = postDate.Value;
+            PostDate = DateTimeOffset.ParseExact(postDate.Value, "MM-dd-yyyy, hh:mm tt", null);
         }
     }
 }

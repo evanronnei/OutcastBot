@@ -106,5 +106,17 @@ namespace OutcastBot
                 await channel.SendMessageAsync($"Deleted message:", false, embed.Build());
             }
         }
+
+        public static async Task GrimDawnForumHandler(MessageCreateEventArgs e)
+        {
+            var match = new Regex(@"http://grimdawn.com/forums/showthread.php\?t=\d*").Match(e.Message.Content);
+
+            if (match.Success)
+            {
+                var forumPost = new ForumPost(match.Value);
+
+                await e.Message.ModifyAsync(e.Message.Content, forumPost.GetEmbed());
+            }
+        }
     }
 }

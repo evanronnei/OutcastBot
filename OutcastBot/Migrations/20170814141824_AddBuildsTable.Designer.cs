@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using OutcastBot;
+using OutcastBot.Ojects;
 
 namespace OutcastBot.Migrations
 {

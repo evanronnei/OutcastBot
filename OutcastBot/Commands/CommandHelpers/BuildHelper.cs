@@ -1,10 +1,14 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
+using OutcastBot.Objects;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Json;
 
 namespace OutcastBot.Commands.CommandHelpers
 {
@@ -21,7 +25,7 @@ namespace OutcastBot.Commands.CommandHelpers
             Edit
         }
 
-        public static async Task<string> GetPatchVersion(CommandType commandType, CommandContext context)
+        public static async Task<string> GetPatchVersionAsync(CommandType commandType, CommandContext context)
         {
             string patchVersion = null;
 
@@ -34,7 +38,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                patchVersion = await ValidatePatchVersion(context, response.Message.Content);
+                patchVersion = await ValidatePatchVersionAsync(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -44,7 +48,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return patchVersion;
         }
 
-        private static async Task<string> ValidatePatchVersion(CommandContext context, string message)
+        private static async Task<string> ValidatePatchVersionAsync(CommandContext context, string message)
         {
             var match = new Regex(@"\d\.\d\.\d\.\d").Match(message);
 
@@ -58,11 +62,11 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidatePatchVersion(context, response.Message.Content);
+                return await ValidatePatchVersionAsync(context, response.Message.Content);
             }
         }
 
-        public static async Task<string> GetTitle(CommandType commandType, CommandContext context)
+        public static async Task<string> GetTitleAsync(CommandType commandType, CommandContext context)
         {
             string title = null;
 
@@ -75,7 +79,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                title = await ValidateTitle(context, response.Message.Content);
+                title = await ValidateTitleAsync(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -85,7 +89,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return title;
         }
 
-        private static async Task<string> ValidateTitle(CommandContext context, string message)
+        private static async Task<string> ValidateTitleAsync(CommandContext context, string message)
         {
             if (message.Length > 256)
             {
@@ -93,7 +97,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateTitle(context, response.Message.Content);
+                return await ValidateTitleAsync(context, response.Message.Content);
             }
             else
             {
@@ -101,7 +105,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetDescription(CommandType commandType, CommandContext context)
+        public static async Task<string> GetDescriptionAsync(CommandType commandType, CommandContext context)
         {
             string description = null;
 
@@ -124,7 +128,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return description;
         }
 
-        public static async Task<string> GetBuildUrl(CommandType commandType, CommandContext context)
+        public static async Task<string> GetBuildUrlAsync(CommandType commandType, CommandContext context)
         {
             string buildUrl = null;
 
@@ -137,7 +141,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null)
             {
-                buildUrl = await ValidateBuildUrl(context, response.Message.Content);
+                buildUrl = await ValidateBuildUrlAsync(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -147,7 +151,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return buildUrl;
         }
 
-        private static async Task<string> ValidateBuildUrl(CommandContext context, string message)
+        private static async Task<string> ValidateBuildUrlAsync(CommandContext context, string message)
         {
             var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(message);
 
@@ -161,11 +165,11 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateBuildUrl(context, response.Message.Content);
+                return await ValidateBuildUrlAsync(context, response.Message.Content);
             }
         }
 
-        public static async Task<string> GetImageUrl(CommandType commandType, CommandContext context)
+        public static async Task<string> GetImageUrlAsync(CommandType commandType, CommandContext context)
         {
             string imageUrl = null;
 
@@ -196,7 +200,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return imageUrl;
         }
 
-        public static async Task<string> GetForumUrl(CommandType commandType, CommandContext context)
+        public static async Task<string> GetForumUrlAsync(CommandType commandType, CommandContext context)
         {
             string forumUrl = null;
 
@@ -217,7 +221,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null && response.Message.Content.ToLower() != _skip)
             {
-                forumUrl = await ValidateForumUrl(context, response.Message.Content);
+                forumUrl = await ValidateForumUrlAysnc(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -227,7 +231,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return forumUrl;
         }
 
-        private static async Task<string> ValidateForumUrl(CommandContext context, string message)
+        private static async Task<string> ValidateForumUrlAysnc(CommandContext context, string message)
         {
             var match = new Regex(@"(?<=grimdawn.com/forums/showthread.php\?t=)\d*").Match(message);
 
@@ -241,11 +245,11 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateForumUrl(context, response.Message.Content);
+                return await ValidateForumUrlAysnc(context, response.Message.Content);
             }
         }
 
-        public static async Task<string> GetVideoUrl(CommandType commandType, CommandContext context)
+        public static async Task<string> GetVideoUrlAsync(CommandType commandType, CommandContext context)
         {
             string videoUrl = null;
 
@@ -266,7 +270,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.DeleteAsync();
             if (response != null && response.Message.Content.ToLower() != _skip)
             {
-                videoUrl = await ValidateVideoUrl(context, response.Message.Content);
+                videoUrl = await ValidateVideoUrlAsync(context, response.Message.Content);
             }
             else if (response == null)
             {
@@ -276,7 +280,7 @@ namespace OutcastBot.Commands.CommandHelpers
             return videoUrl;
         }
 
-        private static async Task<string> ValidateVideoUrl(CommandContext context, string message)
+        private static async Task<string> ValidateVideoUrlAsync(CommandContext context, string message)
         {
             var youTube = new Regex(@"(?<=youtu\.be\/|youtube\.com/(embed/|v/|watch\?v=|watch\?.+&v=))((\w|-){11})").Match(message);
             var streamable = new Regex(@"(?<=streamable\.com/)[a-z0-9]{5}").Match(message);
@@ -295,44 +299,26 @@ namespace OutcastBot.Commands.CommandHelpers
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;
-                return await ValidateVideoUrl(context, response.Message.Content);
+                return await ValidateVideoUrlAsync(context, response.Message.Content);
             }
         }
 
-        public static async Task<string> GetTags(CommandContext context)
+        public static async Task<GrimToolsCalc> GetGrimToolsCalcAsync(string url)
         {
-            string tags = null;
+            var id = new Regex(@"(?<=http://www.grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(url);
 
-            var message = await context.RespondAsync($"{_optional}Enter the tags (emojis) for the build. (Separate each emoji with a space)");
-            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
-            await message.DeleteAsync();
-            if (response != null && response.Message.Content.ToLower() != _skip)
+            var client = new HttpClient
             {
-                tags = ValidateTags(context, response.Message.Content);
-            }
-            else if (response == null)
-            {
-                await context.RespondAsync("Option Timeout");
-            }
+                BaseAddress = new Uri("http://www.grimtools.com/")
+            };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            return tags;
-        }
+            var serializer = new DataContractJsonSerializer(typeof(GrimToolsCalc));
+            var response = await client.GetStreamAsync($"get_build_info.php/?id={id.Value}");
+            var calc = serializer.ReadObject(response) as GrimToolsCalc;
 
-        private static string ValidateTags(CommandContext context, string message)
-        {
-            var output = "";
-            var tags = message.Split(' ').ToList();
-
-            var converter = new DiscordEmojiConverter();
-            foreach (var tag in tags)
-            {
-                if (converter.TryConvert(tag, context, out DiscordEmoji emoji))
-                {
-                    output += $"{tag} ";
-                }
-            }
-
-            return output;
+            return calc;
         }
     }
 }

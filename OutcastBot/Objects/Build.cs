@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
+using OutcastBot.Enumerations;
 using System.Threading.Tasks;
 
 namespace OutcastBot.Ojects
@@ -21,6 +22,7 @@ namespace OutcastBot.Ojects
     {
         #region Automatically Filled Properties
         public int BuildId { get; set; }
+        public Mastery Mastery { get; set; }
         public ulong AuthorId { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
@@ -38,7 +40,6 @@ namespace OutcastBot.Ojects
         public string ImageUrl { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
-        public string Tags { get; set; }
         #endregion
 
         public async Task<DiscordEmbed> GetEmbed()

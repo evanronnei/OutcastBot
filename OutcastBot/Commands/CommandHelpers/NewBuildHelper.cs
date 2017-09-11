@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
+using OutcastBot.Ojects;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,18 +27,6 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.ModifyAsync("", await build.GetEmbed());
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
-
-            if (build.Tags != null)
-            {
-                var converter = new DiscordEmojiConverter();
-                foreach (var tag in build.Tags.Split(' ').ToList())
-                {
-                    if (converter.TryConvert(tag, context, out DiscordEmoji emoji))
-                    {
-                        await message.CreateReactionAsync(emoji);
-                    }
-                }
-            }
         }
     }
 }

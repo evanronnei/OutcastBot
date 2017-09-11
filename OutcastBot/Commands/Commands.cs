@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using OutcastBot.Commands.CommandHelpers;
+using OutcastBot.Ojects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,32 +61,29 @@ namespace OutcastBot.Commands
             };
 
             // PatchVersion
-            build.PatchVersion = await BuildHelper.GetPatchVersion(BuildHelper.CommandType.New, context);
+            build.PatchVersion = await BuildHelper.GetPatchVersionAsync(BuildHelper.CommandType.New, context);
             if (build.PatchVersion == null) return;
 
             // Title
-            build.Title = await BuildHelper.GetTitle(BuildHelper.CommandType.New, context);
+            build.Title = await BuildHelper.GetTitleAsync(BuildHelper.CommandType.New, context);
             if (build.Title == null) return;
 
             // Description
-            build.Description = await BuildHelper.GetDescription(BuildHelper.CommandType.New, context);
+            build.Description = await BuildHelper.GetDescriptionAsync(BuildHelper.CommandType.New, context);
             if (build.Description == null) return;
 
             // BuildUrl
-            build.BuildUrl = await BuildHelper.GetBuildUrl(BuildHelper.CommandType.New, context);
+            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(BuildHelper.CommandType.New, context);
             if (build.BuildUrl == null) return;
 
-            // ImageUrl
-            build.ImageUrl = await BuildHelper.GetImageUrl(BuildHelper.CommandType.New, context);
-
             // ForumUrl
-            build.ForumUrl = await BuildHelper.GetForumUrl(BuildHelper.CommandType.New, context);
+            build.ForumUrl = await BuildHelper.GetForumUrlAsync(BuildHelper.CommandType.New, context);
 
             // VideoUrl
-            build.VideoUrl = await BuildHelper.GetVideoUrl(BuildHelper.CommandType.New, context);
+            build.VideoUrl = await BuildHelper.GetVideoUrlAsync(BuildHelper.CommandType.New, context);
 
-            // Tags
-            build.Tags = await BuildHelper.GetTags(context);
+            // ImageUrl
+            build.ImageUrl = await BuildHelper.GetImageUrlAsync(BuildHelper.CommandType.New, context);
 
             // Post Build
             await NewBuildHelper.PostBuild(context, build);

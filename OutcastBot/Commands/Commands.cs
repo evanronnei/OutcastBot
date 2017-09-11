@@ -73,11 +73,8 @@ namespace OutcastBot.Commands
             if (build.Description == null) return;
 
             // BuildUrl
-            build.BuildUrl = await BuildHelper.GetBuildUrlAsync(BuildHelper.CommandType.New, context);
+            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(BuildHelper.CommandType.New, context);
             if (build.BuildUrl == null) return;
-
-            // ImageUrl
-            build.ImageUrl = await BuildHelper.GetImageUrlAsync(BuildHelper.CommandType.New, context);
 
             // ForumUrl
             build.ForumUrl = await BuildHelper.GetForumUrlAsync(BuildHelper.CommandType.New, context);
@@ -85,7 +82,8 @@ namespace OutcastBot.Commands
             // VideoUrl
             build.VideoUrl = await BuildHelper.GetVideoUrlAsync(BuildHelper.CommandType.New, context);
 
-            //var asdf = await BuildHelper.GetGrimToolsCalcAsync(build.BuildUrl);
+            // ImageUrl
+            build.ImageUrl = await BuildHelper.GetImageUrlAsync(BuildHelper.CommandType.New, context);
 
             // Post Build
             await NewBuildHelper.PostBuild(context, build);

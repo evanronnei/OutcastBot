@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
+using OutcastBot.Enumerations;
 
 namespace OutcastBot.Commands.CommandHelpers
 {
@@ -128,9 +129,10 @@ namespace OutcastBot.Commands.CommandHelpers
             return description;
         }
 
-        public static async Task<string> GetBuildUrlAsync(CommandType commandType, CommandContext context)
+        public static async Task<(string, Mastery)> GetBuildUrlAsync(CommandType commandType, CommandContext context)
         {
             string buildUrl = null;
+            GrimToolsBuild grimToolsBuild = null;
 
             var prefix = "";
             if (commandType == CommandType.New) prefix = _required;
@@ -142,13 +144,20 @@ namespace OutcastBot.Commands.CommandHelpers
             if (response != null)
             {
                 buildUrl = await ValidateBuildUrlAsync(context, response.Message.Content);
+                grimToolsBuild = await GetGrimToolsBuildAsync(buildUrl);
             }
             else if (response == null)
             {
                 await context.RespondAsync("Command Timeout");
             }
 
-            return buildUrl;
+            Mastery mastery = 0;
+            foreach(var key in grimToolsBuild.BuildData.Masteries.Keys)
+            {
+                mastery |= key;
+            }
+
+            return (buildUrl, mastery);
         }
 
         private static async Task<string> ValidateBuildUrlAsync(CommandContext context, string message)
@@ -167,37 +176,6 @@ namespace OutcastBot.Commands.CommandHelpers
                 if (response == null) return null;
                 return await ValidateBuildUrlAsync(context, response.Message.Content);
             }
-        }
-
-        public static async Task<string> GetImageUrlAsync(CommandType commandType, CommandContext context)
-        {
-            string imageUrl = null;
-
-            var prefix = "";
-            var suffix = "";
-            if (commandType == CommandType.New)
-            {
-                prefix = _optional;
-            }
-            else if (commandType == CommandType.Edit)
-            {
-                suffix = _delete;
-            }
-            var outMessage = $"{prefix}Upload the thumbnail image for the build. (Upload attachment){suffix}";
-
-            var message = await context.RespondAsync(outMessage);
-            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
-            await message.DeleteAsync();
-            if (response != null && response.Message.Attachments.Count > 0 && response.Message.Content.ToLower() != _skip)
-            {
-                imageUrl = response.Message.Attachments[0].Url;
-            }
-            else if (response == null)
-            {
-                await context.RespondAsync("Option Timeout");
-            }
-
-            return imageUrl;
         }
 
         public static async Task<string> GetForumUrlAsync(CommandType commandType, CommandContext context)
@@ -303,7 +281,38 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<GrimToolsCalc> GetGrimToolsCalcAsync(string url)
+        public static async Task<string> GetImageUrlAsync(CommandType commandType, CommandContext context)
+        {
+            string imageUrl = null;
+
+            var prefix = "";
+            var suffix = "";
+            if (commandType == CommandType.New)
+            {
+                prefix = _optional;
+            }
+            else if (commandType == CommandType.Edit)
+            {
+                suffix = _delete;
+            }
+            var outMessage = $"{prefix}Upload an image for the build. (Upload attachment){suffix}";
+
+            var message = await context.RespondAsync(outMessage);
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
+            await message.DeleteAsync();
+            if (response != null && response.Message.Attachments.Count > 0 && response.Message.Content.ToLower() != _skip)
+            {
+                imageUrl = response.Message.Attachments[0].Url;
+            }
+            else if (response == null)
+            {
+                await context.RespondAsync("Option Timeout");
+            }
+
+            return imageUrl;
+        }
+
+        public static async Task<GrimToolsBuild> GetGrimToolsBuildAsync(string url)
         {
             var id = new Regex(@"(?<=http://www.grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(url);
 
@@ -314,9 +323,13 @@ namespace OutcastBot.Commands.CommandHelpers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var serializer = new DataContractJsonSerializer(typeof(GrimToolsCalc));
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+            var serializer = new DataContractJsonSerializer(typeof(GrimToolsBuild), settings);
             var response = await client.GetStreamAsync($"get_build_info.php/?id={id.Value}");
-            var calc = serializer.ReadObject(response) as GrimToolsCalc;
+            var calc = serializer.ReadObject(response) as GrimToolsBuild;
 
             return calc;
         }

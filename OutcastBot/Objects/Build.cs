@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
+using static OutcastBot.Enumerations.Attributes;
 using System.Threading.Tasks;
 
 namespace OutcastBot.Ojects
@@ -47,19 +48,20 @@ namespace OutcastBot.Ojects
             var embed = new DiscordEmbedBuilder
             {
                 Title = $"{Title}",
-                Description = Description
+                Description = Description,
+                ThumbnailUrl = Mastery.GetAttribute<MasteryInfoAttribute>().ImageUrl,
+                Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color)
             };
 
             embed.WithAuthor($"[{PatchVersion}]");
 
             var author = await Program.Client.GetUserAsync(AuthorId);
 
-            if (ImageUrl != null) embed.ThumbnailUrl = ImageUrl;
-
             embed.AddField( "Author", author.Mention);
             embed.AddField("Build", BuildUrl);
             if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);
             if (VideoUrl != null) embed.AddField("Video", VideoUrl);
+            if (ImageUrl != null) embed.ImageUrl = ImageUrl;
 
             embed.WithFooter($"ID: {BuildId}");
 

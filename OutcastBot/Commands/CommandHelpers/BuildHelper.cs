@@ -241,7 +241,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 suffix = _delete;
             }
-            var outMessage = $"{prefix}Enter the video URL for the build.{suffix}";
+            var outMessage = $"{prefix}Enter the video URL for the build. (YouTube or streamable){suffix}";
 
             var message = await context.RespondAsync(outMessage);
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -273,7 +273,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var msg = await context.RespondAsync("Invalid video URL, please re-enter the video URL.");
+                var msg = await context.RespondAsync("Invalid video URL, please re-enter the video URL. (YouTube or streamable)");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
                 await msg.DeleteAsync();
                 if (response == null) return null;

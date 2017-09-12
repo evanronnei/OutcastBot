@@ -12,6 +12,17 @@ namespace OutcastBot
 {
     class EventHandler
     {
+        public static async Task ClientReadyHandler(ReadyEventArgs e)
+        {
+            e.Client.DebugLogger.LogMessage(
+                LogLevel.Info, 
+                "OutcastBot", 
+                "Client is ready to process events.", 
+                DateTime.Now);
+
+            await Program.Client.UpdateStatusAsync(new Game($"{Program.Configuration["CommandPrefix"]}help"));
+        }
+
         public static Task ClientErrorHandler(ClientErrorEventArgs e)
         {
             e.Client.DebugLogger.LogMessage(

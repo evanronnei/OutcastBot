@@ -61,29 +61,29 @@ namespace OutcastBot.Commands
             };
 
             // PatchVersion
-            build.PatchVersion = await BuildHelper.GetPatchVersionAsync(BuildHelper.CommandType.New, context);
+            build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context);
             if (build.PatchVersion == null) return;
 
             // Title
-            build.Title = await BuildHelper.GetTitleAsync(BuildHelper.CommandType.New, context);
+            build.Title = await BuildHelper.GetTitleAsync(context);
             if (build.Title == null) return;
 
             // Description
-            build.Description = await BuildHelper.GetDescriptionAsync(BuildHelper.CommandType.New, context);
+            build.Description = await BuildHelper.GetDescriptionAsync(context);
             if (build.Description == null) return;
 
             // BuildUrl
-            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(BuildHelper.CommandType.New, context);
+            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(context);
             if (build.BuildUrl == null) return;
 
             // ForumUrl
-            build.ForumUrl = await BuildHelper.GetForumUrlAsync(BuildHelper.CommandType.New, context);
+            build.ForumUrl = await BuildHelper.GetForumUrlAsync(context);
 
             // VideoUrl
-            build.VideoUrl = await BuildHelper.GetVideoUrlAsync(BuildHelper.CommandType.New, context);
+            build.VideoUrl = await BuildHelper.GetVideoUrlAsync(context);
 
             // ImageUrl
-            build.ImageUrl = await BuildHelper.GetImageUrlAsync(BuildHelper.CommandType.New, context);
+            build.ImageUrl = await BuildHelper.GetImageUrlAsync(context);
 
             // Post Build
             await NewBuildHelper.PostBuild(context, build);

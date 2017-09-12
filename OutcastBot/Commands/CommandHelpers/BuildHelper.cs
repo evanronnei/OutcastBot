@@ -4,6 +4,7 @@ using OutcastBot.Objects;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,23 +18,20 @@ namespace OutcastBot.Commands.CommandHelpers
         private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step) ";
         private static string _delete = $" (Type \"{_skip}\" to remove this property)";
 
-        public enum CommandType
-        {
-            New,
-            Edit
-        }
-
-        public static async Task<string> GetPatchVersionAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetPatchVersionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string patchVersion = null;
 
             var prefix = "";
-            if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the patch version of the build. (i.e. 1.0.0.0)";
+            if (callerMethodName == "NewBuild")
+            {
+                prefix = _required;
+            }
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the patch version of the build. (i.e. 1.0.0.0)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
+
             if (response != null)
             {
                 patchVersion = await ValidatePatchVersionAsync(context, response.Message.Content);
@@ -64,17 +62,20 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetTitleAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetTitleAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string title = null;
 
             var prefix = "";
-            if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the title of the build. (256 characters maximum)";
+            if (callerMethodName == "NewBuild")
+            {
+                prefix = _required;
+            }
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the title of the build. (256 characters maximum)");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             await message.DeleteAsync();
+
             if (response != null)
             {
                 title = await ValidateTitleAsync(context, response.Message.Content);
@@ -103,17 +104,20 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetDescriptionAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetDescriptionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string description = null;
 
             var prefix = "";
-            if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the description of the build.";
+            if (callerMethodName == "NewBuild")
+            {
+                prefix = _required;
+            }
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the description of the build.");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(10));
             await message.DeleteAsync();
+
             if (response != null)
             {
                 description = response.Message.Content;
@@ -126,18 +130,21 @@ namespace OutcastBot.Commands.CommandHelpers
             return description;
         }
 
-        public static async Task<(string, Mastery)> GetBuildUrlAsync(CommandType commandType, CommandContext context)
+        public static async Task<(string, Mastery)> GetBuildUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string buildUrl = null;
             GrimToolsBuild grimToolsBuild = null;
 
             var prefix = "";
-            if (commandType == CommandType.New) prefix = _required;
-            var outMessage = $"{prefix}Enter the http://www.grimtools.com/calc/ for the build";
+            if (callerMethodName == "NewBuild")
+            {
+                prefix = _required;
+            }
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the http://www.grimtools.com/calc/ for the build");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
+
             if (response != null)
             {
                 buildUrl = await ValidateBuildUrlAsync(context, response.Message.Content);
@@ -175,25 +182,25 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetForumUrlAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetForumUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string forumUrl = null;
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New)
+            if (callerMethodName == "NewBuild")
             {
                 prefix = _optional;
             }
-            else if (commandType == CommandType.Edit)
+            else
             {
                 suffix = _delete;
             }
-            var outMessage = $"{prefix}Enter the forum URL for the build.{suffix}";
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the forum URL for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
+
             if (response != null && response.Message.Content.ToLower() != _skip)
             {
                 forumUrl = await ValidateForumUrlAysnc(context, response.Message.Content);
@@ -224,25 +231,25 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetVideoUrlAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetVideoUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string videoUrl = null;
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New)
+            if (callerMethodName == "NewBuild")
             {
                 prefix = _optional;
             }
-            else if (commandType == CommandType.Edit)
+            else
             {
                 suffix = _delete;
             }
-            var outMessage = $"{prefix}Enter the video URL for the build. (YouTube or streamable){suffix}";
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Enter the video URL for the build. (YouTube or streamable){suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
             await message.DeleteAsync();
+
             if (response != null && response.Message.Content.ToLower() != _skip)
             {
                 videoUrl = await ValidateVideoUrlAsync(context, response.Message.Content);
@@ -278,25 +285,25 @@ namespace OutcastBot.Commands.CommandHelpers
             }
         }
 
-        public static async Task<string> GetImageUrlAsync(CommandType commandType, CommandContext context)
+        public static async Task<string> GetImageUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string imageUrl = null;
 
             var prefix = "";
             var suffix = "";
-            if (commandType == CommandType.New)
+            if (callerMethodName == "NewBuild")
             {
                 prefix = _optional;
             }
-            else if (commandType == CommandType.Edit)
+            else
             {
                 suffix = _delete;
             }
-            var outMessage = $"{prefix}Upload an image for the build. (Upload attachment){suffix}";
 
-            var message = await context.RespondAsync(outMessage);
+            var message = await context.RespondAsync($"{prefix}Upload an image for the build. (Upload attachment){suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
             await message.DeleteAsync();
+
             if (response != null && response.Message.Attachments.Count > 0 && response.Message.Content.ToLower() != _skip)
             {
                 imageUrl = response.Message.Attachments[0].Url;

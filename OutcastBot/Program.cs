@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using Microsoft.Extensions.Configuration;
 using OutcastBot.Commands;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -44,14 +45,18 @@ namespace OutcastBot
             Commands.RegisterCommands<Commands.Commands>();
             Commands.RegisterCommands<BuildCommands>();
 
+            Client.ClientErrored += EventHandler.ClientErrorHandler;
             Client.MessageReactionAdded += EventHandler.BuildVoteAddHandler;
             Client.MessageReactionRemoved += EventHandler.BuildVoteRemoveHandler;
             Client.MessageCreated += EventHandler.CrabHandler;
             Client.MessageDeleted += EventHandler.BuildDeleteHandler;
             Client.MessageDeleted += EventHandler.JanitorDeleteHandler;
 
+            Commands.CommandErrored += EventHandler.CommandErrorHandler;
+
             Client.Ready += async e =>
             {
+                e.Client.DebugLogger.LogMessage(LogLevel.Info, "OutcastBot", "Client is ready to process events.", DateTime.Now);
                 await Client.UpdateStatusAsync(new Game($"{Configuration["CommandPrefix"]}help"));
             };
 

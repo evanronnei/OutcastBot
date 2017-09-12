@@ -1,6 +1,9 @@
-﻿using DSharpPlus.Entities;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Ojects;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,6 +12,28 @@ namespace OutcastBot
 {
     class EventHandler
     {
+        public static Task ClientErrorHandler(ClientErrorEventArgs e)
+        {
+            e.Client.DebugLogger.LogMessage(
+                LogLevel.Error, 
+                "OutcastBot", 
+                $"Exception occured: {e.Exception.GetType()}: {e.Exception.Message}", 
+                DateTime.Now);
+
+            return Task.CompletedTask;
+        }
+
+        public static Task CommandErrorHandler(CommandErrorEventArgs e)
+        {
+            e.Context.Client.DebugLogger.LogMessage(
+                LogLevel.Error, 
+                "OutcastBot", 
+                $"Exception occured execution \"{e.Command.Parent} {e.Command.Name}\": {e.Exception.Message}", 
+                DateTime.Now);
+
+            return Task.CompletedTask;
+        }
+
         public static async Task BuildVoteAddHandler(MessageReactionAddEventArgs e)
         {
             if (e.Channel.Name == "builds")

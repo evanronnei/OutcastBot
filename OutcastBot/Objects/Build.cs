@@ -12,7 +12,7 @@ namespace OutcastBot.Ojects
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=OutcastBotDatabase.db");
+            optionsBuilder.UseSqlite($"Data Source={Program.Configuration["DatabasePath"]}");
         }
     }
 
@@ -50,7 +50,8 @@ namespace OutcastBot.Ojects
                 Title = $"{Title}",
                 Description = Description,
                 ThumbnailUrl = Mastery.GetAttribute<MasteryInfoAttribute>().ImageUrl,
-                Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color)
+                Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color),
+                Url = BuildUrl
             };
 
             embed.WithAuthor($"[{PatchVersion}]");

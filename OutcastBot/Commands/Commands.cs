@@ -17,7 +17,7 @@ namespace OutcastBot.Commands
         [Aliases("feedback", "suggestion")]
         public async Task ReportBug(CommandContext context)
         {
-            await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub. <https://github.com/evanronnei/OutcastBot/issues>");
+            await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub: <https://github.com/evanronnei/OutcastBot/issues>");
         }
 
         [Command("f"), Description("Pay respects")]

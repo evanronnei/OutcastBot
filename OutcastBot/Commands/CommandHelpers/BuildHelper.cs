@@ -1,15 +1,12 @@
 ﻿using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Converters;
-using DSharpPlus.Entities;
+using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Runtime.Serialization.Json;
-using OutcastBot.Enumerations;
 
 namespace OutcastBot.Commands.CommandHelpers
 {

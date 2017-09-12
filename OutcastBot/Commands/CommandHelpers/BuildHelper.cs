@@ -18,6 +18,7 @@ namespace OutcastBot.Commands.CommandHelpers
         private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step) ";
         private static string _delete = $" (Type \"{_skip}\" to remove this property)";
 
+        #region PatchVersion
         public static async Task<string> GetPatchVersionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string patchVersion = null;
@@ -61,7 +62,9 @@ namespace OutcastBot.Commands.CommandHelpers
                 return await ValidatePatchVersionAsync(context, response.Message.Content);
             }
         }
+        #endregion
 
+        #region Title
         public static async Task<string> GetTitleAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string title = null;
@@ -103,7 +106,9 @@ namespace OutcastBot.Commands.CommandHelpers
                 return message;
             }
         }
+        #endregion
 
+        #region Description
         public static async Task<string> GetDescriptionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string description = null;
@@ -129,7 +134,9 @@ namespace OutcastBot.Commands.CommandHelpers
 
             return description;
         }
+        #endregion
 
+        #region BuildUrl
         public static async Task<(string, Mastery)> GetBuildUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string buildUrl = null;
@@ -181,7 +188,9 @@ namespace OutcastBot.Commands.CommandHelpers
                 return await ValidateBuildUrlAsync(context, response.Message.Content);
             }
         }
+        #endregion
 
+        #region ForumUrl
         public static async Task<string> GetForumUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string forumUrl = null;
@@ -230,7 +239,9 @@ namespace OutcastBot.Commands.CommandHelpers
                 return await ValidateForumUrlAysnc(context, response.Message.Content);
             }
         }
+        #endregion
 
+        #region VideoUrl
         public static async Task<string> GetVideoUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string videoUrl = null;
@@ -284,7 +295,9 @@ namespace OutcastBot.Commands.CommandHelpers
                 return await ValidateVideoUrlAsync(context, response.Message.Content);
             }
         }
+        #endregion
 
+        #region ImageUrl
         public static async Task<string> GetImageUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             string imageUrl = null;
@@ -315,6 +328,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             return imageUrl;
         }
+        #endregion
 
         public static async Task<GrimToolsBuild> GetGrimToolsBuildAsync(string url)
         {

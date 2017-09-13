@@ -11,7 +11,7 @@ namespace OutcastBot.Commands.CommandHelpers
     {
         public static async Task EditProperty(CommandContext context, Build build)
         {
-            // TODO come up with a better solution to this
+            // TODO: come up with a better solution to this
             var propertyList = new StringBuilder();
             propertyList.AppendLine("**0** - Patch Version");
             propertyList.AppendLine("**1** - Title");

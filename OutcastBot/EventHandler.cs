@@ -116,7 +116,7 @@ namespace OutcastBot
         {
             if (!e.Author.IsBot)
             {
-                var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?\b")
+                var match = new Regex(@"c\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?")
                     .Match(e.Message.Content.ToLower());
 
                 if (match.Success)

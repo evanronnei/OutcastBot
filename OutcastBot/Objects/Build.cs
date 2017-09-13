@@ -12,7 +12,7 @@ namespace OutcastBot.Ojects
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={Program.Configuration["DatabasePath"]}");
+            optionsBuilder.UseSqlite($"Data Source=OutcastBotDatabase.db");
         }
     }
 

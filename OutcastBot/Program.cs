@@ -32,7 +32,7 @@ namespace OutcastBot
                 Token = Configuration["Token"],
                 TokenType = TokenType.Bot,
                 UseInternalLogHandler = true,
-                LogLevel = LogLevel.Debug
+                LogLevel = LogLevel.Info
             });
 
             Interactivity = Client.UseInteractivity();

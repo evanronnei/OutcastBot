@@ -37,17 +37,13 @@ namespace OutcastBot.Commands.CommandHelpers
 
                 if (index == 0) // PatchVersion
                 {
-                    var temp = build.PatchVersion;
-
-                    build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context) ?? temp;
+                    build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context) ?? build.PatchVersion;
                 }
                 else if (index == 1) // Title
                 {
-                    var temp = build.Title;
-
-                    build.Title = await BuildHelper.GetTitleAsync(context) ?? temp;
+                    build.Title = await BuildHelper.GetTitleAsync(context) ?? build.Title;
                 }
-                else if (index == 2) // BuildUrl
+                else if (index == 2) // BuildUrl & Mastery
                 {
                     var tempBuildUrl = build.BuildUrl;
                     var tempMastery = build.Mastery;
@@ -62,9 +58,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 }
                 else if (index == 3) // Description
                 {
-                    var temp = build.Description;
-
-                    build.Description = await BuildHelper.GetDescriptionAsync(context) ?? temp;
+                    build.Description = await BuildHelper.GetDescriptionAsync(context) ?? build.Description;
                 }
                 else if (index == 4) // ImageUrl
                 {

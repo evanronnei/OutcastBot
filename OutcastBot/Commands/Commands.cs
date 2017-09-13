@@ -13,14 +13,16 @@ namespace OutcastBot.Commands
 {
     public class Commands
     {
-        [Command("bug"), Description("Report a bug, give feedback, and/or offer a suggestion")]
+        [Command("bug")]
+        [Description("Report a bug, give feedback, and/or offer a suggestion")]
         [Aliases("feedback", "suggestion")]
         public async Task ReportBug(CommandContext context)
         {
             await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub: <https://github.com/evanronnei/OutcastBot/issues>");
         }
 
-        [Command("f"), Description("Pay respects")]
+        [Command("f")]
+        [Description("Pay respects")]
         [Aliases("payrespects")]
         public async Task PayRespects(CommandContext context)
         {
@@ -29,7 +31,8 @@ namespace OutcastBot.Commands
         }
     }
 
-    [Group("build", CanInvokeWithoutSubcommand = true), Description("Commands for interacting with builds")]
+    [Group("build", CanInvokeWithoutSubcommand = true)]
+    [Description("Commands for interacting with builds")]
     public class BuildCommands
     {
         // Get an existing build
@@ -50,7 +53,8 @@ namespace OutcastBot.Commands
             await context.RespondAsync("", false, await build.GetEmbed());
         } 
 
-        [Command("new"), Description("Create a new build")]
+        [Command("new")]
+        [Description("Create a new build")]
         public async Task NewBuild(CommandContext context)
         {
             var build = new Build()
@@ -89,7 +93,8 @@ namespace OutcastBot.Commands
             await NewBuildHelper.PostBuild(context, build);
         }
 
-        [Command("edit"), Description("Edit an existing build")]
+        [Command("edit")]
+        [Description("Edit an existing build")]
         public async Task EditBuild(CommandContext context, [Description("ID of the build to edit")]int id)
         {
             var build = new Build();
@@ -125,7 +130,8 @@ namespace OutcastBot.Commands
             }
         }
 
-        [Command("delete"), Description("Delete an existing build")]
+        [Command("delete")]
+        [Description("Delete an existing build")]
         public async Task DeleteBuild(CommandContext context, [Description("ID of the build to delete")]int id)
         {
             var build = new Build();
@@ -154,7 +160,8 @@ namespace OutcastBot.Commands
             await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
         }
 
-        [Command("top"), Description("Displays the top builds")]
+        [Command("top")]
+        [Description("Displays the top builds")]
         public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max).")]int count = 5)
         {
             if (count > 10 || count < 1)
@@ -181,7 +188,8 @@ namespace OutcastBot.Commands
             await context.RespondAsync("", false, embed.Build());
         }
 
-        [Command("mybuilds"), Description("Displays your builds")]
+        [Command("mybuilds")]
+        [Description("Displays your builds")]
         public async Task MyBuilds(CommandContext context, [Description("User mention")]string user = null)
         {
             var builds = new List<Build>();

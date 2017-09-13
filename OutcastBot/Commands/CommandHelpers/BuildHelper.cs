@@ -2,10 +2,7 @@
 using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -13,10 +10,12 @@ namespace OutcastBot.Commands.CommandHelpers
 {
     class BuildHelper
     {
+        #region Message prefix and suffix strings
         private static string _required = "(REQUIRED) ";
         private static string _skip = "0";
         private static string _optional = $"(OPTIONAL: Type \"{_skip}\" to skip this step) ";
         private static string _delete = $" (Type \"{_skip}\" to remove this property)";
+        #endregion    
 
         #region PatchVersion
         public static async Task<string> GetPatchVersionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")

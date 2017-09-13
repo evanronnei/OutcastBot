@@ -1,8 +1,8 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
-using static OutcastBot.Enumerations.Attributes;
 using System.Threading.Tasks;
+using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot.Ojects
 {

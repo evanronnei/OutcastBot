@@ -22,4 +22,6 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * Removes deleted builds from the database.
 * Posts deleted messages from `#trade` and `#searching-players` to the `#broomcloset` channel in an embedded object.
 
+## Join us on Discord
+
 [![Join Grim Dawn on Discord](https://raw.githubusercontent.com/evanronnei/OutcastBot/master/GrimDawnJoinBanner.png)](https://discord.gg/2FYWt2B)

@@ -18,7 +18,15 @@ namespace OutcastBot.Commands
         public async Task Credits(CommandContext context)
         {
             var author = await context.Client.GetUserAsync(125732531629719552);
-            await context.RespondAsync($"Developer: {author.Mention}");
+
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = "Developer",
+                Description = author.Mention,
+                ThumbnailUrl = author.AvatarUrl
+            };
+
+            await context.RespondAsync("", false, embed.Build());
         }
 
         [Command("bug")]

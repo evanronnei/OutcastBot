@@ -87,19 +87,13 @@ namespace OutcastBot.Commands.CommandHelpers
 
             await message.DeleteAsync();
 
-            if (reaction == null)
+            if (reaction == null || reaction.Emoji == DiscordEmoji.FromUnicode("🇳"))
             {
-                await context.RespondAsync("Command Timeout");
                 return false;
-            }
-
-            if (reaction.Emoji == DiscordEmoji.FromUnicode("🇾"))
-            {
-                return true;
             }
             else
             {
-                return false;
+                return true;
             }
         }
         #endregion

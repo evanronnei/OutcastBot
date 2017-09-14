@@ -16,9 +16,6 @@ namespace OutcastBot.Ojects
         }
     }
 
-    /// <summary>
-    /// Build object
-    /// </summary>
     public class Build
     {
         #region Automatically Filled Properties

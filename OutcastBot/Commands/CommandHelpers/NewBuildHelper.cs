@@ -1,5 +1,4 @@
 ﻿using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using OutcastBot.Ojects;
 using System.Linq;
@@ -27,6 +26,8 @@ namespace OutcastBot.Commands.CommandHelpers
             await message.ModifyAsync("", await build.GetEmbed());
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_up:"));
             await message.CreateReactionAsync(DiscordEmoji.FromName(context.Client, ":arrow_down:"));
+
+            await context.RespondAsync($"Created new build with ID: {build.BuildId}");
         }
     }
 }

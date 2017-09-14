@@ -3,6 +3,9 @@ using DSharpPlus.Entities;
 using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -260,19 +263,12 @@ namespace OutcastBot.Commands.CommandHelpers
 
             await message.DeleteAsync();
 
-            if (response == null)
-            {
-                await context.RespondAsync("Option Timeout");
-                return null;
-            }
-            if (response.Message.Content == _skip)
-            {
-                await response.Message.DeleteAsync();
-                return null;
-            }
+            if (response == null) return null;
 
             await response.Message.DeleteAsync();
-            
+
+            if (response.Message.Content == _skip) return null;
+
             var forumUrl = await ValidateForumUrlAysnc(context, response.Message.Content);
 
             return forumUrl;
@@ -288,18 +284,16 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var message = await context.RespondAsync("Invalid forum URL, please re-enter the forum URL.");
+                var message = await context.RespondAsync($"Invalid forum URL, please re-enter the forum URL, or type \"{_skip}\" to skip this step.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
 
-                if (response == null)
-                {
-                    await context.RespondAsync("Command Timeout");
-                    return null;
-                }
+                if (response == null) return null;
 
                 await response.Message.DeleteAsync();
+
+                if (response.Message.Content == _skip) return null;
 
                 return await ValidateForumUrlAysnc(context, response.Message.Content);
             }
@@ -358,18 +352,16 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
-                var message = await context.RespondAsync("Invalid video URL, please re-enter the video URL. (YouTube or streamable)");
+                var message = await context.RespondAsync($"Invalid video URL, please re-enter the video URL (YouTube or streamable), or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
 
-                if (response == null)
-                {
-                    await context.RespondAsync("Command Timeout");
-                    return null;
-                }
+                if (response == null) return null;
 
                 await response.Message.DeleteAsync();
+
+                if (response.Message.Content == _skip) return null;
 
                 return await ValidateVideoUrlAsync(context, response.Message.Content);
             }
@@ -390,27 +382,46 @@ namespace OutcastBot.Commands.CommandHelpers
                 suffix = _delete;
             }
 
-            var message = await context.RespondAsync($"{prefix}Upload an image for the build (Upload attachment).{suffix}");
+            var message = await context.RespondAsync($"{prefix}Upload an image for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
 
             await message.DeleteAsync();
 
-            if (response == null)
-            {
-                await context.RespondAsync("Option Timeout");
-                return null;
-            }
-            if (response.Message.Content == _skip)
-            {
-                await response.Message.DeleteAsync();
-                return null;
-            }
+            if (response == null) return null;
 
             await response.Message.DeleteAsync();
 
-            var imageUrl = response.Message.Attachments[0].Url;
+            if (response.Message.Content == _skip) return null;
+
+            var imageUrl = await ValidateImageUrlAsync(context, response.Message.Attachments);
 
             return imageUrl;
+        }
+
+        private static async Task<string> ValidateImageUrlAsync(CommandContext context, IReadOnlyList<DiscordAttachment> userInput)
+        {
+            var acceptedExentions = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
+
+            if (userInput.Count == 0 || 
+                acceptedExentions.FirstOrDefault(extension => extension == Path.GetExtension(userInput[0].Url.ToLower())) == null)
+            {
+                var message = await context.RespondAsync($"Invalid image, please re-upload your image, or type \"{_skip}\" to skip this step");
+                var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+
+                await message.DeleteAsync();
+
+                if (response == null) return null;
+
+                await response.Message.DeleteAsync();
+
+                if (response.Message.Content == _skip) return null;
+
+                return await ValidateImageUrlAsync(context, response.Message.Attachments);
+            }
+            else
+            {
+                return userInput[0].Url;
+            }
         }
         #endregion
     }

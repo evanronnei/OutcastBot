@@ -11,8 +11,8 @@ using System;
 namespace OutcastBot.Migrations
 {
     [DbContext(typeof(BuildContext))]
-    [Migration("20170914151455_BuildsTable2")]
-    partial class BuildsTable2
+    [Migration("20170914153558_BuildsTable")]
+    partial class BuildsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,7 @@ namespace OutcastBot.Migrations
 
                     b.Property<int>("DownVotes");
 
-                    b.Property<bool?>("ExpansionRequired");
+                    b.Property<bool>("ExpansionRequired");
 
                     b.Property<string>("ForumUrl");
 

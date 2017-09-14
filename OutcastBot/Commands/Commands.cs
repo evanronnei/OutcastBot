@@ -70,7 +70,6 @@ namespace OutcastBot.Commands
 
             // ExpansionRequired
             //build.ExpansionRequired = await BuildHelper.GetExpansionRequiredAsync(context);
-            //if (build.ExpansionRequired == null) return;
 
             // Title
             build.Title = await BuildHelper.GetTitleAsync(context);

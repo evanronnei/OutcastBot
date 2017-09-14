@@ -32,7 +32,7 @@ namespace OutcastBot.Migrations
 
                     b.Property<int>("DownVotes");
 
-                    b.Property<bool?>("ExpansionRequired");
+                    b.Property<bool>("ExpansionRequired");
 
                     b.Property<string>("ForumUrl");
 

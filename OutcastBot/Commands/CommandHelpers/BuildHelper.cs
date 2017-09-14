@@ -27,7 +27,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 prefix = _required;
             }
 
-            var message = await context.RespondAsync($"{prefix}Enter the patch version of the build. (i.e. 1.0.0.0)");
+            var message = await context.RespondAsync($"{prefix}Enter the patch version of the build (i.e. 1.0.0.0).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -74,7 +74,7 @@ namespace OutcastBot.Commands.CommandHelpers
         #endregion
 
         #region ExpansionRequired
-        public static async Task<bool?> GetExpansionRequiredAsync(CommandContext context)
+        public static async Task<bool> GetExpansionRequiredAsync(CommandContext context)
         {
             var message = await context.RespondAsync($"{_required}Does this build require the expansion pack (Ashes of Malmouth)?");
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇾"));
@@ -90,7 +90,7 @@ namespace OutcastBot.Commands.CommandHelpers
             if (reaction == null)
             {
                 await context.RespondAsync("Command Timeout");
-                return null;
+                return false;
             }
 
             if (reaction.Emoji == DiscordEmoji.FromUnicode("🇾"))
@@ -113,7 +113,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 prefix = _required;
             }
 
-            var message = await context.RespondAsync($"{prefix}Enter the title of the build. (256 characters maximum)");
+            var message = await context.RespondAsync($"{prefix}Enter the title of the build (256 characters maximum).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
 
             await message.DeleteAsync();
@@ -326,7 +326,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 suffix = _delete;
             }
 
-            var message = await context.RespondAsync($"{prefix}Enter the video URL for the build. (YouTube or streamable){suffix}");
+            var message = await context.RespondAsync($"{prefix}Enter the video URL for the build (YouTube or streamable).{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -396,7 +396,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 suffix = _delete;
             }
 
-            var message = await context.RespondAsync($"{prefix}Upload an image for the build. (Upload attachment){suffix}");
+            var message = await context.RespondAsync($"{prefix}Upload an image for the build (Upload attachment).{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(2));
 
             await message.DeleteAsync();
@@ -413,7 +413,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
 
             await response.Message.DeleteAsync();
-           
+
             var imageUrl = response.Message.Attachments[0].Url;
 
             return imageUrl;

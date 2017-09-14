@@ -30,7 +30,7 @@ namespace OutcastBot.Ojects
         #region User Filled Properties
         // required
         public string PatchVersion { get; set; }
-        public bool? ExpansionRequired { get; set; }
+        public bool ExpansionRequired { get; set; }
         public string Title { get; set; }
         public string BuildUrl { get; set; }
         public string Description { get; set; }
@@ -52,7 +52,7 @@ namespace OutcastBot.Ojects
                 Url = BuildUrl
             };
 
-            if ((bool)ExpansionRequired)
+            if (ExpansionRequired)
             {
                 embed.WithAuthor($"[{PatchVersion}][Expansion]");
             }
@@ -62,7 +62,6 @@ namespace OutcastBot.Ojects
             }
 
             var author = await Program.Client.GetUserAsync(AuthorId);
-
             embed.AddField( "Author", author.Mention);
             embed.AddField("Build", BuildUrl);
             if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);

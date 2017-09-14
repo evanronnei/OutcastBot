@@ -2,7 +2,7 @@
 
 # The Outcast
 
-The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](https://github.com/NaamloosDT/DSharpPlus). The main purpose of the bot is for interacting with the `#builds` channel. This includes posting, editting, and deleting builds.
+The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](https://github.com/NaamloosDT/DSharpPlus). The main purpose of the bot is for interacting with the `#builds` channel. This includes posting, editing, and deleting builds.
 
 ## Commands
 

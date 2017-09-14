@@ -14,7 +14,7 @@ namespace OutcastBot.Commands
     public class Commands
     {
         [Command("credits")]
-        [Description("Displays bot author")]
+        [Description("Displays bot credits")]
         public async Task Credits(CommandContext context)
         {
             var author = await context.Client.GetUserAsync(125732531629719552);

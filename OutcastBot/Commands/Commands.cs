@@ -68,6 +68,10 @@ namespace OutcastBot.Commands
             build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context);
             if (build.PatchVersion == null) return;
 
+            // ExpansionRequired
+            //build.ExpansionRequired = await BuildHelper.GetExpansionRequiredAsync(context);
+            //if (build.ExpansionRequired == null) return;
+
             // Title
             build.Title = await BuildHelper.GetTitleAsync(context);
             if (build.Title == null) return;

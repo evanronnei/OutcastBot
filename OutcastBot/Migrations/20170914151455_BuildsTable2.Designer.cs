@@ -11,9 +11,10 @@ using System;
 namespace OutcastBot.Migrations
 {
     [DbContext(typeof(BuildContext))]
-    partial class BuildContextModelSnapshot : ModelSnapshot
+    [Migration("20170914151455_BuildsTable2")]
+    partial class BuildsTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,4 +1,5 @@
 ﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using System;
@@ -68,6 +69,37 @@ namespace OutcastBot.Commands.CommandHelpers
                 await response.Message.DeleteAsync();
 
                 return await ValidatePatchVersionAsync(context, response.Message.Content);
+            }
+        }
+        #endregion
+
+        #region ExpansionRequired
+        public static async Task<bool?> GetExpansionRequiredAsync(CommandContext context)
+        {
+            var message = await context.RespondAsync($"{_required}Does this build require the expansion pack (Ashes of Malmouth)?");
+            await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇾"));
+            await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇳"));
+            var reaction = await Program.Interactivity.WaitForMessageReactionAsync(
+                e => e == DiscordEmoji.FromUnicode("🇾") || e == DiscordEmoji.FromUnicode("🇳"),
+                message,
+                TimeSpan.FromMinutes(1),
+                context.User.Id);
+
+            await message.DeleteAsync();
+
+            if (reaction == null)
+            {
+                await context.RespondAsync("Command Timeout");
+                return null;
+            }
+
+            if (reaction.Emoji == DiscordEmoji.FromUnicode("🇾"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         #endregion

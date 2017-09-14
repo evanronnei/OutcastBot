@@ -178,7 +178,7 @@ namespace OutcastBot.Commands
             var message = await channel.GetMessageAsync(build.MessageId);
             await message.DeleteAsync();
 
-            await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
+            await context.RespondAsync($"Deleted build **{build.Title}**");
         }
 
         [Command("top")]
@@ -203,7 +203,7 @@ namespace OutcastBot.Commands
             {
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
-                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
+                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
             }
 
             await context.RespondAsync("", false, embed.Build());
@@ -253,7 +253,7 @@ namespace OutcastBot.Commands
 
             foreach (var build in builds)
             {
-                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", build.BuildUrl);
+                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) {build.Title}", build.BuildUrl);
             }
 
             await context.RespondAsync("", false, embed.Build());

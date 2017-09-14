@@ -1,6 +1,9 @@
-﻿using DSharpPlus.Entities;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Ojects;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,6 +12,39 @@ namespace OutcastBot
 {
     class EventHandler
     {
+        public static async Task ClientReadyHandler(ReadyEventArgs e)
+        {
+            e.Client.DebugLogger.LogMessage(
+                LogLevel.Info, 
+                "OutcastBot", 
+                "Client is ready to process events.", 
+                DateTime.Now);
+
+            await Program.Client.UpdateStatusAsync(new Game($"{Program.Configuration["CommandPrefix"]}help"));
+        }
+
+        public static Task ClientErrorHandler(ClientErrorEventArgs e)
+        {
+            e.Client.DebugLogger.LogMessage(
+                LogLevel.Error, 
+                "OutcastBot", 
+                $"Exception occured: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}", 
+                DateTime.Now);
+
+            return Task.CompletedTask;
+        }
+
+        public static Task CommandErrorHandler(CommandErrorEventArgs e)
+        {
+            e.Context.Client.DebugLogger.LogMessage(
+                LogLevel.Error, 
+                "OutcastBot", 
+                $"Exception occured on command: \"{e.Command.Name}\": {e.Exception.Message}\n{e.Exception.StackTrace}", 
+                DateTime.Now);
+
+            return Task.CompletedTask;
+        }
+
         public static async Task BuildVoteAddHandler(MessageReactionAddEventArgs e)
         {
             if (e.Channel.Name == "builds")
@@ -80,7 +116,7 @@ namespace OutcastBot
         {
             if (!e.Author.IsBot)
             {
-                var match = new Regex(@"\bc\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?\b")
+                var match = new Regex(@"c\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?")
                     .Match(e.Message.Content.ToLower());
 
                 if (match.Success)

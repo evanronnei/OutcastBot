@@ -299,7 +299,7 @@ __pycache__/
 
 # End of https://www.gitignore.io/api/visualstudio
 
-OutcastBot/appsettings\.json
+
 
 OutcastBot/OutcastBotDatabase\.db
 

@@ -1,8 +1,8 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
-using static OutcastBot.Enumerations.Attributes;
 using System.Threading.Tasks;
+using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot.Ojects
 {
@@ -12,7 +12,7 @@ namespace OutcastBot.Ojects
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=OutcastBotDatabase.db");
+            optionsBuilder.UseSqlite($"Data Source=OutcastBotDatabase.db");
         }
     }
 
@@ -50,7 +50,8 @@ namespace OutcastBot.Ojects
                 Title = $"{Title}",
                 Description = Description,
                 ThumbnailUrl = Mastery.GetAttribute<MasteryInfoAttribute>().ImageUrl,
-                Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color)
+                Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color),
+                Url = BuildUrl
             };
 
             embed.WithAuthor($"[{PatchVersion}]");

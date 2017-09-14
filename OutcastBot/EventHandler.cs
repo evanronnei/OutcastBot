@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Ojects;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -141,6 +142,20 @@ namespace OutcastBot
                 var channel = e.Guild.Channels.FirstOrDefault(c => c.Name == "broomcloset");
                 if (channel == null) return;
                 await channel.SendMessageAsync($"Deleted message:", false, embed.Build());
+            }
+        }
+
+        public static async Task ExpansionWhenHandler(MessageCreateEventArgs e)
+        {
+            var match = new Regex(@"\be?\s?x\s?p\s?a\s?((n\s?s\s?i\s?o\s?n)|c)\s?w\s?h\s?e\s?n\b")
+                .Match(e.Message.Content.ToLower());
+
+            if (match.Success)
+            {
+                using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen.png", FileMode.Open))
+                {
+                    await e.Message.RespondWithFileAsync(fs);
+                }
             }
         }
     }

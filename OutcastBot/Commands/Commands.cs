@@ -13,6 +13,24 @@ namespace OutcastBot.Commands
 {
     public class Commands
     {
+        [Command("credits")]
+        [Description("Displays bot credits and source code link")]
+        public async Task Credits(CommandContext context)
+        {
+            var author = await context.Client.GetUserAsync(125732531629719552);
+
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = "Developer",
+                Description = author.Mention,
+                ThumbnailUrl = author.AvatarUrl
+            };
+
+            embed.AddField("Source", "https://github.com/evanronnei/OutcastBot/");
+
+            await context.RespondAsync("", false, embed.Build());
+        }
+
         [Command("bug")]
         [Description("Report a bug, give feedback, and/or offer a suggestion")]
         [Aliases("feedback", "suggestion")]
@@ -68,6 +86,9 @@ namespace OutcastBot.Commands
             build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context);
             if (build.PatchVersion == null) return;
 
+            // ExpansionRequired
+            //build.ExpansionRequired = await BuildHelper.GetExpansionRequiredAsync(context);
+
             // Title
             build.Title = await BuildHelper.GetTitleAsync(context);
             if (build.Title == null) return;
@@ -76,9 +97,11 @@ namespace OutcastBot.Commands
             build.Description = await BuildHelper.GetDescriptionAsync(context);
             if (build.Description == null) return;
 
-            // BuildUrl
-            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(context);
-            if (build.BuildUrl == null) return;
+            // BuildUrl & Mastery
+            var buildInfo = await BuildHelper.GetBuildInfoAsync(context);
+            if (buildInfo == null) return;
+            build.BuildUrl = buildInfo.BuildUrl;
+            build.Mastery = buildInfo.Mastery;
 
             // ForumUrl
             build.ForumUrl = await BuildHelper.GetForumUrlAsync(context);
@@ -157,7 +180,7 @@ namespace OutcastBot.Commands
             var message = await channel.GetMessageAsync(build.MessageId);
             await message.DeleteAsync();
 
-            await context.RespondAsync($"Deleted build **[{build.PatchVersion}] {build.Title}**");
+            await context.RespondAsync($"Deleted build **{build.Title}**");
         }
 
         [Command("top")]
@@ -182,7 +205,7 @@ namespace OutcastBot.Commands
             {
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
-                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
+                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
             }
 
             await context.RespondAsync("", false, embed.Build());
@@ -232,7 +255,7 @@ namespace OutcastBot.Commands
 
             foreach (var build in builds)
             {
-                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) [{build.PatchVersion}] {build.Title}", build.BuildUrl);
+                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) {build.Title}", build.BuildUrl);
             }
 
             await context.RespondAsync("", false, embed.Build());

@@ -12,12 +12,15 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `build delete <int id>` - Allows the build author to delete an existing build.
 * `build mybuilds <optional: string userMention>` - Displays all builds by the command user, or by the mentioned user.
 * `build top <optional: int count(1-10)` - Displays the top 5 builds, or the top `count` builds.
+* `credits` - Displays the bot author and source code link in and embedded object.
 * `bug` - Links to the issues page here.
 * `f` - Pays respects.
 
 ## Events
 
 * Reacts to any instances of crab, crab commando, or crabmando with a 🦀 emoji.
+* Reacts to all `thinking` and `thonking` emojis with their respective emojis.
+* Reacts to "(e)xpac when" with a meme.
 * Keeps track of votes on builds.
 * Removes deleted builds from the database.
 * Posts deleted messages from `#trade` and `#searching-players` to the `#broomcloset` channel in an embedded object.

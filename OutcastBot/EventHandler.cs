@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Ojects;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,21 +16,29 @@ namespace OutcastBot
         public static async Task ClientReadyHandler(ReadyEventArgs e)
         {
             e.Client.DebugLogger.LogMessage(
-                LogLevel.Info, 
-                "OutcastBot", 
-                "Client is ready to process events.", 
+                LogLevel.Info,
+                "OutcastBot",
+                "Client is ready to process events.",
                 DateTime.Now);
 
-            await Program.Client.UpdateStatusAsync(new Game($"{Program.Configuration["CommandPrefix"]}help"));
+            await Program.Client.UpdateStatusAsync(new Game($"{Program.AppSettings.CommandPrefix}help"));
         }
 
         public static Task ClientErrorHandler(ClientErrorEventArgs e)
         {
             e.Client.DebugLogger.LogMessage(
-                LogLevel.Error, 
-                "OutcastBot", 
-                $"Exception occured: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}", 
+                LogLevel.Error,
+                "OutcastBot",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
                 DateTime.Now);
+
+            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            using (var sw = new StreamWriter(fs))
+            {
+                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source}: {e.Exception.GetType()}:" +
+                    $" {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
+                    $"\n--------------");
+            }
 
             return Task.CompletedTask;
         }
@@ -37,10 +46,18 @@ namespace OutcastBot
         public static Task CommandErrorHandler(CommandErrorEventArgs e)
         {
             e.Context.Client.DebugLogger.LogMessage(
-                LogLevel.Error, 
-                "OutcastBot", 
-                $"Exception occured on command: \"{e.Command.Name}\": {e.Exception.Message}\n{e.Exception.StackTrace}", 
+                LogLevel.Error,
+                "OutcastBot",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
                 DateTime.Now);
+
+            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            using (var sw = new StreamWriter(fs))
+            {
+                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source} on command '{e.Command.Name}':" +
+                    $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
+                    $"\n--------------");
+            }
 
             return Task.CompletedTask;
         }
@@ -153,6 +170,36 @@ namespace OutcastBot
                 var forumPost = new ForumPost(match.Value);
 
                 await e.Channel.SendMessageAsync("", false, forumPost.GetEmbed());
+            }
+        }
+
+        public static async Task ExpansionWhenHandler(MessageCreateEventArgs e)
+        {
+            var match = new Regex(@"\be?\s?x\s?p\s?a\s?((n\s?s\s?i\s?o\s?n)|c)\s?w\s?h\s?e\s?n\b")
+                .Match(e.Message.Content.ToLower());
+
+            if (match.Success)
+            {
+                using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen.png", FileMode.Open))
+                {
+                    await e.Message.RespondWithFileAsync(fs);
+                }
+            }
+        }
+
+        public static async Task ThinkingHandler(MessageCreateEventArgs e)
+        {
+            if (e.Message.Content.Contains("🤔"))
+            {
+                await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🤔"));
+            }
+        }
+
+        public static async Task ThonkingHandler(MessageCreateEventArgs e)
+        {
+            if (e.Message.Content.ToLower().Contains(":thonking:"))
+            {
+                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":thonking:"));
             }
         }
     }

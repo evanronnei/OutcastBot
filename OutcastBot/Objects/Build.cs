@@ -16,9 +16,6 @@ namespace OutcastBot.Ojects
         }
     }
 
-    /// <summary>
-    /// Build object
-    /// </summary>
     public class Build
     {
         #region Automatically Filled Properties
@@ -33,6 +30,7 @@ namespace OutcastBot.Ojects
         #region User Filled Properties
         // required
         public string PatchVersion { get; set; }
+        public bool ExpansionRequired { get; set; }
         public string Title { get; set; }
         public string BuildUrl { get; set; }
         public string Description { get; set; }
@@ -54,10 +52,16 @@ namespace OutcastBot.Ojects
                 Url = BuildUrl
             };
 
-            embed.WithAuthor($"[{PatchVersion}]");
+            if (ExpansionRequired)
+            {
+                embed.WithAuthor($"[{PatchVersion}][Expansion]");
+            }
+            else
+            {
+                embed.WithAuthor($"[{PatchVersion}]");
+            }
 
             var author = await Program.Client.GetUserAsync(AuthorId);
-
             embed.AddField( "Author", author.Mention);
             embed.AddField("Build", BuildUrl);
             if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);

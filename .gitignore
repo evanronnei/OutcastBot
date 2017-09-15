@@ -304,3 +304,7 @@ __pycache__/
 OutcastBot/OutcastBotDatabase\.db
 
 Mastery Images/
+
+OutcastBotUWP/
+
+OutcastBot/ErrorLog\.txt

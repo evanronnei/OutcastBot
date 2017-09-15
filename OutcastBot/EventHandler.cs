@@ -177,7 +177,7 @@ namespace OutcastBot
 
         public static async Task ThinkingHandler(MessageCreateEventArgs e)
         {
-            if (e.Message.Content.ToLower().Contains("🤔"))
+            if (e.Message.Content.Contains("🤔"))
             {
                 await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🤔"));
             }
@@ -185,7 +185,7 @@ namespace OutcastBot
 
         public static async Task ThonkingHandler(MessageCreateEventArgs e)
         {
-            if (e.Message.Content.ToLower().Contains("thonking"))
+            if (e.Message.Content.ToLower().Contains(":thonking:"))
             {
                 await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":thonking:"));
             }

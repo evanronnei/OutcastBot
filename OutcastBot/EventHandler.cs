@@ -16,9 +16,9 @@ namespace OutcastBot
         public static async Task ClientReadyHandler(ReadyEventArgs e)
         {
             e.Client.DebugLogger.LogMessage(
-                LogLevel.Info, 
-                "OutcastBot", 
-                "Client is ready to process events.", 
+                LogLevel.Info,
+                "OutcastBot",
+                "Client is ready to process events.",
                 DateTime.Now);
 
             await Program.Client.UpdateStatusAsync(new Game($"{Program.Configuration["CommandPrefix"]}help"));
@@ -26,22 +26,28 @@ namespace OutcastBot
 
         public static Task ClientErrorHandler(ClientErrorEventArgs e)
         {
-            e.Client.DebugLogger.LogMessage(
-                LogLevel.Error, 
-                "OutcastBot", 
-                $"Exception occured: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}", 
-                DateTime.Now);
+            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured: {e.Exception.GetType()}:" +
+                        $" {e.Exception.Message}\n{e.Exception.StackTrace}");
+                }
+            }
 
             return Task.CompletedTask;
         }
 
         public static Task CommandErrorHandler(CommandErrorEventArgs e)
         {
-            e.Context.Client.DebugLogger.LogMessage(
-                LogLevel.Error, 
-                "OutcastBot", 
-                $"Exception occured on command: \"{e.Command.Name}\": {e.Exception.Message}\n{e.Exception.StackTrace}", 
-                DateTime.Now);
+            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured On Command '{e.Command.Name}':" +
+                        $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}");
+                }
+            }
 
             return Task.CompletedTask;
         }

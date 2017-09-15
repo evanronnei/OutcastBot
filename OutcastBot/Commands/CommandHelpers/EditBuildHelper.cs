@@ -52,15 +52,11 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else if (index == 2) // BuildUrl & Mastery
             {
-                var tempBuildUrl = build.BuildUrl;
-                var tempMastery = build.Mastery;
-
-                (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(context);
-
-                if (tempBuildUrl == null)
+                var buildInfo = await BuildHelper.GetBuildInfoAsync(context);
+                if (buildInfo != null)
                 {
-                    build.BuildUrl = tempBuildUrl;
-                    build.Mastery = tempMastery;
+                    build.BuildUrl = buildInfo.BuildUrl;
+                    build.Mastery = buildInfo.Mastery;
                 }
             }
             else if (index == 3) // Description

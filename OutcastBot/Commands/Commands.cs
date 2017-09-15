@@ -97,9 +97,11 @@ namespace OutcastBot.Commands
             build.Description = await BuildHelper.GetDescriptionAsync(context);
             if (build.Description == null) return;
 
-            // BuildUrl
-            (build.BuildUrl, build.Mastery) = await BuildHelper.GetBuildUrlAsync(context);
-            if (build.BuildUrl == null) return;
+            // BuildUrl & Mastery
+            var buildInfo = await BuildHelper.GetBuildInfoAsync(context);
+            if (buildInfo == null) return;
+            build.BuildUrl = buildInfo.BuildUrl;
+            build.Mastery = buildInfo.Mastery;
 
             // ForumUrl
             build.ForumUrl = await BuildHelper.GetForumUrlAsync(context);

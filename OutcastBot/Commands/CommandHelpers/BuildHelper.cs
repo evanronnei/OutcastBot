@@ -182,8 +182,8 @@ namespace OutcastBot.Commands.CommandHelpers
         }
         #endregion
 
-        #region BuildUrl
-        public static async Task<(string, Mastery)> GetBuildUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
+        #region BuildUrl & Mastery
+        public static async Task<GetBuildInfoResults> GetBuildInfoAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
             var prefix = "";
             if (callerMethodName == "NewBuild")
@@ -199,7 +199,7 @@ namespace OutcastBot.Commands.CommandHelpers
             if (response == null)
             {
                 await context.RespondAsync("Command Timeout");
-                return (null, 0);
+                return null;
             }
 
             await response.Message.DeleteAsync();
@@ -213,7 +213,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 mastery |= key;
             }
 
-            return (buildUrl, mastery);
+            return new GetBuildInfoResults { BuildUrl = buildUrl, Mastery = mastery };
         }
 
         private static async Task<string> ValidateBuildUrlAsync(CommandContext context, string userInput)

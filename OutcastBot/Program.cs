@@ -1,8 +1,9 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Interactivity;
-using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OutcastBot.Commands;
+using OutcastBot.Objects;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,17 +11,20 @@ namespace OutcastBot
 {
     class Program
     {
-        public static IConfigurationRoot Configuration { get; set; }
+        public static ApplicationSettings AppSettings { get; set; }
         public static DiscordClient Client { get; set; }
         public static InteractivityModule Interactivity { get; set; }
         public static CommandsNextModule Commands { get; set; }
 
         static void Main(string[] args)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-
+            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/appsettings.json", FileMode.Open))
+            using (var sr = new StreamReader(fs))
+            {
+                var settings = sr.ReadToEnd();
+                AppSettings = JsonConvert.DeserializeObject<ApplicationSettings>(settings);
+            }
+            
             RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
@@ -29,7 +33,7 @@ namespace OutcastBot
             #region Initialize Client
             Client = new DiscordClient(new DiscordConfiguration
             {
-                Token = Configuration["Token"],
+                Token = AppSettings.Token,
                 TokenType = TokenType.Bot,
                 UseInternalLogHandler = true,
                 LogLevel = LogLevel.Info
@@ -41,7 +45,7 @@ namespace OutcastBot
             #region Register Commands
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefix = Configuration["CommandPrefix"]
+                StringPrefix = AppSettings.CommandPrefix
             });
 
             Commands.RegisterCommands<Commands.Commands>();

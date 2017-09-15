@@ -21,18 +21,23 @@ namespace OutcastBot
                 "Client is ready to process events.",
                 DateTime.Now);
 
-            await Program.Client.UpdateStatusAsync(new Game($"{Program.Configuration["CommandPrefix"]}help"));
+            await Program.Client.UpdateStatusAsync(new Game($"{Program.AppSettings.CommandPrefix}help"));
         }
 
         public static Task ClientErrorHandler(ClientErrorEventArgs e)
         {
+            e.Client.DebugLogger.LogMessage(
+                LogLevel.Error,
+                "OutcastBot",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
+                DateTime.Now);
+
             using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            using (var sw = new StreamWriter(fs))
             {
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured at {e.Exception.Source}: {e.Exception.GetType()}:" +
-                        $" {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}");
-                }
+                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source}: {e.Exception.GetType()}:" +
+                    $" {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
+                    $"\n--------------");
             }
 
             return Task.CompletedTask;
@@ -40,13 +45,18 @@ namespace OutcastBot
 
         public static Task CommandErrorHandler(CommandErrorEventArgs e)
         {
+            e.Context.Client.DebugLogger.LogMessage(
+                LogLevel.Error,
+                "OutcastBot",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
+                DateTime.Now);
+
             using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
+            using (var sw = new StreamWriter(fs))
             {
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured at {e.Exception.Source} on Command '{e.Command.Name}':" +
-                        $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}");
-                }
+                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source} on command '{e.Command.Name}':" +
+                    $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
+                    $"\n--------------");
             }
 
             return Task.CompletedTask;

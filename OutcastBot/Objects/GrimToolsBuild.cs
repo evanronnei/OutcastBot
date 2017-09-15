@@ -1,25 +1,24 @@
-﻿using OutcastBot.Enumerations;
+﻿using Newtonsoft.Json;
+using OutcastBot.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OutcastBot.Objects
 {
-    [DataContract]
+    [JsonObject]
     public class GrimToolsBuild
     {
-        [DataMember(Name = "data")]
+        [JsonProperty("data")]
         public BuildData BuildData { get; set; }
 
-        [DataMember(Name = "created_for_build")]
+        [JsonProperty("created_for_build")]
         public string GameVersion { get; set; }
 
-        [DataMember(Name = "created_date")]
+        [JsonProperty("created_date")]
         public string CreatedDate { get; set; }
 
         public static async Task<GrimToolsBuild> GetGrimToolsBuildAsync(string buildUrl)
@@ -32,45 +31,39 @@ namespace OutcastBot.Objects
             };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var settings = new DataContractJsonSerializerSettings
-            {
-                UseSimpleDictionaryFormat = true
-            };
-            var serializer = new DataContractJsonSerializer(typeof(GrimToolsBuild), settings);
-            var response = await client.GetStreamAsync($"get_build_info.php/?id={id.Value}");
-            var calc = serializer.ReadObject(response) as GrimToolsBuild;
+            var response = await client.GetStringAsync($"get_build_info.php/?id={id.Value}");
+            var calc = JsonConvert.DeserializeObject<GrimToolsBuild>(response);
 
             return calc;
         }
     }
 
-    [DataContract]
+    [JsonObject]
     public class BuildData
     {
-        [DataMember(Name = "bio")]
+        [JsonProperty("bio")]
         public BuildInfo BuildInfo { get; set; }
 
-        [DataMember(Name = "skills")]
+        [JsonProperty("skills")]
         public Dictionary<string, int> Skills { get; set; }
 
-        [DataMember(Name = "masteries")]
+        [JsonProperty("masteries")]
         public Dictionary<Mastery, int> Masteries { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
     public class BuildInfo
     {
-        [DataMember(Name = "level")]
+        [JsonProperty("level")]
         public int Level { get; set; }
 
-        [DataMember(Name = "physique")]
+        [JsonProperty("physique")]
         public int Physique { get; set; }
 
-        [DataMember(Name = "cunning")]
+        [JsonProperty("cunning")]
         public int Cunning { get; set; }
 
-        [DataMember(Name = "spirit")]
+        [JsonProperty("spirit")]
         public int Spirit { get; set; }
     }
 }

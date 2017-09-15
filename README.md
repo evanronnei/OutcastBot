@@ -20,7 +20,7 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 
 * Reacts to any instances of crab, crab commando, or crabmando with a 🦀 emoji.
 * Reacts to all `thinking` and `thonking` emojis with their respective emojis.
-* Reacts to "(e)xpac when" with a meme.
+* Responds to "(e)xpac when" with a meme.
 * Keeps track of votes on builds.
 * Removes deleted builds from the database.
 * Posts deleted messages from `#trade` and `#searching-players` to the `#broomcloset` channel in an embedded object.

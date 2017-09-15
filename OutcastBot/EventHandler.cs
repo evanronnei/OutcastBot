@@ -30,8 +30,8 @@ namespace OutcastBot
             {
                 using (var sw = new StreamWriter(fs))
                 {
-                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured: {e.Exception.GetType()}:" +
-                        $" {e.Exception.Message}\n{e.Exception.StackTrace}");
+                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured at {e.Exception.Source}: {e.Exception.GetType()}:" +
+                        $" {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}");
                 }
             }
 
@@ -44,8 +44,8 @@ namespace OutcastBot
             {
                 using (var sw = new StreamWriter(fs))
                 {
-                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured On Command '{e.Command.Name}':" +
-                        $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}");
+                    sw.WriteLineAsync($"[{DateTime.Now}] Exception Occured at {e.Exception.Source} on Command '{e.Command.Name}':" +
+                        $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}");
                 }
             }
 

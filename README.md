@@ -15,6 +15,7 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `credits` - Displays the bot author and source code link in and embedded object.
 * `bug` - Links to the issues page here.
 * `f` - Pays respects.
+* `!quote <ulong id>` - Quotes a Discord message with the given ID
 
 ## Events
 

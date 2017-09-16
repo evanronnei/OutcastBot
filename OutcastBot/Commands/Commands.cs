@@ -57,6 +57,7 @@ namespace OutcastBot.Commands
                 ch.Name == "grim-dawn" ||
                 ch.Name == "arpg-general" ||
                 ch.Name == "build-discussion" ||
+                ch.Name == "mod-dsicussion" ||
                 ch.Name == "off-topic" ||
                 ch.Name == "news-guides" ||
                 ch.Name == "trade" ||
@@ -70,11 +71,13 @@ namespace OutcastBot.Commands
                     message = await channel.GetMessageAsync(messageId);
                     if (message != null) break;
                 }
-                catch (NotFoundException)
-                {
-                    await context.RespondAsync("Invalid message ID or channel");
-                    return;
-                }
+                catch (NotFoundException) { }
+            }
+
+            if (message == null)
+            {
+                await context.RespondAsync("Invalid message ID or channel");
+                return;
             }
 
             var embed = new DiscordEmbedBuilder()

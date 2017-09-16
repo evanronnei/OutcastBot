@@ -29,7 +29,8 @@ namespace OutcastBot
             e.Client.DebugLogger.LogMessage(
                 LogLevel.Error,
                 "OutcastBot",
-                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: " +
+                    $"{e.Exception.Message}\n{e.Exception.StackTrace}",
                 DateTime.Now);
 
             return Task.CompletedTask;
@@ -40,7 +41,8 @@ namespace OutcastBot
             e.Context.Client.DebugLogger.LogMessage(
                 LogLevel.Error,
                 "OutcastBot",
-                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
+                $"Exception occured at {e.Exception.Source} on command '{e.Command.Name}': " +
+                    $"{e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
                 DateTime.Now);
 
             return Task.CompletedTask;

@@ -22,7 +22,8 @@ namespace OutcastBot.Commands.CommandHelpers
             propertyList.AppendLine("**6** - Build Image");
             var embed = new DiscordEmbedBuilder { Description = propertyList.ToString() };
             var message = await context.RespondAsync("Which property would you like to edit?", false, embed.Build());
-            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
+            var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id && 
+                m.Channel.Id == context.Channel.Id, TimeSpan.FromMinutes(1));
             
             if (response == null)
             {

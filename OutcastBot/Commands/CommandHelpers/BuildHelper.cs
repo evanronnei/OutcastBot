@@ -32,7 +32,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the patch version of the build (i.e. 1.0.0.0).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id && 
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -62,7 +62,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync("Invalid patch version, please re-enter the patch version. (i.e. 1.0.0.0)");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
@@ -116,7 +116,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the title of the build (256 characters maximum).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(2));
 
             await message.DeleteAsync();
@@ -140,7 +140,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync($"Title is too long ({userInput.Length}). Please shorten the title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
@@ -173,7 +173,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the description of the build.");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(10));
 
             await message.DeleteAsync();
@@ -203,7 +203,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the http://www.grimtools.com/calc/ for the build");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -240,7 +240,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync("Invalid grimtools URL, please re-enter the grimtools URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
@@ -274,7 +274,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the forum URL for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -302,7 +302,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync($"Invalid forum URL, please re-enter the forum URL, or type \"{_skip}\" to skip this step.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
@@ -334,7 +334,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the video URL for the build (YouTube or streamable).{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();
@@ -374,7 +374,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync($"Invalid video URL, please re-enter the video URL (YouTube or streamable), or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();
@@ -406,7 +406,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Upload an image for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel == context.Channel, 
+                m.Channel.Id == context.Channel.Id, 
                 TimeSpan.FromMinutes(2));
 
             await message.DeleteAsync();
@@ -431,7 +431,7 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 var message = await context.RespondAsync($"Invalid image, please re-upload your image, or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel == context.Channel, 
+                    m.Channel.Id == context.Channel.Id, 
                     TimeSpan.FromMinutes(1));
 
                 await message.DeleteAsync();

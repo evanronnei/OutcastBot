@@ -2,12 +2,16 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using OutcastBot.Enumerations;
+using OutcastBot.Objects;
 using OutcastBot.Ojects;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot
 {
@@ -174,6 +178,59 @@ namespace OutcastBot
             if (e.Message.Content.ToLower().Contains(":thonking:"))
             {
                 await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":thonking:"));
+            }
+        }
+
+        public static async Task GrimToolsHandler(MessageCreateEventArgs e)
+        {
+            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(e.Message.Content);
+            
+            if (match.Success)
+            {
+                var url = $"http://www.grimtools.com/calc/{match.Value}";
+
+                var task = GrimToolsBuild.GetGrimToolsBuildAsync(url);
+                task.Wait();
+                var grimToolsBuild = task.Result;
+
+                var masteryCombo = grimToolsBuild.GetMasteryCombination();
+
+                var embed = new DiscordEmbedBuilder
+                {
+                    Url = url,
+                    ThumbnailUrl = masteryCombo.GetAttribute<MasteryInfoAttribute>().ImageUrl,
+
+                    Title = $"Level {grimToolsBuild.BuildData.BuildInfo.Level} " +
+                        $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
+
+                    Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
+                                    $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
+                                    $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
+                };
+
+                foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))
+                {
+                    embed.AddField(mastery.Key.ToString(), mastery.Value.ToString(), true);
+                }
+
+                var sb = new StringBuilder();
+                foreach (var skill in grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value))
+                {
+                    try
+                    {
+                        var emojiSkill = EnumExtensions.GetValueFromDescription<EmojiSkills>(skill.Key);
+                        sb.Append($"{DiscordEmoji.FromName(Program.Client, $":{emojiSkill.ToString()}:")} ");
+                    }
+                    catch (ArgumentException) { }
+                }
+
+                embed.AddField("Offensive Skills(s)", sb.ToString());
+
+                embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
+
+                embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
+
+                await e.Message.RespondAsync("", false, embed.Build());
             }
         }
     }

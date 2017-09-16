@@ -36,6 +36,16 @@ namespace OutcastBot.Objects
 
             return calc;
         }
+
+        public Mastery GetMasteryCombination()
+        {
+            Mastery mastery = 0;
+            foreach (var key in BuildData.Masteries.Keys)
+            {
+                mastery |= key;
+            }
+            return mastery;
+        }
     }
 
     [JsonObject]

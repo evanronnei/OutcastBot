@@ -57,6 +57,7 @@ namespace OutcastBot
             Client.ClientErrored += EventHandler.ClientErrorHandler;
             Client.MessageReactionAdded += EventHandler.BuildVoteAddHandler;
             Client.MessageReactionRemoved += EventHandler.BuildVoteRemoveHandler;
+            Client.MessageCreated += EventHandler.GrimToolsHandler;
             Client.MessageCreated += EventHandler.CrabHandler;
             Client.MessageCreated += EventHandler.ExpansionWhenHandler;
             Client.MessageCreated += EventHandler.ThinkingHandler;

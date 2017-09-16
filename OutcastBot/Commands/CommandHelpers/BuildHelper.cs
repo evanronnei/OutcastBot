@@ -219,11 +219,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var buildUrl = await ValidateBuildUrlAsync(context, response.Message.Content);
             var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(buildUrl);
 
-            Mastery mastery = 0;
-            foreach(var key in grimToolsBuild.BuildData.Masteries.Keys)
-            {
-                mastery |= key;
-            }
+            var mastery = grimToolsBuild.GetMasteryCombination();
 
             return new GetBuildInfoResults { BuildUrl = buildUrl, Mastery = mastery };
         }

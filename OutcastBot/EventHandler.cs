@@ -29,16 +29,8 @@ namespace OutcastBot
             e.Client.DebugLogger.LogMessage(
                 LogLevel.Error,
                 "OutcastBot",
-                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
                 DateTime.Now);
-
-            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
-            using (var sw = new StreamWriter(fs))
-            {
-                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source}: {e.Exception.GetType()}:" +
-                    $" {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
-                    $"\n--------------");
-            }
 
             return Task.CompletedTask;
         }
@@ -48,16 +40,8 @@ namespace OutcastBot
             e.Context.Client.DebugLogger.LogMessage(
                 LogLevel.Error,
                 "OutcastBot",
-                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
                 DateTime.Now);
-
-            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/ErrorLog.txt", FileMode.OpenOrCreate))
-            using (var sw = new StreamWriter(fs))
-            {
-                sw.WriteLineAsync($"[{DateTime.Now}] Exception occured at {e.Exception.Source} on command '{e.Command.Name}':" +
-                    $" {e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}\n{e.Exception.InnerException}" +
-                    $"\n--------------");
-            }
 
             return Task.CompletedTask;
         }
@@ -83,8 +67,8 @@ namespace OutcastBot
                     db.Update(build);
                     await db.SaveChangesAsync();
 
-                    if (build.UpVotes + build.DownVotes >= 10 && 
-                        (double)build.DownVotes / (double)(build.UpVotes + build.DownVotes) >= 0.70)
+                    if (build.UpVotes + build.DownVotes - 2 >= 10 && 
+                        (double)build.DownVotes / (double)(build.UpVotes + build.DownVotes - 2) >= 0.70)
                     {
                         await e.Message.DeleteAsync();
                     }

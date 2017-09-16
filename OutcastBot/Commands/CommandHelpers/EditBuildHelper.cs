@@ -15,11 +15,11 @@ namespace OutcastBot.Commands.CommandHelpers
             var propertyList = new StringBuilder();
             propertyList.AppendLine("**0** - Patch Version");
             propertyList.AppendLine("**1** - Title");
-            propertyList.AppendLine("**2** - Build URL");
-            propertyList.AppendLine("**3** - Description");
-            propertyList.AppendLine("**4** - Build Image");
-            propertyList.AppendLine("**5** - Forum URL");
-            propertyList.AppendLine("**6** - Video URL");
+            propertyList.AppendLine("**2** - Description");
+            propertyList.AppendLine("**3** - Build URL");
+            propertyList.AppendLine("**4** - Forum URL");
+            propertyList.AppendLine("**5** - Video URL");
+            propertyList.AppendLine("**6** - Build Image");
             var embed = new DiscordEmbedBuilder { Description = propertyList.ToString() };
             var message = await context.RespondAsync("Which property would you like to edit?", false, embed.Build());
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id, TimeSpan.FromMinutes(1));
@@ -50,7 +50,11 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 build.Title = await BuildHelper.GetTitleAsync(context) ?? build.Title;
             }
-            else if (index == 2) // BuildUrl & Mastery
+            else if (index == 2) // Description
+            {
+                build.Description = await BuildHelper.GetDescriptionAsync(context) ?? build.Description;
+            }
+            else if (index == 3) // BuildUrl & Mastery
             {
                 var buildInfo = await BuildHelper.GetBuildInfoAsync(context);
                 if (buildInfo != null)
@@ -59,21 +63,17 @@ namespace OutcastBot.Commands.CommandHelpers
                     build.Mastery = buildInfo.Mastery;
                 }
             }
-            else if (index == 3) // Description
-            {
-                build.Description = await BuildHelper.GetDescriptionAsync(context) ?? build.Description;
-            }
-            else if (index == 4) // ImageUrl
-            {
-                build.ImageUrl = await BuildHelper.GetImageUrlAsync(context);
-            }
-            else if (index == 5) // ForumUrl
+            else if (index == 4) // ForumUrl
             {
                 build.ForumUrl = await BuildHelper.GetForumUrlAsync(context);
             }
-            else if (index == 6) // VideoUrl
+            else if (index == 5) // VideoUrl
             {
                 build.VideoUrl = await BuildHelper.GetVideoUrlAsync(context);
+            }
+            else if (index == 6) // ImageUrl
+            {
+                build.ImageUrl = await BuildHelper.GetImageUrlAsync(context);
             }
 
             message = await context.RespondAsync("Would you like to edit another property?");

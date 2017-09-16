@@ -205,7 +205,7 @@ namespace OutcastBot.Commands
             {
                 var build = builds[i - 1];
                 var author = await context.Client.GetUserAsync(build.AuthorId);
-                embed.AddField($"{i}. (+{build.UpVotes} | -{build.DownVotes}) {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
+                embed.AddField($"{i}. (+{build.UpVotes - 1} | -{build.DownVotes - 1}) {build.Title}", $" Author: {author.Mention}\n{build.BuildUrl}");
             }
 
             await context.RespondAsync("", false, embed.Build());
@@ -255,7 +255,7 @@ namespace OutcastBot.Commands
 
             foreach (var build in builds)
             {
-                embed.AddField($"(+{build.UpVotes} | -{build.DownVotes}) {build.Title}", build.BuildUrl);
+                embed.AddField($"(+{build.UpVotes - 1} | -{build.DownVotes} - 1) {build.Title}", build.BuildUrl);
             }
 
             await context.RespondAsync("", false, embed.Build());

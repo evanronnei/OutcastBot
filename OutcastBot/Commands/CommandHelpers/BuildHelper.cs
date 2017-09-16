@@ -413,7 +413,10 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (response == null) return null;
 
-            await response.Message.DeleteAsync();
+            if (response.Message.Attachments.Count == 0)
+            {
+                await response.Message.DeleteAsync();
+            }
 
             if (response.Message.Content == _skip) return null;
 
@@ -438,7 +441,10 @@ namespace OutcastBot.Commands.CommandHelpers
 
                 if (response == null) return null;
 
-                await response.Message.DeleteAsync();
+                if (response.Message.Attachments.Count == 0)
+                {
+                    await response.Message.DeleteAsync();
+                }
 
                 if (response.Message.Content == _skip) return null;
 

@@ -50,7 +50,8 @@ namespace OutcastBot.Commands
         }
 
         [Command("quote")]
-        [Description("Creates a quote of a Discord message using the message ID. Message IDs can be obtained with developer mode.")]
+        [Description("Creates a quote of a Discord message using the message ID.\n\n" +
+            "Message IDs can be obtained with developer mode enabled. Settings > Appearance > Advanced > Developer Mode")]
         public async Task Quote(CommandContext context, ulong messageId)
         {
             var validChannels = context.Guild.Channels.Where(ch =>

@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Exceptions;
 using OutcastBot.Commands.CommandHelpers;
 using OutcastBot.Ojects;
 using System;
@@ -46,6 +47,45 @@ namespace OutcastBot.Commands
         {
             var message = await context.RespondAsync($"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects.");
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));
+        }
+
+        [Command("quote")]
+        [Description("Creates a quote of a Discord message using the message ID. Message IDs can be obtained with developer mode.")]
+        public async Task Quote(CommandContext context, ulong messageId)
+        {
+            var validChannels = context.Guild.Channels.Where(ch =>
+                ch.Name == "grim-dawn" ||
+                ch.Name == "arpg-general" ||
+                ch.Name == "build-discussion" ||
+                ch.Name == "off-topic" ||
+                ch.Name == "news-guides" ||
+                ch.Name == "trade" ||
+                ch.Name == "searching-players");
+
+            DiscordMessage message = null;
+            foreach (var channel in validChannels)
+            {
+                try
+                {
+                    message = await channel.GetMessageAsync(messageId);
+                    if (message != null) break;
+                }
+                catch (NotFoundException)
+                {
+                    await context.RespondAsync("Invalid message ID or channel");
+                    return;
+                }
+            }
+
+            var embed = new DiscordEmbedBuilder()
+            {
+                Description = message.Content,
+                Timestamp = context.Message.Timestamp,
+
+            };
+            embed.WithAuthor($"{message.Author.Username}#{message.Author.Discriminator} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
+
+            await context.RespondAsync("", false, embed.Build());
         }
     }
 

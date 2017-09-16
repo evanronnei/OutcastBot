@@ -221,7 +221,10 @@ namespace OutcastBot
                         var emojiSkill = EnumExtensions.GetValueFromDescription<EmojiSkills>(skill.Key);
                         sb.Append($"{DiscordEmoji.FromName(Program.Client, $":{emojiSkill.ToString()}:")} ");
                     }
-                    catch (ArgumentException) { }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
                 }
 
                 embed.AddField("Offensive Skills(s)", sb.ToString());

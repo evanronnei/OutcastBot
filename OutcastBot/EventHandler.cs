@@ -165,22 +165,6 @@ namespace OutcastBot
             }
         }
 
-        public static async Task ThinkingHandler(MessageCreateEventArgs e)
-        {
-            if (e.Message.Content.Contains("🤔"))
-            {
-                await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🤔"));
-            }
-        }
-
-        public static async Task ThonkingHandler(MessageCreateEventArgs e)
-        {
-            if (e.Message.Content.ToLower().Contains(":thonking:"))
-            {
-                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":thonking:"));
-            }
-        }
-
         public static async Task GrimToolsHandler(MessageCreateEventArgs e)
         {
             var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(e.Message.Content);
@@ -232,20 +216,6 @@ namespace OutcastBot
                 embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
 
                 await e.Message.RespondAsync("", false, embed.Build());
-            }
-        }
-
-        public static async Task AyyHandler(MessageCreateEventArgs e)
-        {
-            if (e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":Ayy:").ToString()) &&
-                !e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":AyyYOO:").ToString()))
-            {
-                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":AyyYOO:"));
-            }
-            else if (e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":AyyYOO:").ToString()) &&
-                !e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":Ayy:").ToString())) 
-            {
-                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":Ayy:"));
             }
         }
     }

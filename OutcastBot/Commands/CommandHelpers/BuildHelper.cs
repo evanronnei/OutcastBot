@@ -1,6 +1,5 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using System;
 using System.Collections.Generic;

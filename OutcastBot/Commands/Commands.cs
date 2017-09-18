@@ -117,7 +117,15 @@ namespace OutcastBot.Commands
         } 
 
         [Command("new")]
-        [Description("Create a new build")]
+        [Description("Create a new build.\n\n" +
+            "Will prompt you to fill in the following properties:\n" +
+            "(REQUIRED) Patch Version\n" +
+            "(REQUIRED) Title\n" +
+            "(REQUIRED) Description\n" +
+            "(REQUIRED) Build URL\n" +
+            "(OPTIONAL) Forum URL\n" +
+            "(OPTIONAL) Video URL\n" +
+            "(OPTIONAL) Build Image")]
         public async Task NewBuild(CommandContext context)
         {
             var build = new Build()

@@ -189,9 +189,7 @@ namespace OutcastBot
             {
                 var url = $"http://www.grimtools.com/calc/{match.Value}";
 
-                var task = GrimToolsBuild.GetGrimToolsBuildAsync(url);
-                task.Wait();
-                var grimToolsBuild = task.Result;
+                var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(url);
 
                 var masteryCombo = grimToolsBuild.GetMasteryCombination();
 
@@ -234,6 +232,20 @@ namespace OutcastBot
                 embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
 
                 await e.Message.RespondAsync("", false, embed.Build());
+            }
+        }
+
+        public static async Task AyyHandler(MessageCreateEventArgs e)
+        {
+            if (e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":Ayy:").ToString()) &&
+                !e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":AyyYOO:").ToString()))
+            {
+                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":AyyYOO:"));
+            }
+            else if (e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":AyyYOO:").ToString()) &&
+                !e.Message.Content.Contains(DiscordEmoji.FromName(Program.Client, ":Ayy:").ToString())) 
+            {
+                await e.Message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":Ayy:"));
             }
         }
     }

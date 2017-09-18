@@ -51,7 +51,8 @@ namespace OutcastBot.Commands
 
         [Command("quote")]
         [Description("Creates a quote of a Discord message using the message ID.\n\n" +
-            "Message IDs can be obtained with developer mode enabled.\nSettings > Appearance > Advanced > Developer Mode")]
+            "Message IDs can be obtained with developer mode enabled.\n" +
+            "Settings > Appearance > Advanced > Developer Mode")]
         public async Task Quote(CommandContext context, ulong messageId)
         {
             var validChannels = context.Guild.Channels.Where(ch =>
@@ -229,11 +230,11 @@ namespace OutcastBot.Commands
 
         [Command("top")]
         [Description("Displays the top builds")]
-        public async Task TopBuilds(CommandContext context, [Description("Number of builds (10 max).")]int count = 5)
+        public async Task TopBuilds(CommandContext context, [Description("Number of builds (5 max).")]int count = 5)
         {
-            if (count > 10 || count < 1)
+            if (count > 5 || count < 1)
             {
-                await context.RespondAsync("Invalid build amount (1-10)");
+                await context.RespondAsync("Invalid build amount (1-5)");
                 return;
             }
 
@@ -299,7 +300,7 @@ namespace OutcastBot.Commands
 
             foreach (var build in builds)
             {
-                embed.AddField($"(+{build.UpVotes - 1} | -{build.DownVotes} - 1) {build.Title}", build.BuildUrl);
+                embed.AddField($"(+{build.UpVotes - 1} | -{build.DownVotes - 1}) {build.Title}", build.BuildUrl);
             }
 
             await context.RespondAsync("", false, embed.Build());

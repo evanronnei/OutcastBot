@@ -68,14 +68,14 @@ namespace OutcastBot.Enumerations
         [Description("Shadow Strike")]
         ShadowStrike,
 
-        //[Description("Ring of Steel")]
-        //RingOfSteel,
+        [Description("Ring of Steel")]
+        RingOfSteel,
 
         [Description("Blade Trap")]
         BladeTrap,
 
-        //[Description("Blade Spirit")]
-        //BladeSpirit,
+        [Description("Blade Spirit")]
+        BladeSpirit,
 
         // Arcanist
         [Description("Panetti's Replicating Missle")]

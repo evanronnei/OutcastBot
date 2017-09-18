@@ -62,6 +62,7 @@ namespace OutcastBot
             Client.MessageCreated += EventHandler.ExpansionWhenHandler;
             Client.MessageCreated += EventHandler.ThinkingHandler;
             Client.MessageCreated += EventHandler.ThonkingHandler;
+            Client.MessageCreated += EventHandler.AyyHandler;
             Client.MessageDeleted += EventHandler.BuildDeleteHandler;
             Client.MessageDeleted += EventHandler.JanitorDeleteHandler;
             #endregion

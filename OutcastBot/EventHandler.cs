@@ -6,7 +6,6 @@ using OutcastBot.Enumerations;
 using OutcastBot.Objects;
 using OutcastBot.Ojects;
 using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -158,14 +157,7 @@ namespace OutcastBot
 
             if (match.Success)
             {
-                var imageCount = Directory.GetFiles($"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen").Length;
-
-                using (var fs = new FileStream(
-                    $"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen/{new Random().Next(imageCount)}.png", 
-                    FileMode.Open))
-                {
-                    await e.Message.RespondWithFileAsync(fs);
-                }
+                await e.Message.RespondAsync("https://youtu.be/oz2Z6hN5YBs");
             }
         }
 

@@ -213,7 +213,7 @@ namespace OutcastBot
                     }
                 }
 
-                embed.AddField("Offensive Skills(s)", sb.ToString());
+                if (sb.Length > 0) embed.AddField("Offensive Skills(s)", sb.ToString());
 
                 embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
 

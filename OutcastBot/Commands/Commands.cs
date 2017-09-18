@@ -51,7 +51,7 @@ namespace OutcastBot.Commands
 
         [Command("quote")]
         [Description("Creates a quote of a Discord message using the message ID.\n\n" +
-            "Message IDs can be obtained with developer mode enabled.\n" +
+            "Message IDs can be obtained with developer mode enabled:\n" +
             "Settings > Appearance > Advanced > Developer Mode")]
         public async Task Quote(CommandContext context, ulong messageId)
         {
@@ -73,7 +73,10 @@ namespace OutcastBot.Commands
                     message = await channel.GetMessageAsync(messageId);
                     if (message != null) break;
                 }
-                catch (NotFoundException) { }
+                catch (NotFoundException)
+                {
+                    continue;
+                }
             }
 
             if (message == null)

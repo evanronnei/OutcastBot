@@ -85,8 +85,7 @@ namespace OutcastBot.Commands
             var embed = new DiscordEmbedBuilder()
             {
                 Description = message.Content,
-                Timestamp = context.Message.Timestamp,
-
+                Timestamp = message.Timestamp,
             };
             embed.WithAuthor($"{message.Author.Username}#{message.Author.Discriminator} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
 

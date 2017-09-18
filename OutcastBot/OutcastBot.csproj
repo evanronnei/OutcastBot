@@ -13,7 +13,6 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\0.png" />
   </ItemGroup>
 
   <ItemGroup>

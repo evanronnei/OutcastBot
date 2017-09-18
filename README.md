@@ -21,7 +21,7 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 
 * Responds to [grimtools build](http://www.grimtools.com/calc/) links with information about the build in an embedded object.
 * Reacts to any instances of crab, crab commando, or crabmando with a 🦀 emoji.
-* Responds to "(e)xpac when" with a meme.
+* Responds to "(e)xpa(c|nsion) when" with the Ashes of Malmouth trailer.
 * Keeps track of votes on builds.
 * Removes deleted builds from the database.
 * Posts deleted messages from `#trade` and `#searching-players` to the `#broomcloset` channel in an embedded object.

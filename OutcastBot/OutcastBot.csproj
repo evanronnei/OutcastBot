@@ -13,7 +13,7 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\ExpansionWhen_0.png" />
+    <Content Include="Images\0.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +25,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Images\ExpansionWhen\" />
   </ItemGroup>
 
 </Project>

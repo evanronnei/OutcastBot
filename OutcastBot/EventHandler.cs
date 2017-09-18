@@ -158,10 +158,10 @@ namespace OutcastBot
 
             if (match.Success)
             {
-                var imageCount = Directory.GetFiles($"{Directory.GetCurrentDirectory()}/Images").Length;
+                var imageCount = Directory.GetFiles($"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen").Length;
 
                 using (var fs = new FileStream(
-                    $"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen_{new Random().Next(imageCount)}.png", 
+                    $"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen/{new Random().Next(imageCount)}.png", 
                     FileMode.Open))
                 {
                     await e.Message.RespondWithFileAsync(fs);
@@ -190,8 +190,8 @@ namespace OutcastBot
                         $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
 
                     Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
-                                    $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
-                                    $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
+                                  $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
+                                  $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
                 };
 
                 foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))

@@ -158,7 +158,11 @@ namespace OutcastBot
 
             if (match.Success)
             {
-                using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen.png", FileMode.Open))
+                var imageCount = Directory.GetFiles($"{Directory.GetCurrentDirectory()}/Images").Length;
+
+                using (var fs = new FileStream(
+                    $"{Directory.GetCurrentDirectory()}/Images/ExpansionWhen_{new Random().Next(imageCount)}.png", 
+                    FileMode.Open))
                 {
                     await e.Message.RespondWithFileAsync(fs);
                 }

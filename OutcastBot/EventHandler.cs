@@ -126,7 +126,7 @@ namespace OutcastBot
                 var match = new Regex(@"c\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?")
                     .Match(e.Message.Content.ToLower());
 
-                if (match.Success)
+                if (match.Success || e.Message.Content.Contains("🦀"))
                 {
                     await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
                 }

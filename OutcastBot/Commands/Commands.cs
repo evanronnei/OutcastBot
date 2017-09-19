@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
@@ -96,18 +97,20 @@ namespace OutcastBot.Commands
             await context.RespondAsync("", false, embed.Build());
         }
 
-        [Command("emojis")]
         [Hidden]
+        [RequirePermissions(Permissions.ManageMessages)]
+        [Command("emojis")]
         public async Task Test(CommandContext context)
         {
-            var embed = new DiscordEmbedBuilder
-            {
-                Title = "Guild Emojis"
-            };
+            var embed = new DiscordEmbedBuilder();
+
+            embed.WithAuthor($"{context.Guild.Name} Emojis", context.Guild.IconUrl);
+
             foreach (var emoji in context.Guild.Emojis)
             {
                 embed.AddField(emoji.Name, $"{emoji} {emoji.Id}", true);
             }
+
             await context.RespondAsync("", false, embed.Build());
         }
     }

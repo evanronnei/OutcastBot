@@ -104,12 +104,14 @@ namespace OutcastBot.Commands
         {
             var embed = new DiscordEmbedBuilder();
 
-            embed.WithAuthor($"{context.Guild.Name} Emojis", context.Guild.IconUrl);
+            embed.WithAuthor($"{context.Guild.Name} Emojis", "",context.Guild.IconUrl);
 
+            var sb = new StringBuilder();
             foreach (var emoji in context.Guild.Emojis)
             {
-                embed.AddField(emoji.Name, $"{emoji} {emoji.Id}", true);
+                sb.AppendLine($"{emoji.Name} {emoji} `{emoji.Id}`");
             }
+            embed.WithDescription(sb.ToString());
 
             await context.RespondAsync("", false, embed.Build());
         }

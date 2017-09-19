@@ -7,14 +7,12 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
-    <None Remove="Images\ExpansionWhen\0.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\ExpansionWhen\0.png" />
   </ItemGroup>
 
   <ItemGroup>

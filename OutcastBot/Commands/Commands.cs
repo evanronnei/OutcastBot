@@ -7,6 +7,7 @@ using OutcastBot.Ojects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -92,6 +93,21 @@ namespace OutcastBot.Commands
             };
             embed.WithAuthor($"{message.Author.Username}#{message.Author.Discriminator} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
 
+            await context.RespondAsync("", false, embed.Build());
+        }
+
+        [Command("emojis")]
+        [Hidden]
+        public async Task Test(CommandContext context)
+        {
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = "Guild Emojis"
+            };
+            foreach (var emoji in context.Guild.Emojis)
+            {
+                embed.AddField(emoji.Name, $"{emoji} {emoji.Id}", true);
+            }
             await context.RespondAsync("", false, embed.Build());
         }
     }

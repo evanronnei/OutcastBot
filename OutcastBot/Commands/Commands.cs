@@ -20,13 +20,13 @@ namespace OutcastBot.Commands
         [Description("Displays bot credits and source code link")]
         public async Task Credits(CommandContext context)
         {
-            var author = await context.Client.GetUserAsync(125732531629719552);
+            var user = await context.Client.GetUserAsync(125732531629719552);
 
             var embed = new DiscordEmbedBuilder
             {
                 Title = "Developer",
-                Description = author.Mention,
-                ThumbnailUrl = author.AvatarUrl
+                Description = user.Mention,
+                ThumbnailUrl = user.AvatarUrl
             };
 
             embed.AddField("Source", "https://github.com/evanronnei/OutcastBot/");
@@ -58,12 +58,12 @@ namespace OutcastBot.Commands
         public async Task Quote(CommandContext context, ulong messageId)
         {
             var validChannels = context.Guild.Channels.Where(ch =>
-                ch.Name == "grim-dawn" ||
+                ch.Name == "general" ||
                 ch.Name == "arpg-general" ||
                 ch.Name == "build-discussion" ||
                 ch.Name == "mod-dsicussion" ||
                 ch.Name == "off-topic" ||
-                ch.Name == "news-guides" ||
+                ch.Name == "news" ||
                 ch.Name == "trade" ||
                 ch.Name == "searching-players");
 

@@ -170,7 +170,7 @@ namespace OutcastBot
                 else if (temp.EndsWith("☯️"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkYawn).ToString());
+                        Program.Client, (ulong)ThinkingEmojis.ThinkYang).ToString());
 
                     await e.Message.DeleteAsync();
                 }
@@ -205,7 +205,7 @@ namespace OutcastBot
                 else if (temp.EndsWith("🍆"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkFish).ToString());
+                        Program.Client, (ulong)ThinkingEmojis.ThinkPlant).ToString());
 
                     await e.Message.DeleteAsync();
                 }

@@ -100,7 +100,7 @@ namespace OutcastBot.Commands
         [Hidden]
         [RequirePermissions(Permissions.ManageMessages)]
         [Command("emojis")]
-        public async Task Test(CommandContext context)
+        public async Task Emojis(CommandContext context)
         {
             var embed = new DiscordEmbedBuilder();
 

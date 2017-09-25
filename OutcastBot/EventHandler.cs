@@ -192,20 +192,22 @@ namespace OutcastBot
                 }
 
                 var sb = new StringBuilder();
-                foreach (var skill in grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value))
+                var sortedSkills = grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value).ToList();
+                for (int i = 0; i < 10 && i < sortedSkills.Count; i++)
                 {
                     try
                     {
-                        var emojiSkill = EnumExtensions.GetValueFromDescription<EmojiSkills>(skill.Key);
-                        sb.Append($"{DiscordEmoji.FromName(Program.Client, $":{emojiSkill.ToString()}:")} ");
+                        var skillEmoji = EnumExtensions.GetValueFromDescription<SkillEmoji>(sortedSkills[i].Key);
+                        sb.Append(DiscordEmoji.FromGuildEmote(Program.Client, (ulong)skillEmoji).ToString());
                     }
                     catch (ArgumentException)
                     {
-                        continue;
+                        sortedSkills.RemoveAt(i);
+                        i--;
                     }
                 }
 
-                if (sb.Length > 0) embed.AddField("Offensive Skills(s)", sb.ToString());
+                if (sb.Length > 0) embed.AddField("Top Skill(s)", sb.ToString());
 
                 embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
 

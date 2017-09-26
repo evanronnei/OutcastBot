@@ -127,11 +127,11 @@ namespace OutcastBot.Enumerations
         [Description("Shattering Blast")]
         ShatteringBlast = 361572097484652554,
 
-        //[Description("Vindictive Flame")]
-        //VindictiveFlame,
+        [Description("Vindictive Flame")]
+        VindictiveFlame = 362060392777646093,
 
-        //[Description("Ulzuin's Wrath")]
-        //UlzuinsWrath,
+        [Description("Ulzuin's Wrath")]
+        UlzuinsWrath = 362060392756674561,
 
         [Description("Mortar Trap")]
         MortarTrap = 361572097492779008,

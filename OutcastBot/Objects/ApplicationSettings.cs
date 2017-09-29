@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace OutcastBot.Objects
 {
@@ -10,5 +11,8 @@ namespace OutcastBot.Objects
 
         [JsonProperty]
         public string CommandPrefix { get; set; }
+
+        [JsonProperty]
+        public List<string> QuotableChannels { get; set; }
     }
 }

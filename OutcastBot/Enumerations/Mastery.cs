@@ -1,5 +1,4 @@
 ﻿using System;
-using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot.Enumerations
 {

@@ -23,6 +23,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region PatchVersion
         public static async Task<string> GetPatchVersionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             if (callerMethodName == "NewBuild")
             {
@@ -38,6 +40,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (response == null)
             {
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return null;
             }
@@ -59,6 +62,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync("Invalid patch version, please re-enter the patch version. (i.e. 1.0.0.0)");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
@@ -68,6 +72,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
                 if (response == null)
                 {
+                    await context.TriggerTypingAsync();
                     await context.RespondAsync("Command Timeout");
                     return null;
                 }
@@ -82,6 +87,7 @@ namespace OutcastBot.Commands.CommandHelpers
         #region ExpansionRequired
         public static async Task<bool> GetExpansionRequiredAsync(CommandContext context)
         {
+            await context.TriggerTypingAsync();
             var message = await context.RespondAsync($"{_required}Does this build require the expansion pack (Ashes of Malmouth)?");
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇾"));
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇳"));
@@ -107,6 +113,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region Title
         public static async Task<string> GetTitleAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             if (callerMethodName == "NewBuild")
             {
@@ -122,6 +130,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (response == null)
             {
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return null;
             }
@@ -137,6 +146,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             if (userInput.Length > 256)
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Title is too long ({userInput.Length}). Please shorten the title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
@@ -146,6 +156,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
                 if (response == null)
                 {
+                    await context.TriggerTypingAsync();
                     await context.RespondAsync("Command Timeout");
                     return null;
                 }
@@ -164,6 +175,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region Description
         public static async Task<string> GetDescriptionAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             if (callerMethodName == "NewBuild")
             {
@@ -179,6 +192,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (response == null)
             {
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return null;
             }
@@ -194,6 +208,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region BuildUrl & Mastery
         public static async Task<GetBuildInfoResults> GetBuildInfoAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             if (callerMethodName == "NewBuild")
             {
@@ -209,6 +225,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             if (response == null)
             {
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return null;
             }
@@ -233,6 +250,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync("Invalid grimtools URL, please re-enter the grimtools URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
@@ -242,6 +260,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
                 if (response == null)
                 {
+                    await context.TriggerTypingAsync();
                     await context.RespondAsync("Command Timeout");
                     return null;
                 }
@@ -256,6 +275,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region ForumUrl
         public static async Task<string> GetForumUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             var suffix = "";
             if (callerMethodName == "NewBuild")
@@ -295,6 +316,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Invalid forum URL, please re-enter the forum URL, or type \"{_skip}\" to skip this step.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
@@ -316,6 +338,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region VideoUrl
         public static async Task<string> GetVideoUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             var suffix = "";
             if (callerMethodName == "NewBuild")
@@ -334,18 +358,11 @@ namespace OutcastBot.Commands.CommandHelpers
 
             await message.DeleteAsync();
 
-            if (response == null)
-            {
-                await context.RespondAsync("Option Timeout");
-                return null;
-            }
-            if (response.Message.Content == _skip)
-            {
-                await response.Message.DeleteAsync();
-                return null;
-            }
+            if (response == null) return null;
 
             await response.Message.DeleteAsync();
+
+            if (response.Message.Content == _skip) return null;
 
             var videoUrl = await ValidateVideoUrlAsync(context, response.Message.Content);
 
@@ -367,6 +384,7 @@ namespace OutcastBot.Commands.CommandHelpers
             }
             else
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Invalid video URL, please re-enter the video URL (YouTube or streamable), or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
@@ -388,6 +406,8 @@ namespace OutcastBot.Commands.CommandHelpers
         #region ImageUrl
         public static async Task<string> GetImageUrlAsync(CommandContext context, [CallerMemberName]string callerMethodName = "")
         {
+            await context.TriggerTypingAsync();
+
             var prefix = "";
             var suffix = "";
             if (callerMethodName == "NewBuild")
@@ -427,6 +447,7 @@ namespace OutcastBot.Commands.CommandHelpers
             if (userInput.Count == 0 || 
                 acceptedExentions.FirstOrDefault(extension => extension == Path.GetExtension(userInput[0].Url.ToLower())) == null)
             {
+                await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Invalid image, please re-upload your image, or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 

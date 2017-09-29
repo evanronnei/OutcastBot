@@ -20,6 +20,8 @@ namespace OutcastBot.Commands
         [Description("Displays bot credits and source code link")]
         public async Task Credits(CommandContext context)
         {
+            await context.TriggerTypingAsync();
+
             var user = await context.Client.GetUserAsync(125732531629719552);
 
             var embed = new DiscordEmbedBuilder
@@ -39,6 +41,7 @@ namespace OutcastBot.Commands
         [Aliases("feedback", "suggestion")]
         public async Task ReportBug(CommandContext context)
         {
+            await context.TriggerTypingAsync();
             await context.RespondAsync("Bugs, feedback, and suggestions are tracked on GitHub: <https://github.com/evanronnei/OutcastBot/issues>");
         }
 
@@ -47,6 +50,7 @@ namespace OutcastBot.Commands
         [Aliases("payrespects")]
         public async Task PayRespects(CommandContext context)
         {
+            await context.TriggerTypingAsync();
             var message = await context.RespondAsync($"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects.");
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));
         }
@@ -57,15 +61,10 @@ namespace OutcastBot.Commands
             "Settings > Appearance > Advanced > Developer Mode")]
         public async Task Quote(CommandContext context, ulong messageId)
         {
-            var validChannels = context.Guild.Channels.Where(ch =>
-                ch.Name == "general" ||
-                ch.Name == "arpg-general" ||
-                ch.Name == "build-discussion" ||
-                ch.Name == "mod-dsicussion" ||
-                ch.Name == "off-topic" ||
-                ch.Name == "news" ||
-                ch.Name == "trade" ||
-                ch.Name == "searching-players");
+            await context.TriggerTypingAsync();
+
+            var validChannels = context.Guild.Channels.Where(
+                ch => Program.AppSettings.QuotableChannels.Contains(ch.Name));
 
             DiscordMessage message = null;
             foreach (var channel in validChannels)
@@ -104,7 +103,7 @@ namespace OutcastBot.Commands
         {
             var embed = new DiscordEmbedBuilder();
 
-            embed.WithAuthor($"{context.Guild.Name} Emojis", "",context.Guild.IconUrl);
+            embed.WithAuthor($"{context.Guild.Name} Emojis", "", context.Guild.IconUrl);
 
             var sb = new StringBuilder();
             foreach (var emoji in context.Guild.Emojis)
@@ -124,6 +123,8 @@ namespace OutcastBot.Commands
         // Get an existing build
         public async Task ExecuteGroupAsync(CommandContext context, [Description("ID of the build to get")]int id)
         {
+            await context.TriggerTypingAsync();
+
             var build = new Build();
             using (var db = new BuildContext())
             {
@@ -160,18 +161,18 @@ namespace OutcastBot.Commands
 
             // PatchVersion
             build.PatchVersion = await BuildHelper.GetPatchVersionAsync(context);
-            if (build.PatchVersion == null) return;
+            if (String.IsNullOrEmpty(build.PatchVersion)) return;
 
             // ExpansionRequired
             //build.ExpansionRequired = await BuildHelper.GetExpansionRequiredAsync(context);
 
             // Title
             build.Title = await BuildHelper.GetTitleAsync(context);
-            if (build.Title == null) return;
+            if (String.IsNullOrEmpty(build.Title)) return;
 
             // Description
             build.Description = await BuildHelper.GetDescriptionAsync(context);
-            if (build.Description == null) return;
+            if (String.IsNullOrEmpty(build.Description)) return;
 
             // BuildUrl & Mastery
             var buildInfo = await BuildHelper.GetBuildInfoAsync(context);
@@ -263,6 +264,8 @@ namespace OutcastBot.Commands
         [Description("Displays the top builds")]
         public async Task TopBuilds(CommandContext context, [Description("Number of builds (5 max).")]int count = 5)
         {
+            await context.TriggerTypingAsync();
+
             if (count > 5 || count < 1)
             {
                 await context.RespondAsync("Invalid build amount (1-5)");
@@ -291,6 +294,8 @@ namespace OutcastBot.Commands
         [Description("Displays your builds")]
         public async Task MyBuilds(CommandContext context, [Description("User mention")]string user = null)
         {
+            await context.TriggerTypingAsync();
+
             var builds = new List<Build>();
 
             if (user == null)

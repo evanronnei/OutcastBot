@@ -11,6 +11,8 @@ namespace OutcastBot.Commands.CommandHelpers
     {
         public static async Task EditProperty(CommandContext context, Build build)
         {
+            await context.TriggerTypingAsync();
+
             // TODO: come up with a better solution to this
             var propertyList = new StringBuilder();
             propertyList.AppendLine("**0** - Patch Version");
@@ -28,6 +30,7 @@ namespace OutcastBot.Commands.CommandHelpers
             if (response == null)
             {
                 await message.DeleteAsync();
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return;
             }
@@ -37,6 +40,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var index = await CommandHelper.ValidateIndex(context, response.Message.Content, 7);
             if (index == null)
             {
+                await context.TriggerTypingAsync();
                 await context.RespondAsync("Command Timeout");
                 return;
             }
@@ -77,6 +81,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 build.ImageUrl = await BuildHelper.GetImageUrlAsync(context);
             }
 
+            await context.TriggerTypingAsync();
             message = await context.RespondAsync("Would you like to edit another property?");
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇾"));
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇳"));

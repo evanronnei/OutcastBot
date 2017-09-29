@@ -1,4 +1,5 @@
 ﻿{
   "Token": "",
-  "CommandPrefix": ""
+  "CommandPrefix": "",
+  "QuotableChannels": []
 }

@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot
 {
@@ -182,8 +181,8 @@ namespace OutcastBot
                         $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
 
                     Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
-                                  $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
-                                  $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
+                        $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
+                        $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
                 };
 
                 foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
 using System.Threading.Tasks;
-using static OutcastBot.Enumerations.Attributes;
 
 namespace OutcastBot.Ojects
 {

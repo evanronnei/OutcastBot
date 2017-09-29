@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
+using System;
 using System.Threading.Tasks;
 
 namespace OutcastBot.Ojects
@@ -63,9 +64,9 @@ namespace OutcastBot.Ojects
             var author = await Program.Client.GetUserAsync(AuthorId);
             embed.AddField( "Author", author.Mention);
             embed.AddField("Build", BuildUrl);
-            if (ForumUrl != null) embed.AddField("Forum Post", ForumUrl);
-            if (VideoUrl != null) embed.AddField("Video", VideoUrl);
-            if (ImageUrl != null) embed.ImageUrl = ImageUrl;
+            if (!String.IsNullOrEmpty(ForumUrl)) embed.AddField("Forum Post", ForumUrl);
+            if (!String.IsNullOrEmpty(VideoUrl)) embed.AddField("Video", VideoUrl);
+            if (!String.IsNullOrEmpty(ImageUrl)) embed.ImageUrl = ImageUrl;
 
             embed.WithFooter($"ID: {BuildId}");
 

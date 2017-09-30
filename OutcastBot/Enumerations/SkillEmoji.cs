@@ -447,7 +447,7 @@ namespace OutcastBot.Enumerations
         [Description("Mogdrogden's Pact")]
         MogdrogdensPact = 361574137602375691,
 
-        [Description("HeartOfTheWild")]
+        [Description("Heart of the Wild")]
         HeartOfTheWild = 361574137564758016,
 
         [Description("Oak Skin")]

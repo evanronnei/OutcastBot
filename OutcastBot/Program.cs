@@ -18,13 +18,15 @@ namespace OutcastBot
 
         static void Main(string[] args)
         {
-            using (var fs = new FileStream($"{Directory.GetCurrentDirectory()}/appsettings.json", FileMode.Open))
+            using (var fs = new FileStream($"appsettings.json", FileMode.Open))
             using (var sr = new StreamReader(fs))
             {
                 var settings = sr.ReadToEnd();
                 AppSettings = JsonConvert.DeserializeObject<ApplicationSettings>(settings);
             }
-            
+
+            if (!Directory.Exists($"Temp")) Directory.CreateDirectory("Temp");
+
             RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 

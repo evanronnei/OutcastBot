@@ -5,9 +5,13 @@ using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
 using OutcastBot.Commands.CommandHelpers;
 using OutcastBot.Ojects;
+using SixLabors.ImageSharp;
+using SixLabors.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -94,6 +98,47 @@ namespace OutcastBot.Commands
             embed.WithAuthor($"{message.Author.Username}#{message.Author.Discriminator} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
 
             await context.RespondAsync("", false, embed.Build());
+        }
+
+        [Command("mobile")]
+        [Description("Mobile Discord claims another victim")]
+        public async Task MobileDiscord(CommandContext context, [Description("Mention of the victim")]string userMention)
+        {
+            var match = new Regex(@"(?<=<@)\d+(?=>)").Match(userMention);
+
+            if (!match.Success)
+            {
+                await context.RespondAsync("Invalid user");
+                return;
+            }
+
+            var user = await context.Client.GetUserAsync(Convert.ToUInt64(match.Value));
+
+            var avatarPath = $"Temp/{user.Id}_avatar.png";
+            var outputPath = $"Temp/{user.Id}_mobile_discord.png";
+
+            var client = new WebClient();
+            client.DownloadFile(user.AvatarUrl, avatarPath);
+
+            using (var baseImage = Image.Load("Images/MobileDiscord.png"))
+            using (var avatar = Image.Load(avatarPath))
+            {
+                baseImage.Mutate(x => x.DrawImage(
+                    avatar,
+                    new Size(43, 43),
+                    new Point(221, 148),
+                    new GraphicsOptions()));
+
+                baseImage.Save(outputPath);
+            }
+
+            using (var fs = new FileStream(outputPath, FileMode.Open))
+            {
+                await context.RespondWithFileAsync(fs);
+            }
+
+            File.Delete(avatarPath);
+            File.Delete(outputPath);
         }
 
         [Hidden]
@@ -292,13 +337,13 @@ namespace OutcastBot.Commands
 
         [Command("mybuilds")]
         [Description("Displays your builds")]
-        public async Task MyBuilds(CommandContext context, [Description("User mention")]string user = null)
+        public async Task MyBuilds(CommandContext context, [Description("User mention")]string userMention = null)
         {
             await context.TriggerTypingAsync();
 
             var builds = new List<Build>();
 
-            if (user == null)
+            if (userMention == null)
             {
                 using (var db = new BuildContext())
                 {
@@ -307,7 +352,7 @@ namespace OutcastBot.Commands
             }
             else
             {
-                var match = new Regex(@"(?<=<@)\d+(?=>)").Match(user);
+                var match = new Regex(@"(?<=<@)\d+(?=>)").Match(userMention);
 
                 if (!match.Success)
                 {

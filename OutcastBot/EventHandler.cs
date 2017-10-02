@@ -38,16 +38,9 @@ namespace OutcastBot
             return Task.CompletedTask;
         }
 
-        public static Task CommandErrorHandler(CommandErrorEventArgs e)
+        public static async Task CommandErrorHandler(CommandErrorEventArgs e)
         {
-            e.Context.Client.DebugLogger.LogMessage(
-                LogLevel.Error,
-                "OutcastBot",
-                $"Exception occured at {e.Exception.Source} on command '{e.Command.Name}': " +
-                    $"{e.Exception.GetType()}: {e.Exception.Message}\n{e.Exception.StackTrace}",
-                DateTime.Now);
-
-            return Task.CompletedTask;
+            await e.Context.RespondAsync($"Invalid command arguments. Type `{Program.AppSettings.CommandPrefix}help` for more info.");
         }
 
         public static async Task BuildVoteAddHandler(MessageReactionAddEventArgs e)

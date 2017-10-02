@@ -52,10 +52,14 @@ namespace OutcastBot.Commands
         [Command("f")]
         [Description("Pay respects")]
         [Aliases("payrespects")]
-        public async Task PayRespects(CommandContext context)
+        public async Task PayRespects(CommandContext context, [RemainingText, Description("Optional: thing to pay respects to")]string victim = null)
         {
             await context.TriggerTypingAsync();
-            var message = await context.RespondAsync($"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects.");
+
+            var messageContent = $"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects";
+            messageContent += (victim == null) ? "." : $" to {victim}.";
+
+            var message = await context.RespondAsync(messageContent);
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));
         }
 
@@ -102,29 +106,13 @@ namespace OutcastBot.Commands
 
         [Command("mobile")]
         [Description("Mobile Discord claims another victim")]
-        public async Task MobileDiscord(CommandContext context, [Description("@mention of the victim")]string userMention)
+        public async Task MobileDiscord(CommandContext context, [Description("@mention of the victim")]DiscordMember member)
         {
-            var match = new Regex(@"(?<=<@)\d+(?=>)").Match(userMention);
-
-            if (!match.Success)
-            {
-                await context.RespondAsync("Invalid user");
-                return;
-            }
-
-            var user = await context.Client.GetUserAsync(Convert.ToUInt64(match.Value));
-
-            if (user == null)
-            {
-                await context.RespondAsync("Invalid user");
-                return;
-            }
-
-            var avatarPath = $"Temp/{user.Id}_avatar.png";
-            var outputPath = $"Temp/{user.Id}_mobile_discord.png";
+            var avatarPath = $"Temp/{member.Id}_avatar.png";
+            var outputPath = $"Temp/{member.Id}_mobile_discord.png";
 
             var client = new WebClient();
-            client.DownloadFile(user.AvatarUrl, avatarPath);
+            client.DownloadFile(member.AvatarUrl, avatarPath);
 
             using (var baseImage = Image.Load("Images/MobileDiscord.png"))
             using (var avatar = Image.Load(avatarPath))
@@ -343,35 +331,17 @@ namespace OutcastBot.Commands
 
         [Command("mybuilds")]
         [Description("Displays your builds")]
-        public async Task MyBuilds(CommandContext context, [Description("Optional: user @mention")]string userMention = null)
+        public async Task MyBuilds(CommandContext context, [Description("Optional: user @mention")]DiscordMember member = null)
         {
             await context.TriggerTypingAsync();
 
             var builds = new List<Build>();
 
-            if (userMention == null)
+            using (var db = new BuildContext())
             {
-                using (var db = new BuildContext())
-                {
-                    builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
-                }
-            }
-            else
-            {
-                var match = new Regex(@"(?<=<@)\d+(?=>)").Match(userMention);
-
-                if (!match.Success)
-                {
-                    await context.RespondAsync("Invalid user");
-                    return;
-                }
-
-                var id = Convert.ToUInt64(match.Value);
-
-                using (var db = new BuildContext())
-                {
-                    builds = db.Builds.Where(b => b.AuthorId == id).ToList();
-                }
+                builds = (member == null)
+                    ? db.Builds.Where(b => b.AuthorId == context.User.Id).ToList()
+                    : db.Builds.Where(b => b.AuthorId == member.Id).ToList();
             }
 
             if (builds.Count == 0)

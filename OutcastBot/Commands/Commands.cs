@@ -114,6 +114,12 @@ namespace OutcastBot.Commands
 
             var user = await context.Client.GetUserAsync(Convert.ToUInt64(match.Value));
 
+            if (user == null)
+            {
+                await context.RespondAsync("Invalid user");
+                return;
+            }
+
             var avatarPath = $"Temp/{user.Id}_avatar.png";
             var outputPath = $"Temp/{user.Id}_mobile_discord.png";
 

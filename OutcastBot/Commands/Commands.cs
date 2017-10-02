@@ -193,7 +193,7 @@ namespace OutcastBot.Commands
 
         [Command("new")]
         [Description("Create a new build.\n\n" +
-            "Will prompt you to fill in the following properties:\n" +
+            "Command will prompt you to fill in the following properties:\n" +
             "(REQUIRED) Patch Version\n" +
             "(REQUIRED) Title\n" +
             "(REQUIRED) Description\n" +
@@ -313,7 +313,7 @@ namespace OutcastBot.Commands
 
         [Command("top")]
         [Description("Displays the top builds")]
-        public async Task TopBuilds(CommandContext context, [Description("Number of builds (5 max).")]int count = 5)
+        public async Task TopBuilds(CommandContext context, [Description("Optional: number of builds (5 max).")]int count = 5)
         {
             await context.TriggerTypingAsync();
 

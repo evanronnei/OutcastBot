@@ -7,11 +7,15 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Images\MobileDiscord.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MobileDiscord.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -26,10 +30,6 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0001" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0001" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

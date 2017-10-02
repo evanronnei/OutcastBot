@@ -63,7 +63,7 @@ namespace OutcastBot.Commands
         [Description("Creates a quote of a Discord message using the message ID.\n\n" +
             "Message IDs can be obtained with developer mode enabled:\n" +
             "Settings > Appearance > Advanced > Developer Mode")]
-        public async Task Quote(CommandContext context, ulong messageId)
+        public async Task Quote(CommandContext context, [Description("ID of the message to quote")]ulong messageId)
         {
             await context.TriggerTypingAsync();
 

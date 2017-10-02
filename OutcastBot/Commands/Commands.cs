@@ -102,7 +102,7 @@ namespace OutcastBot.Commands
 
         [Command("mobile")]
         [Description("Mobile Discord claims another victim")]
-        public async Task MobileDiscord(CommandContext context, [Description("Mention of the victim")]string userMention)
+        public async Task MobileDiscord(CommandContext context, [Description("@mention of the victim")]string userMention)
         {
             var match = new Regex(@"(?<=<@)\d+(?=>)").Match(userMention);
 
@@ -343,7 +343,7 @@ namespace OutcastBot.Commands
 
         [Command("mybuilds")]
         [Description("Displays your builds")]
-        public async Task MyBuilds(CommandContext context, [Description("User mention")]string userMention = null)
+        public async Task MyBuilds(CommandContext context, [Description("Optional: user @mention")]string userMention = null)
         {
             await context.TriggerTypingAsync();
 

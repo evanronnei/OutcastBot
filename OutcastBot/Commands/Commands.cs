@@ -427,6 +427,105 @@ namespace OutcastBot.Commands
             }
         }
 
+        [Command("submit")]
+        [Description("Submit a new tag for moderator approval")]
+        public async Task ApproveTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
+        {
+            await context.TriggerTypingAsync();
+
+            var moderation = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "moderation");
+            if (moderation == null) return;
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                if (tag != null)
+                {
+                    await context.RespondAsync($"Tag `{key}` already exists");
+                    return;
+                }
+            }
+
+            await context.RespondAsync($"{context.User.Mention} your tag `{key}` has been submitted for approval");
+
+            var embed = new DiscordEmbedBuilder { Timestamp = context.Message.Timestamp };
+
+            embed.WithAuthor($"{context.User.Username}#{context.User.Discriminator}", "", context.User.AvatarUrl);
+            embed.AddField("Key", $"`{key}`");
+            embed.AddField("Value", value);
+
+            var message = await moderation.SendMessageAsync("New tag submission:", false, embed.Build());
+
+            var approval = DiscordEmoji.FromUnicode("✅");
+            var denial = DiscordEmoji.FromUnicode("❌");
+            await message.CreateReactionAsync(approval);
+            await message.CreateReactionAsync(denial);
+
+            await Task.Delay(2000);
+
+            var response = await Program.Interactivity.WaitForMessageReactionAsync(
+                r => r == approval || r == denial, 
+                message,
+                0,
+                TimeSpan.FromHours(8));
+
+            await message.DeleteAsync();
+
+            await moderation.TriggerTypingAsync();
+
+            if (response == null || response.Emoji == denial)
+            {
+                await moderation.SendMessageAsync($"Denied tag `{key}`");
+
+                await context.Member.SendMessageAsync($"Your tag `{key}` has been denied");
+            }
+            else
+            {
+                await moderation.SendMessageAsync($"Created tag `{key}`");
+
+                using (var db = new TagContext())
+                {
+                    db.Tags.Add(new Tag { Key = key, Value = value });
+                    await db.SaveChangesAsync();
+                }
+
+                await context.Member.SendMessageAsync($"Your tag `{key}` has been approved");
+            }
+        }
+
+        [Command("list")]
+        [Description("Lists all tags")]
+        public async Task ListTags(CommandContext context)
+        {
+            await context.TriggerTypingAsync();
+
+            var tags = new List<Tag>();
+            using (var db = new TagContext())
+            {
+                tags = db.Tags.ToList();
+            }
+
+            if (tags.Count == 0)
+            {
+                await context.RespondAsync("There are no created tags");
+                return;
+            }
+
+            var keys = new List<string>();
+            foreach (var tag in tags)
+            {
+                keys.Add($"`{tag.Key}`");
+            }
+
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = $"Tags",
+                Description = String.Join(", ", keys)
+            };
+
+            await context.RespondAsync("", false, embed.Build());
+        }
+
         [Command("new")]
         [Description("Creates a new tag")]
         [RequirePermissions(Permissions.ManageChannels)]
@@ -496,39 +595,6 @@ namespace OutcastBot.Commands
                 await db.SaveChangesAsync();
                 await context.RespondAsync($"Deleted tag `{key}`");
             }
-        }
-
-        [Command("list")]
-        [Description("Lists all tags")]
-        public async Task ListTags(CommandContext context)
-        {
-            await context.TriggerTypingAsync();
-
-            var tags = new List<Tag>();
-            using (var db = new TagContext())
-            {
-                tags = db.Tags.ToList();
-            }
-
-            if (tags.Count == 0)
-            {
-                await context.RespondAsync("There are no created tags");
-                return;
-            }
-
-            var keys = new List<string>();
-            foreach (var tag in tags)
-            {
-                keys.Add($"`{tag.Key}`");
-            }
-
-            var embed = new DiscordEmbedBuilder
-            {
-                Title = $"Tags",
-                Description = String.Join(", ", keys)
-            };
-
-            await context.RespondAsync("", false, embed.Build());
         }
     }
 }

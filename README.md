@@ -10,12 +10,13 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `build new` - Creates a new build. Prompts the user to fill in required and optional properties. Posts the build as an embedded object in the `#builds` channel.
 * `build edit <int id>` - Allows the build author to edit an existing build.
 * `build delete <int id>` - Allows the build author to delete an existing build.
-* `build mybuilds <optional: string userMention>` - Displays all builds by the command user, or by the mentioned user.
+* `build mybuilds <optional: DiscordMember member>` - Displays all builds by the command user, or by the mentioned member.
 * `build top <optional: int count(1-5)>` - Displays the top 5 builds, or the top `count` builds.
 * `credits` - Displays the bot author and source code link in and embedded object.
 * `bug` - Links to the issues page here.
 * `f` - Pays respects.
 * `quote <ulong id>` - Quotes a Discord message with the given ID
+* `mobile <DiscordMember member>` - Responds with a composite image of `member`'s avatar and  [MobileDiscord.png](https://github.com/evanronnei/OutcastBot/blob/master/OutcastBot/Images/MobileDiscord.png)
 
 ## Events
 

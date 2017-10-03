@@ -9,7 +9,7 @@ namespace OutcastBot
     {
         public static async Task ThinkingHandler(MessageCreateEventArgs e)
         {
-            if (e.Message.Content.StartsWith("🤔"))
+            if (!e.Author.IsBot && e.Message.Content.StartsWith("🤔"))
             {
                 var temp = e.Message.Content.Remove(0, 1);
 

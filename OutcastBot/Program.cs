@@ -52,6 +52,7 @@ namespace OutcastBot
 
             Commands.RegisterCommands<Commands.Commands>();
             Commands.RegisterCommands<BuildCommands>();
+            Commands.RegisterCommands<TagCommands>();
             #endregion
 
             #region Client Events

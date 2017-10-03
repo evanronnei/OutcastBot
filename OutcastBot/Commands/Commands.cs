@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
 using OutcastBot.Commands.CommandHelpers;
+using OutcastBot.Objects;
 using OutcastBot.Ojects;
 using SixLabors.ImageSharp;
 using SixLabors.Primitives;
@@ -136,6 +137,42 @@ namespace OutcastBot.Commands
             File.Delete(avatarPath);
             File.Delete(outputPath);
         }
+
+        //[Command("tag")]
+        //[Description("Creates a new command with the given key/value pair, or gets a command with the given tag")]
+        //[RequirePermissions(Permissions.ManageChannels)]
+        //public async Task Tag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value = null)
+        //{
+        //    await context.TriggerTypingAsync();
+
+        //    using (var db = new TagContext())
+        //    {
+        //        var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+
+        //        if (value == null)
+        //        {
+        //            if (tag == null)
+        //            {
+        //                await context.RespondAsync($"`{key}` is not a valid tag.");
+        //                return;
+        //            }
+        //            await context.RespondAsync(tag.Value);
+        //        }
+        //        else
+        //        {
+        //            if (tag != null)
+        //            {
+        //                await context.RespondAsync($"Tag `{key}` already exists.");
+        //                return;
+        //            }
+
+        //            tag = new Tag { Key = key, Value = value };
+        //            db.Add(tag);
+        //            await db.SaveChangesAsync();
+        //            await context.RespondAsync($"Created tag `{key}`");
+        //        }
+        //    }
+        //}
 
         [Hidden]
         [RequirePermissions(Permissions.ManageMessages)]
@@ -275,6 +312,8 @@ namespace OutcastBot.Commands
         [Description("Delete an existing build")]
         public async Task DeleteBuild(CommandContext context, [Description("ID of the build to delete")]int id)
         {
+            await context.TriggerTypingAsync();
+
             var build = new Build();
             using (var db = new BuildContext())
             {
@@ -361,6 +400,133 @@ namespace OutcastBot.Commands
             {
                 embed.AddField($"(+{build.UpVotes - 1} | -{build.DownVotes - 1}) {build.Title}", build.BuildUrl);
             }
+
+            await context.RespondAsync("", false, embed.Build());
+        }
+    }
+
+    [Group("tag", CanInvokeWithoutSubcommand = true)]
+    [Description("Gets a tag (key/value pair)")]
+    public class TagCommands
+    {
+        public async Task ExecuteGroupAsync(CommandContext context, [Description("Tag name")]string key)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+
+                if (tag == null)
+                {
+                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    return;
+                }
+
+                await context.RespondAsync(tag.Value);
+            }
+        }
+
+        [Command("new")]
+        [Description("Creates a new tag")]
+        [RequirePermissions(Permissions.ManageChannels)]
+        public async Task NewTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+
+                if (tag != null)
+                {
+                    await context.RespondAsync($"Tag `{key}` already exists");
+                    return;
+                }
+
+                tag = new Tag { Key = key, Value = value };
+                db.Add(tag);
+                await db.SaveChangesAsync();
+                await context.RespondAsync($"Created tag `{key}`");
+            }
+        }
+
+        [Command("edit")]
+        [Description("Edits an existing tag.")]
+        [RequirePermissions(Permissions.ManageChannels)]
+        public async Task EditTag(CommandContext context , [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+
+                if (tag == null)
+                {
+                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    return;
+                }
+
+                tag.Value = value;
+                db.Update(tag);
+                await db.SaveChangesAsync();
+                await context.RespondAsync($"Edited tag `{key}`");
+            }
+        }
+
+        [Command("delete")]
+        [Description("Deletes an existing tag")]
+        [RequirePermissions(Permissions.ManageChannels)]
+        public async Task DeleteTag(CommandContext context, [Description("Tag name")]string key)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+
+                if (tag == null)
+                {
+                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    return;
+                }
+
+                db.Remove(tag);
+                await db.SaveChangesAsync();
+                await context.RespondAsync($"Deleted tag `{key}`");
+            }
+        }
+
+        [Command("list")]
+        [Description("Lists all tags")]
+        public async Task ListTags(CommandContext context)
+        {
+            await context.TriggerTypingAsync();
+
+            var tags = new List<Tag>();
+            using (var db = new TagContext())
+            {
+                tags = db.Tags.ToList();
+            }
+
+            if (tags.Count == 0)
+            {
+                await context.RespondAsync("There are no created tags");
+                return;
+            }
+
+            var keys = new List<string>();
+            foreach (var tag in tags)
+            {
+                keys.Add($"`{tag.Key}`");
+            }
+
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = $"Tags",
+                Description = String.Join(", ", keys)
+            };
 
             await context.RespondAsync("", false, embed.Build());
         }

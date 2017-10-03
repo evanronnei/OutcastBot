@@ -14,8 +14,8 @@ namespace OutcastBot.Migrations.Tag
                 {
                     TagId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Key = table.Column<string>(type: "TEXT", nullable: true),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

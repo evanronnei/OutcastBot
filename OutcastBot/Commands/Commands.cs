@@ -441,7 +441,7 @@ namespace OutcastBot.Commands
             {
                 await moderation.SendMessageAsync($"Denied tag `{key}`");
 
-                await context.Member.SendMessageAsync($"Your tag `{key}` has been denied");
+                await context.Member.SendMessageAsync($"{approval} Your tag has been denied", false, embed.Build());
             }
             else
             {
@@ -453,7 +453,7 @@ namespace OutcastBot.Commands
                     await db.SaveChangesAsync();
                 }
 
-                await context.Member.SendMessageAsync($"Your tag `{key}` has been approved");
+                await context.Member.SendMessageAsync($"{denial} Your tag has been approved", false, embed.Build());
             }
         }
 

@@ -147,7 +147,7 @@ namespace OutcastBot
             var match = new Regex(@"\be?\s?x\s?p\s?a\s?((n\s?s\s?i\s?o\s?n)|c)\s?w\s?h\s?e\s?n\b")
                 .Match(e.Message.Content.ToLower());
 
-            if (match.Success)
+            if (match.Success && !e.Author.IsBot)
             {
                 await e.Message.RespondAsync("October 11th!\n\nhttps://youtu.be/03VZ9cUB3vg");
             }

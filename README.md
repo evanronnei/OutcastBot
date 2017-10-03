@@ -12,6 +12,12 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `build delete <int id>` - Allows the build author to delete an existing build.
 * `build mybuilds <optional: DiscordMember member>` - Displays all builds by the command user, or by the mentioned member.
 * `build top <optional: int count(1-5)>` - Displays the top 5 builds, or the top `count` builds.
+* `tag <string key>` - Retrives the value with the given key.
+* `tag submit <string key> <sting[] value>` - Submits a new tag for moderator approval in `#moderation`
+* `tag list` - Retrieves a list of all tags.
+* `tag new <string key> <string[] value>` - Creates a new tag with `key` and `value`. Requires `ManageChannels` permissions to execute.
+* `tag edit <string key>` - Edits an existing tag `key`. Requires `ManageChannels` permissions to execute.
+* `tag delete <string key>` - Deletes and existing tag `key`. Requires `ManageChannels` permissions to execute.
 * `credits` - Displays the bot author and source code link in and embedded object.
 * `bug` - Links to the issues page here.
 * `f <optional: string victim>` - Pays respects. If `victim` exists then it pays respects to `victim`.

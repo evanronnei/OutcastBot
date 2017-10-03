@@ -33,8 +33,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the patch version of the build (i.e. 1.0.0.0).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id && 
-                m.Channel.Id == context.Channel.Id, 
-                TimeSpan.FromMinutes(1));
+                m.Channel.Id == context.Channel.Id);
 
             await message.DeleteAsync();
 
@@ -65,8 +64,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.TriggerTypingAsync();
                 var message = await context.RespondAsync("Invalid patch version, please re-enter the patch version. (i.e. 1.0.0.0)");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    m.Channel.Id == context.Channel.Id);
 
                 await message.DeleteAsync();
 
@@ -94,7 +92,6 @@ namespace OutcastBot.Commands.CommandHelpers
             var reaction = await Program.Interactivity.WaitForMessageReactionAsync(
                 e => e == DiscordEmoji.FromUnicode("🇾") || e == DiscordEmoji.FromUnicode("🇳"),
                 message,
-                TimeSpan.FromMinutes(1),
                 context.User.Id);
 
             await message.DeleteAsync();
@@ -150,7 +147,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var message = await context.RespondAsync($"Title is too long ({userInput.Length}). Please shorten the title to 246 characters.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    TimeSpan.FromMinutes(2));
 
                 await message.DeleteAsync();
 
@@ -218,8 +215,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the http://www.grimtools.com/calc/ for the build");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel.Id == context.Channel.Id, 
-                TimeSpan.FromMinutes(1));
+                m.Channel.Id == context.Channel.Id);
 
             await message.DeleteAsync();
 
@@ -253,8 +249,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.TriggerTypingAsync();
                 var message = await context.RespondAsync("Invalid grimtools URL, please re-enter the grimtools URL.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    m.Channel.Id == context.Channel.Id);
 
                 await message.DeleteAsync();
 
@@ -290,8 +285,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the forum URL for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel.Id == context.Channel.Id, 
-                TimeSpan.FromMinutes(1));
+                m.Channel.Id == context.Channel.Id);
 
             await message.DeleteAsync();
 
@@ -319,8 +313,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Invalid forum URL, please re-enter the forum URL, or type \"{_skip}\" to skip this step.");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    m.Channel.Id == context.Channel.Id);
 
                 await message.DeleteAsync();
 
@@ -353,8 +346,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
             var message = await context.RespondAsync($"{prefix}Enter the video URL for the build (YouTube or streamable).{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                m.Channel.Id == context.Channel.Id, 
-                TimeSpan.FromMinutes(1));
+                m.Channel.Id == context.Channel.Id);
 
             await message.DeleteAsync();
 
@@ -387,8 +379,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 await context.TriggerTypingAsync();
                 var message = await context.RespondAsync($"Invalid video URL, please re-enter the video URL (YouTube or streamable), or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
-                    m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    m.Channel.Id == context.Channel.Id);
 
                 await message.DeleteAsync();
 
@@ -451,7 +442,7 @@ namespace OutcastBot.Commands.CommandHelpers
                 var message = await context.RespondAsync($"Invalid image, please re-upload your image, or type \"{_skip}\" to skip this step");
                 var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
                     m.Channel.Id == context.Channel.Id, 
-                    TimeSpan.FromMinutes(1));
+                    TimeSpan.FromMinutes(2));
 
                 await message.DeleteAsync();
 

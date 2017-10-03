@@ -5,9 +5,13 @@ using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
 using OutcastBot.Commands.CommandHelpers;
 using OutcastBot.Ojects;
+using SixLabors.ImageSharp;
+using SixLabors.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -48,10 +52,14 @@ namespace OutcastBot.Commands
         [Command("f")]
         [Description("Pay respects")]
         [Aliases("payrespects")]
-        public async Task PayRespects(CommandContext context)
+        public async Task PayRespects(CommandContext context, [RemainingText, Description("Optional: thing to pay respects to")]string victim = null)
         {
             await context.TriggerTypingAsync();
-            var message = await context.RespondAsync($"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects.");
+
+            var messageContent = $"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects";
+            messageContent += (victim == null) ? "." : $" to {victim}.";
+
+            var message = await context.RespondAsync(messageContent);
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));
         }
 
@@ -59,7 +67,7 @@ namespace OutcastBot.Commands
         [Description("Creates a quote of a Discord message using the message ID.\n\n" +
             "Message IDs can be obtained with developer mode enabled:\n" +
             "Settings > Appearance > Advanced > Developer Mode")]
-        public async Task Quote(CommandContext context, ulong messageId)
+        public async Task Quote(CommandContext context, [Description("ID of the message to quote")]ulong messageId)
         {
             await context.TriggerTypingAsync();
 
@@ -94,6 +102,39 @@ namespace OutcastBot.Commands
             embed.WithAuthor($"{message.Author.Username}#{message.Author.Discriminator} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
 
             await context.RespondAsync("", false, embed.Build());
+        }
+
+        [Command("mobile")]
+        [Description("Mobile Discord claims another victim")]
+        public async Task MobileDiscord(CommandContext context, [Description("@mention of the victim")]DiscordMember member)
+        {
+            await context.TriggerTypingAsync();
+
+            var avatarPath = $"Temp/{member.Id}_avatar.png";
+            var outputPath = $"Temp/{member.Id}_mobile_discord.png";
+
+            var client = new WebClient();
+            client.DownloadFile(member.AvatarUrl, avatarPath);
+
+            using (var baseImage = Image.Load("Images/MobileDiscord.png"))
+            using (var avatar = Image.Load(avatarPath))
+            {
+                baseImage.Mutate(x => x.DrawImage(
+                    avatar,
+                    new Size(43, 43),
+                    new Point(221, 148),
+                    new GraphicsOptions()));
+
+                baseImage.Save(outputPath);
+            }
+
+            using (var fs = new FileStream(outputPath, FileMode.Open))
+            {
+                await context.RespondWithFileAsync(fs);
+            }
+
+            File.Delete(avatarPath);
+            File.Delete(outputPath);
         }
 
         [Hidden]
@@ -142,7 +183,7 @@ namespace OutcastBot.Commands
 
         [Command("new")]
         [Description("Create a new build.\n\n" +
-            "Will prompt you to fill in the following properties:\n" +
+            "Command will prompt you to fill in the following properties:\n" +
             "(REQUIRED) Patch Version\n" +
             "(REQUIRED) Title\n" +
             "(REQUIRED) Description\n" +
@@ -262,7 +303,7 @@ namespace OutcastBot.Commands
 
         [Command("top")]
         [Description("Displays the top builds")]
-        public async Task TopBuilds(CommandContext context, [Description("Number of builds (5 max).")]int count = 5)
+        public async Task TopBuilds(CommandContext context, [Description("Optional: number of builds (5 max).")]int count = 5)
         {
             await context.TriggerTypingAsync();
 
@@ -292,35 +333,17 @@ namespace OutcastBot.Commands
 
         [Command("mybuilds")]
         [Description("Displays your builds")]
-        public async Task MyBuilds(CommandContext context, [Description("User mention")]string user = null)
+        public async Task MyBuilds(CommandContext context, [Description("Optional: user @mention")]DiscordMember member = null)
         {
             await context.TriggerTypingAsync();
 
             var builds = new List<Build>();
 
-            if (user == null)
+            using (var db = new BuildContext())
             {
-                using (var db = new BuildContext())
-                {
-                    builds = db.Builds.Where(b => b.AuthorId == context.User.Id).ToList();
-                }
-            }
-            else
-            {
-                var match = new Regex(@"(?<=<@)\d+(?=>)").Match(user);
-
-                if (!match.Success)
-                {
-                    await context.RespondAsync("Invalid user");
-                    return;
-                }
-
-                var id = Convert.ToUInt64(match.Value);
-
-                using (var db = new BuildContext())
-                {
-                    builds = db.Builds.Where(b => b.AuthorId == id).ToList();
-                }
+                builds = (member == null)
+                    ? db.Builds.Where(b => b.AuthorId == context.User.Id).ToList()
+                    : db.Builds.Where(b => b.AuthorId == member.Id).ToList();
             }
 
             if (builds.Count == 0)

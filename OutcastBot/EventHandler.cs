@@ -149,7 +149,7 @@ namespace OutcastBot
 
             if (match.Success)
             {
-                await e.Message.RespondAsync("https://youtu.be/oz2Z6hN5YBs");
+                await e.Message.RespondAsync("October 11th!\n\nhttps://youtu.be/03VZ9cUB3vg");
             }
         }
 

@@ -14,7 +14,7 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `build top <optional: int count(1-5)>` - Displays the top 5 builds, or the top `count` builds.
 * `credits` - Displays the bot author and source code link in and embedded object.
 * `bug` - Links to the issues page here.
-* `f <optional: string victim>` - Pays respects. If `victim` exists then it pay respects to `victim`.
+* `f <optional: string victim>` - Pays respects. If `victim` exists then it pays respects to `victim`.
 * `quote <ulong id>` - Quotes a Discord message with the given ID
 * `mobile <DiscordMember member>` - Responds with a composite image of `member`'s avatar and  [MobileDiscord.png](https://github.com/evanronnei/OutcastBot/blob/master/OutcastBot/Images/MobileDiscord.png)
 

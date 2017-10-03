@@ -138,42 +138,6 @@ namespace OutcastBot.Commands
             File.Delete(outputPath);
         }
 
-        //[Command("tag")]
-        //[Description("Creates a new command with the given key/value pair, or gets a command with the given tag")]
-        //[RequirePermissions(Permissions.ManageChannels)]
-        //public async Task Tag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value = null)
-        //{
-        //    await context.TriggerTypingAsync();
-
-        //    using (var db = new TagContext())
-        //    {
-        //        var tag = db.Tags.FirstOrDefault(t => t.Key == key);
-
-        //        if (value == null)
-        //        {
-        //            if (tag == null)
-        //            {
-        //                await context.RespondAsync($"`{key}` is not a valid tag.");
-        //                return;
-        //            }
-        //            await context.RespondAsync(tag.Value);
-        //        }
-        //        else
-        //        {
-        //            if (tag != null)
-        //            {
-        //                await context.RespondAsync($"Tag `{key}` already exists.");
-        //                return;
-        //            }
-
-        //            tag = new Tag { Key = key, Value = value };
-        //            db.Add(tag);
-        //            await db.SaveChangesAsync();
-        //            await context.RespondAsync($"Created tag `{key}`");
-        //        }
-        //    }
-        //}
-
         [Hidden]
         [RequirePermissions(Permissions.ManageMessages)]
         [Command("emojis")]

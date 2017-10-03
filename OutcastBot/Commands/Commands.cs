@@ -387,7 +387,7 @@ namespace OutcastBot.Commands
 
             if (builds.Count == 0)
             {
-                await context.RespondAsync("User hasn't created any builds");
+                await context.RespondAsync($"{member.DisplayName} hasn't created any builds");
                 return;
             }
 

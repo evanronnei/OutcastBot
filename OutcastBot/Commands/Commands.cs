@@ -492,7 +492,7 @@ namespace OutcastBot.Commands
 
         [Command("new")]
         [Description("Creates a new tag")]
-        [RequirePermissions(Permissions.ManageChannels)]
+        [RequirePermissions(Permissions.ManageMessages)]
         public async Task NewTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
             await context.TriggerTypingAsync();
@@ -516,7 +516,7 @@ namespace OutcastBot.Commands
 
         [Command("edit")]
         [Description("Edits an existing tag.")]
-        [RequirePermissions(Permissions.ManageChannels)]
+        [RequirePermissions(Permissions.ManageMessages)]
         public async Task EditTag(CommandContext context , [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
             await context.TriggerTypingAsync();
@@ -540,7 +540,7 @@ namespace OutcastBot.Commands
 
         [Command("delete")]
         [Description("Deletes an existing tag")]
-        [RequirePermissions(Permissions.ManageChannels)]
+        [RequirePermissions(Permissions.ManageMessages)]
         public async Task DeleteTag(CommandContext context, [Description("Tag name")]string key)
         {
             await context.TriggerTypingAsync();

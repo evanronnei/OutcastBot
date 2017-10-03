@@ -4,6 +4,7 @@ using DSharpPlus.Interactivity;
 using Newtonsoft.Json;
 using OutcastBot.Commands;
 using OutcastBot.Objects;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -41,7 +42,12 @@ namespace OutcastBot
                 LogLevel = LogLevel.Info
             });
 
-            Interactivity = Client.UseInteractivity();
+            Interactivity = Client.UseInteractivity(new InteractivityConfiguration
+            {
+                PaginationBehaviour = TimeoutBehaviour.Delete,
+                PaginationTimeout = TimeSpan.FromMinutes(5),
+                Timeout = TimeSpan.FromMinutes(1)
+            });
             #endregion
 
             #region Register Commands

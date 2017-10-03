@@ -24,7 +24,7 @@ namespace OutcastBot
                 "Client is ready to process events.",
                 DateTime.Now);
 
-            await Program.Client.UpdateStatusAsync(new Game($"{Program.AppSettings.CommandPrefix}help"));
+            await Program.Client.UpdateStatusAsync(new DiscordGame($"{Program.AppSettings.CommandPrefix}help"));
         }
 
         public static Task ClientErrorHandler(ClientErrorEventArgs e)

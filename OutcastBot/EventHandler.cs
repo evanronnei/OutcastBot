@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Enumerations;
@@ -31,8 +32,9 @@ namespace OutcastBot
             e.Client.DebugLogger.LogMessage(
                 LogLevel.Error,
                 "OutcastBot",
-                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType()}: " +
-                    $"{e.Exception.Message}\n{e.Exception.StackTrace}",
+                $"Exception occured at {e.Exception.Source}: {e.Exception.GetType().Name}: {e.Exception.Message}\n" +
+                    $"{e.Exception.InnerException}" +
+                    $"{e.Exception.StackTrace}",
                 DateTime.Now);
 
             return Task.CompletedTask;
@@ -40,7 +42,24 @@ namespace OutcastBot
 
         public static async Task CommandErrorHandler(CommandErrorEventArgs e)
         {
-            await e.Context.RespondAsync($"Invalid command arguments. Type `{Program.AppSettings.CommandPrefix}help` for more info.");
+            switch (e.Exception)
+            {
+                case CommandNotFoundException notFound:
+                    await e.Context.RespondAsync($"Invalid command. Type `{Program.AppSettings.CommandPrefix}help` for a list of commands.");
+                    return;
+                case ArgumentException argument:
+                    await e.Context.RespondAsync($"Invalid command arguments. Type `{Program.AppSettings.CommandPrefix}help {e.Command.QualifiedName}` for more info.");
+                    return;
+                default:
+                    e.Context.Client.DebugLogger.LogMessage(
+                        LogLevel.Error,
+                        "OutcastBot",
+                        $"Exception occured at {e.Exception.Source}: {e.Exception.GetType().Name}: {e.Exception.Message}\n" +
+                            $"{e.Exception.InnerException}\n" +
+                            $"{e.Exception.StackTrace}",
+                        DateTime.Now);
+                    return;
+            }
         }
 
         public static async Task BuildVoteAddHandler(MessageReactionAddEventArgs e)

@@ -57,7 +57,7 @@ namespace OutcastBot
                 EnableDms = false
             });
 
-            Commands.RegisterCommands<Commands.Commands>();
+            Commands.RegisterCommands<MiscellaneousCommands>();
             Commands.RegisterCommands<BuildCommands>();
             Commands.RegisterCommands<TagCommands>();
             #endregion

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace OutcastBot.Commands
 {
-    public class Commands
+    public class MiscellaneousCommands
     {
         [Command("credits")]
         [Description("Displays bot credits and source code link")]

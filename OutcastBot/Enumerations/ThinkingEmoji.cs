@@ -1,6 +1,6 @@
 ﻿namespace OutcastBot.Enumerations
 {
-    public enum ThinkingEmojis : ulong
+    public enum ThinkingEmoji : ulong
     {
         ThinkEyes = 359798823486226443,
         WeebThink = 359798823725432842,

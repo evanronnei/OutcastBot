@@ -16,210 +16,210 @@ namespace OutcastBot
                 if (temp.EndsWith("👀"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkEyes).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkEyes).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🇯🇵"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.WeebThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.WeebThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😡"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkRage).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkRage).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("👌"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.OkThinking).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.OkThinking).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("👏"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Clapking).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Clapking).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("✝️"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkusVult).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkusVult).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🤷"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Thrugging).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Thrugging).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🌊"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkWave).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkWave).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🥔"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.SpudThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.SpudThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🦀"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.CrabThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.CrabThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😉"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Winking).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Winking).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😐"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkStare).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkStare).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🖕"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.UpThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.UpThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🔫"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.KmsThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.KmsThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("👈"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.LeftyThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.LeftyThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("⬜"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.SquareThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.SquareThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("💻"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkPad).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkPad).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🍞"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Breading).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Breading).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("💦"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkDrops).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkDrops).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🎩"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Mthinking).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Mthinking).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🍺"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.BeerThink).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.BeerThink).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😫"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkYawn).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkYawn).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("☯️"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkYang).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkYang).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😰"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkCern).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkCern).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🔄"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkSpinner).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkSpinner).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🤔"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Thinkception).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Thinkception).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🐟"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkFish).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkFish).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("🍆"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.ThinkPlant).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.ThinkPlant).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("😕"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Thinkfusing).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Thinkfusing).ToString());
 
                     await e.Message.DeleteAsync();
                 }
                 else if (temp.EndsWith("👍"))
                 {
                     await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
-                        Program.Client, (ulong)ThinkingEmojis.Thinkup).ToString());
+                        Program.Client, (ulong)ThinkingEmoji.Thinkup).ToString());
 
                     await e.Message.DeleteAsync();
                 }

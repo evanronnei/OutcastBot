@@ -53,7 +53,8 @@ namespace OutcastBot
             #region Register Commands
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefix = AppSettings.CommandPrefix
+                StringPrefix = AppSettings.CommandPrefix,
+                EnableDms = false
             });
 
             Commands.RegisterCommands<Commands.Commands>();

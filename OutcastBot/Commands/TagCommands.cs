@@ -39,6 +39,8 @@ namespace OutcastBot.Commands
         [Description("Submit a new tag for moderator approval")]
         public async Task ApproveTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
+            if (String.IsNullOrEmpty(value)) throw new ArgumentException();
+
             await context.TriggerTypingAsync();
 
             var moderation = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "moderation");

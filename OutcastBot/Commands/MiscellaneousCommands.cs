@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
 using SixLabors.ImageSharp;
 using SixLabors.Primitives;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -47,12 +48,12 @@ namespace OutcastBot.Commands
         [Command("f")]
         [Description("Pay respects")]
         [Aliases("payrespects")]
-        public async Task PayRespects(CommandContext context, [RemainingText, Description("Optional: thing to pay respects to")]string victim = null)
+        public async Task PayRespects(CommandContext context, [RemainingText, Description("Optional: thing to pay respects to")]string text)
         {
             await context.TriggerTypingAsync();
 
             var messageContent = $"Press {DiscordEmoji.FromUnicode("🇫")} to pay respects";
-            messageContent += (victim == null) ? "." : $" to {victim}.";
+            messageContent += (String.IsNullOrEmpty(text)) ? "." : $" to {text}.";
 
             var message = await context.RespondAsync(messageContent);
             await message.CreateReactionAsync(DiscordEmoji.FromUnicode("🇫"));

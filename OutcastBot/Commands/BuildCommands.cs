@@ -27,7 +27,7 @@ namespace OutcastBot.Commands
 
             if (build == null)
             {
-                var error = await context.RespondAsync($"`{1000}` is not a valid build ID");
+                var error = await context.RespondAsync($"`{id}` is not a valid build ID");
                 await Task.Delay(2500)
                     .ContinueWith(t => error.DeleteAsync())
                     .ContinueWith(t => context.Message.DeleteAsync());
@@ -192,7 +192,7 @@ namespace OutcastBot.Commands
                 builds = db.Builds.OrderByDescending(b => b.UpVotes - b.DownVotes).ThenByDescending(b => b.UpVotes).Take(count).ToList();
             }
 
-            var embed = new DiscordEmbedBuilder() { Title = $"Top {builds.Count} build(s)" };
+            var embed = new DiscordEmbedBuilder { Title = $"Top {builds.Count} build(s)" };
 
             for (int i = 1; i <= builds.Count; i++)
             {

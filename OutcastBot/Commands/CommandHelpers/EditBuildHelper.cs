@@ -88,7 +88,7 @@ namespace OutcastBot.Commands.CommandHelpers
             var reaction = await Program.Interactivity.WaitForMessageReactionAsync(
                 e => e == DiscordEmoji.FromUnicode("🇾") || e == DiscordEmoji.FromUnicode("🇳"),
                 message,
-                context.User.Id,
+                context.User,
                 TimeSpan.FromMinutes(1));
 
             await message.DeleteAsync();

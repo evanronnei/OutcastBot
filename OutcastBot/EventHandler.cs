@@ -140,15 +140,14 @@ namespace OutcastBot
 
         public static async Task CrabHandler(MessageCreateEventArgs e)
         {
-            if (!e.Author.IsBot)
-            {
-                var match = new Regex(@"c\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?")
-                    .Match(e.Message.Content.ToLower());
+            if (e.Author.IsBot) return;
 
-                if (match.Success || e.Message.Content.Contains("🦀"))
-                {
-                    await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
-                }
+            var match = new Regex(@"c\s?r\s?a\s?b(\s?(c\s?o\s?)?m\s?m?\s?a\s?n\s?d\s?o)?(\s?s)?")
+                .Match(e.Message.Content.ToLower());
+
+            if (match.Success || e.Message.Content.Contains("🦀"))
+            {
+                await e.Message.CreateReactionAsync(DiscordEmoji.FromUnicode(Program.Client, "🦀"));
             }
         }
 
@@ -172,10 +171,12 @@ namespace OutcastBot
 
         public static async Task ExpansionWhenHandler(MessageCreateEventArgs e)
         {
+            if (e.Author.IsBot) return;
+
             var match = new Regex(@"\be?\s?x\s?p\s?a\s?((n\s?s\s?i\s?o\s?n)|c)\s?w\s?h\s?e\s?n\b")
                 .Match(e.Message.Content.ToLower());
 
-            if (match.Success && !e.Author.IsBot)
+            if (match.Success)
             {
                 await e.Message.RespondAsync("October 11th!\n\nhttps://youtu.be/03VZ9cUB3vg");
             }
@@ -183,58 +184,59 @@ namespace OutcastBot
 
         public static async Task GrimToolsHandler(MessageCreateEventArgs e)
         {
+            if (e.Author.IsBot) return;
+
             var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(e.Message.Content);
-            
-            if (match.Success)
+
+            if (!match.Success) return;
+
+            var url = $"http://www.grimtools.com/calc/{match.Value}";
+
+            var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(url);
+
+            var masteryCombo = grimToolsBuild.GetMasteryCombination();
+
+            var embed = new DiscordEmbedBuilder
             {
-                var url = $"http://www.grimtools.com/calc/{match.Value}";
+                Url = url,
+                ThumbnailUrl = masteryCombo.GetAttribute<MasteryInfoAttribute>().ImageUrl,
 
-                var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(url);
+                Title = $"Level {grimToolsBuild.BuildData.BuildInfo.Level} " +
+                    $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
 
-                var masteryCombo = grimToolsBuild.GetMasteryCombination();
+                Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
+                    $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
+                    $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
+            };
 
-                var embed = new DiscordEmbedBuilder
-                {
-                    Url = url,
-                    ThumbnailUrl = masteryCombo.GetAttribute<MasteryInfoAttribute>().ImageUrl,
-
-                    Title = $"Level {grimToolsBuild.BuildData.BuildInfo.Level} " +
-                        $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
-
-                    Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
-                        $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
-                        $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
-                };
-
-                foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))
-                {
-                    embed.AddField(mastery.Key.ToString(), mastery.Value.ToString(), true);
-                }
-
-                var sb = new StringBuilder();
-                var sortedSkills = grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value).ToList();
-                for (int i = 0; i < 10 && i < sortedSkills.Count; i++)
-                {
-                    try
-                    {
-                        var skillEmoji = EnumExtensions.GetValueFromDescription<SkillEmoji>(sortedSkills[i].Key);
-                        sb.Append(DiscordEmoji.FromGuildEmote(Program.Client, (ulong)skillEmoji).ToString());
-                    }
-                    catch (ArgumentException)
-                    {
-                        sortedSkills.RemoveAt(i);
-                        i--;
-                    }
-                }
-
-                if (sb.Length > 0) embed.AddField("Top Skill(s)", sb.ToString());
-
-                embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
-
-                embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
-
-                await e.Message.RespondAsync("", false, embed.Build());
+            foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))
+            {
+                embed.AddField(mastery.Key.ToString(), mastery.Value.ToString(), true);
             }
+
+            var sb = new StringBuilder();
+            var sortedSkills = grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value).ToList();
+            for (int i = 0; i < 10 && i < sortedSkills.Count; i++)
+            {
+                try
+                {
+                    var skillEmoji = EnumExtensions.GetValueFromDescription<SkillEmoji>(sortedSkills[i].Key);
+                    sb.Append(DiscordEmoji.FromGuildEmote(Program.Client, (ulong)skillEmoji).ToString());
+                }
+                catch (ArgumentException)
+                {
+                    sortedSkills.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            if (sb.Length > 0) embed.AddField("Top Skill(s)", sb.ToString());
+
+            embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
+
+            embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
+
+            await e.Message.RespondAsync("", false, embed.Build());
         }
     }
 }

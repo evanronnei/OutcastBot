@@ -24,7 +24,8 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
+                        $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
                     await Task.Delay(2500)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
@@ -79,7 +80,7 @@ namespace OutcastBot.Commands
             var response = await Program.Interactivity.WaitForMessageReactionAsync(
                 e => e == approval || e == denial,
                 message,
-                0,
+                null,
                 TimeSpan.FromHours(8));
 
             await message.DeleteAsync();
@@ -127,16 +128,10 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            var keys = new List<string>();
-            foreach (var tag in tags)
-            {
-                keys.Add($"`{tag.Key}`");
-            }
-
             var embed = new DiscordEmbedBuilder
             {
                 Title = $"Tags",
-                Description = String.Join(", ", keys)
+                Description = String.Join(", ", tags.OrderBy(t => t.Key).Select(t => $"`{t.Key}`"))
             };
 
             await context.RespondAsync("", false, embed.Build());
@@ -165,8 +160,9 @@ namespace OutcastBot.Commands
                 tag = new Tag { Key = key, Value = value };
                 db.Add(tag);
                 await db.SaveChangesAsync();
-                await context.RespondAsync($"Created tag `{key}`");
             }
+
+            await context.RespondAsync($"Created tag `{key}`");
         }
 
         [Command("edit")]
@@ -182,7 +178,8 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
+                        $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
                     await Task.Delay(2500)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
@@ -192,8 +189,9 @@ namespace OutcastBot.Commands
                 tag.Value = value;
                 db.Update(tag);
                 await db.SaveChangesAsync();
-                await context.RespondAsync($"Edited tag `{key}`");
             }
+
+            await context.RespondAsync($"Edited tag `{key}`");
         }
 
         [Command("delete")]
@@ -209,7 +207,8 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
+                        $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
                     await Task.Delay(2500)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
@@ -218,8 +217,9 @@ namespace OutcastBot.Commands
 
                 db.Remove(tag);
                 await db.SaveChangesAsync();
-                await context.RespondAsync($"Deleted tag `{key}`");
             }
+
+            await context.RespondAsync($"Deleted tag `{key}`");
         }
     }
 }

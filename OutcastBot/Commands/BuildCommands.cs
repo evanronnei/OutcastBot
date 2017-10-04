@@ -94,6 +94,8 @@ namespace OutcastBot.Commands
         [Description("Edit an existing build")]
         public async Task EditBuild(CommandContext context, [Description("ID of the build to edit")]int id)
         {
+            await context.TriggerTypingAsync();
+
             var build = new Build();
             using (var db = new BuildContext())
             {

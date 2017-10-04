@@ -5,7 +5,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using OutcastBot.Enumerations;
 using OutcastBot.Objects;
-using OutcastBot.Ojects;
+using OutcastBot.Objects;
 using System;
 using System.Linq;
 using System.Text;

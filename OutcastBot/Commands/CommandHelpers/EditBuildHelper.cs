@@ -1,6 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using OutcastBot.Ojects;
+using OutcastBot.Objects;
 using System;
 using System.Text;
 using System.Threading.Tasks;

@@ -1,21 +1,10 @@
 ﻿using DSharpPlus.Entities;
-using Microsoft.EntityFrameworkCore;
 using OutcastBot.Enumerations;
 using System;
 using System.Threading.Tasks;
 
-namespace OutcastBot.Ojects
+namespace OutcastBot.Objects
 {
-    public class BuildContext : DbContext
-    {
-        public DbSet<Build> Builds { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite($"Data Source=OutcastBotDatabase.db");
-        }
-    }
-
     public class Build
     {
         #region Automatically Filled Properties

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using OutcastBot.Enumerations;
-using OutcastBot.Ojects;
+using OutcastBot.Objects;
 using System;
 
 namespace OutcastBot.Migrations

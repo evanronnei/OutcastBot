@@ -2,7 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using OutcastBot.Commands.CommandHelpers;
-using OutcastBot.Ojects;
+using OutcastBot.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -13,6 +13,9 @@ namespace OutcastBot.Objects
         public string CommandPrefix { get; set; }
 
         [JsonProperty]
+        public string DatabaseConnectionString { get; set; }
+
+        [JsonProperty]
         public List<string> QuotableChannels { get; set; }
     }
 }

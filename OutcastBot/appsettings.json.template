@@ -1,5 +1,6 @@
 ﻿{
   "Token": "",
   "CommandPrefix": "",
+  "DatabaseConnectionString": "",
   "QuotableChannels": []
 }

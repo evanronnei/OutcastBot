@@ -24,7 +24,10 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    await Task.Delay(2500)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                     return;
                 }
 
@@ -46,7 +49,10 @@ namespace OutcastBot.Commands
                 var tag = db.Tags.FirstOrDefault(t => t.Key == key);
                 if (tag != null)
                 {
-                    await context.RespondAsync($"Tag `{key}` already exists");
+                    var error = await context.RespondAsync($"Tag `{key}` already exists");
+                    await Task.Delay(2500)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                     return;
                 }
             }
@@ -112,7 +118,10 @@ namespace OutcastBot.Commands
 
             if (tags.Count == 0)
             {
-                await context.RespondAsync("There are no created tags");
+                var error = await context.RespondAsync("There are no created tags");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -144,7 +153,10 @@ namespace OutcastBot.Commands
 
                 if (tag != null)
                 {
-                    await context.RespondAsync($"Tag `{key}` already exists");
+                    var error = await context.RespondAsync($"Tag `{key}` already exists");
+                    await Task.Delay(2500)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                     return;
                 }
 
@@ -168,7 +180,10 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    await Task.Delay(2500)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                     return;
                 }
 
@@ -192,7 +207,10 @@ namespace OutcastBot.Commands
 
                 if (tag == null)
                 {
-                    await context.RespondAsync($"`{key}` is not a valid tag");
+                    var error = await context.RespondAsync($"`{key}` is not a valid tag");
+                    await Task.Delay(2500)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                     return;
                 }
 

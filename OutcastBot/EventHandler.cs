@@ -44,10 +44,20 @@ namespace OutcastBot
             switch (e.Exception)
             {
                 case CommandNotFoundException notFound:
-                    await e.Context.RespondAsync($"Invalid command. Type `{Program.AppSettings.CommandPrefix}help` for a list of commands.");
+                    var message = await e.Context.RespondAsync($"Invalid command. Type " +
+                        $"`{Program.AppSettings.CommandPrefix}help` for a list of commands.");
+
+                    await Task.Delay(2500)
+                        .ContinueWith(t => message.DeleteAsync())
+                        .ContinueWith(t => e.Context.Message.DeleteAsync());
                     return;
                 case ArgumentException argument:
-                    await e.Context.RespondAsync($"Invalid command arguments. Type `{Program.AppSettings.CommandPrefix}help {e.Command.QualifiedName}` for more info.");
+                    message = await e.Context.RespondAsync($"Invalid command arguments. " +
+                        $"Type `{Program.AppSettings.CommandPrefix}help {e.Command.QualifiedName}` for more info.");
+
+                    await Task.Delay(2500)
+                        .ContinueWith(t => message.DeleteAsync())
+                        .ContinueWith(t => e.Context.Message.DeleteAsync());
                     return;
                 default:
                     e.Context.Client.DebugLogger.LogMessage(

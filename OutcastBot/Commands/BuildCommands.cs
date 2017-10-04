@@ -27,7 +27,10 @@ namespace OutcastBot.Commands
 
             if (build == null)
             {
-                await context.RespondAsync("Invalid build ID");
+                var error = await context.RespondAsync($"`{1000}` is not a valid build ID");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -99,13 +102,19 @@ namespace OutcastBot.Commands
 
             if (build == null)
             {
-                await context.RespondAsync("Invalid build ID");
+                var error = await context.RespondAsync($"`{id}` is not a valid build ID");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
             if (build.AuthorId != context.User.Id)
             {
-                await context.RespondAsync("This build does not belong to you");
+                var error = await context.RespondAsync("That build does not belong to you");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -138,13 +147,19 @@ namespace OutcastBot.Commands
 
             if (build == null)
             {
-                await context.RespondAsync("Invalid build ID");
+                var error = await context.RespondAsync($"`{id}` is not a valid build ID");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
             if (build.AuthorId != context.User.Id)
             {
-                await context.RespondAsync("This build does not belong to you");
+                var error = await context.RespondAsync("That build does not belong to you");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -164,7 +179,10 @@ namespace OutcastBot.Commands
 
             if (count > 5 || count < 1)
             {
-                await context.RespondAsync("Invalid build amount (1-5)");
+                var error = await context.RespondAsync($"`{count}` is not a valid build amount (1-5)");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -203,7 +221,10 @@ namespace OutcastBot.Commands
 
             if (builds.Count == 0)
             {
-                await context.RespondAsync($"{member.DisplayName} hasn't created any builds");
+                var error = await context.RespondAsync($"{member.DisplayName} hasn't created any builds");
+                await Task.Delay(2500)
+                    .ContinueWith(t => error.DeleteAsync())
+                    .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 

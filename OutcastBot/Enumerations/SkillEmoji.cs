@@ -17,6 +17,9 @@ namespace OutcastBot.Enumerations
         [Description("Break Morale")]
         BreakMorale = 361570929962385410,
 
+        [Description("Fighting Spirit")]
+        FightingSpirit = 365319602382700551,
+
         [Description("Blade Arc")]
         BladeArc = 361570930238947329,
 
@@ -53,6 +56,9 @@ namespace OutcastBot.Enumerations
         [Description("Deadly Momentum")]
         DeadlyMomentum = 361570929924505602,
 
+        [Description("Menhir's Will")]
+        MenhirsWill = 365319602697142275,
+
         [Description("Overguard")]
         Overguard = 361570930012717070,
 
@@ -64,6 +70,21 @@ namespace OutcastBot.Enumerations
 
         [Description("Menhir's Bulwark")]
         MenhirsBulwark = 361570930306056192,
+
+        [Description("Military Conditioning")]
+        MilitaryConditioning = 365319602399477761,
+
+        [Description("Shield Training")]
+        ShieldTraining = 365319602718375937,
+
+        [Description("Veterancy")]
+        Veterancy = 365319602730827777,
+
+        [Description("Decorated Soldier")]
+        DecoratedSoldier = 365319602734891008,
+
+        [Description("Scars of Battle")]
+        ScarsOfBattle = 365319603443728384,
         #endregion
 
         #region Demolitionist
@@ -72,6 +93,9 @@ namespace OutcastBot.Enumerations
 
         [Description("Temper")]
         Temper = 361572097325006859,
+
+        [Description("Blast Shield")]
+        BlastShield = 365319870705041411,
 
         [Description("Fire Strike")]
         FireStrike = 361572097295646720,
@@ -301,6 +325,15 @@ namespace OutcastBot.Enumerations
 
         [Description("Devouring Blades")]
         DevouringBlades = 361573101328400386,
+
+        [Description("Phantasmal Armor")]
+        PhantasmalArmor = 365320001831567360,
+
+        [Description("Anatomy of Murder")]
+        AnatomyOfMurder = 365320001558937602,
+
+        [Description("Merciless Repertoire")]
+        MercilessRepertoire = 365320001684504577,
         #endregion
 
         #region Arcanist
@@ -369,6 +402,18 @@ namespace OutcastBot.Enumerations
 
         [Description("Star Pact")]
         StarPact = 361573594372898846,
+
+        [Description("Inner Focus")]
+        InnerFocus = 365320207155331072,
+
+        [Description("Arcane Will")]
+        ArcaneWill = 365320207129903104,
+
+        [Description("Mental Alacrity")]
+        MentalAlacrity = 365320207113388032,
+
+        [Description("Fabric of Reality")]
+        FabricOfReality = 365320206970650625,
         #endregion
 
         #region Shaman

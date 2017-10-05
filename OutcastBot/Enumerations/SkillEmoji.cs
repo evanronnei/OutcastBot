@@ -496,7 +496,176 @@ namespace OutcastBot.Enumerations
         HeartOfTheWild = 361574137564758016,
 
         [Description("Oak Skin")]
-        OakSkin = 361574137598181376
+        OakSkin = 361574137598181376,
+        #endregion
+
+        #region Inquisitor
+        [Description("Ranged Expertise")]
+        RangedExpertise = 365342486513713153,
+
+        [Description("Bursting Round")]
+        BurstingRound = 365342486228500480,
+
+        [Description("Chilling Rounds")]
+        ChillingRounds = 365342486601793566,
+
+        [Description("Storm Spread")]
+        StormSpread = 365342486975086592,
+
+        [Description("Word of Renewal")]
+        WordOfRenewal = 365342487063298048,
+
+        [Description("Vigor")]
+        Vigor = 365342486991994881,
+
+        [Description("Steel Resolve")]
+        SteelResolve = 365342486962634762,
+
+        [Description("Aura of Conviction")]
+        AuraOfConviction = 365342486392078338,
+
+        [Description("Word of Pain")]
+        WordOfPain = 365342486807445505,
+
+        [Description("Word of Agony")]
+        WordOfAgony = 365342487004315648,
+
+        [Description("Death Sentence")]
+        DeathSentence = 365342486668771328,
+
+        [Description("Horn of Gandarr")]
+        HornOfGandarr = 365342486694199296,
+
+        [Description("Flames of Ignaffar")]
+        FlamesOfIgnaffar = 365342486383558658,
+
+        [Description("Intensify")]
+        Intensify = 365342486870360064,
+
+        [Description("Infernal Purge")]
+        InfernalPurge = 365342486677422081,
+
+        [Description("Endless Flame")]
+        EndlessFlame = 365342486417375245,
+
+        [Description("Rune of Hagarrad")]
+        RuneOfHagarrad = 365342486631022594,
+
+        [Description("Biting Cold")]
+        BitingCold = 365342486530359297,
+
+        [Description("Chillsurge")]
+        Chillsurge = 365342486538747904,
+
+        [Description("Aura of Censure")]
+        AuraOfCensure = 365342486102671373,
+
+        [Description("Storm Box of Elgoloth")]
+        StormBoxOfElgoloth = 365342486941401098,
+
+        [Description("Lightning Tether")]
+        LightningTether = 365342486673096705,
+
+        [Description("Inquisitor Seal")]
+        InquisitorSeal = 365342486446604302,
+
+        [Description("Arcane Empowerment")]
+        ArcaneEmpowerment = 365342486358523904,
+
+        [Description("Deadly Aim")]
+        DeadlyAim = 365342486639411210,
+
+        [Description("Rune of Kalastor")]
+        RuneOfKalastor = 365342486916497408,
+
+        [Description("Ignition")]
+        Ignition = 365342486752788480,
+
+        [Description("Artifact Handling")]
+        ArtifactHandling = 365342486312386561,
+        #endregion
+
+        #region Necromancer
+        [Description("Reaping Strike")]
+        ReapingStrike = 365342578184552449,
+
+        [Description("Necrotic Edge")]
+        NecroticEdge = 365342578108923906,
+
+        [Description("Siphon Souls")]
+        SiphonSouls = 365342578092146690,
+
+        [Description("Blood Boil")]
+        BloodBoil = 365342577827905536,
+
+        [Description("Drain Essence")]
+        DrainEssence = 365342577584767008,
+
+        [Description("Decomposition")]
+        Decomposition = 365342577567727627,
+
+        [Description("Hungering Reach")]
+        HungeringReach = 365342578037751818,
+
+        [Description("Harbinger of Souls")]
+        HarbingerOfSouls = 365342577760927745,
+
+        [Description("Ravenous Earth")]
+        RavenousEarth = 365342578000003075,
+
+        [Description("Decay")]
+        Decay = 365342577689362433,
+
+        [Description("Foul Eruption")]
+        FoulEruption = 365342578163580928,
+
+        [Description("Bone Harvest")]
+        BoneHarvest = 365342577505075206,
+
+        [Description("Dread")]
+        Dread = 365342577781637122,
+
+        [Description("Soul Harvest")]
+        SoulHarvest = 365342578037620738,
+
+        [Description("Reap Spirit")]
+        ReapSpirit = 365342578008391681,
+
+        [Description("Raise Skeletons")]
+        RaiseSkeletons = 365342577890820097,
+
+        [Description("Undead Legion")]
+        UndeadLegion = 365342578037620738,
+
+        [Description("Will of the Crypt")]
+        WillOfTheCrypt = 365342578310250498,
+
+        [Description("Ill Omen")]
+        IllOmen = 365342577823711243,
+
+        [Description("Summon Blight Fiend")]
+        SummongBlightFiend = 365342578046140428,
+
+        [Description("Rotting Fumes")]
+        RottingFumes = 365342578285084682,
+
+        [Description("Blight Burst")]
+        BlightBurst = 365342577773248513,
+
+        [Description("Master of Death")]
+        MasterOfDeath = 365342578209456148,
+
+        [Description("Spectral Binding")]
+        SpectralBinding = 365342578184552450,
+
+        [Description("Spectral Wraith")]
+        SpectralWraith = 365342578234621953,
+
+        [Description("Call of the Grave")]
+        CallOfTheGrave = 365342577505075205,
+
+        [Description("Mark of Torment")]
+        MarkOfTorment = 365342577899339777
         #endregion
     }
 }

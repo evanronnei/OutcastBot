@@ -25,36 +25,32 @@ namespace OutcastBot.Objects
         public string Description { get; set; }
 
         // optional
-        public string ImageUrl { get; set; }
         public string ForumUrl { get; set; }
         public string VideoUrl { get; set; }
+        public string ImageUrl { get; set; }
         #endregion
 
         public async Task<DiscordEmbed> GetEmbed()
         {
             var embed = new DiscordEmbedBuilder
             {
-                Title = $"{Title}",
+                Title = Title,
                 Description = Description,
                 ThumbnailUrl = Mastery.GetAttribute<MasteryInfoAttribute>().ImageUrl,
                 Color = new DiscordColor(Mastery.GetAttribute<MasteryInfoAttribute>().Color),
                 Url = BuildUrl
             };
 
-            if (ExpansionRequired)
-            {
-                embed.WithAuthor($"[{PatchVersion}][Expansion]");
-            }
-            else
-            {
-                embed.WithAuthor($"[{PatchVersion}]");
-            }
+            embed.WithAuthor((ExpansionRequired) ? $"[{PatchVersion}][AoM]" : $"[{PatchVersion}]");
 
             var author = await Program.Client.GetUserAsync(AuthorId);
             embed.AddField( "Author", author.Mention);
+
             embed.AddField("Build", BuildUrl);
+
             if (!String.IsNullOrEmpty(ForumUrl)) embed.AddField("Forum Post", ForumUrl);
             if (!String.IsNullOrEmpty(VideoUrl)) embed.AddField("Video", VideoUrl);
+
             if (!String.IsNullOrEmpty(ImageUrl)) embed.ImageUrl = ImageUrl;
 
             embed.WithFooter($"ID: {BuildId}");

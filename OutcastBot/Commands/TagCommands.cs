@@ -142,6 +142,8 @@ namespace OutcastBot.Commands
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task NewTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
+            if (String.IsNullOrEmpty(value)) throw new ArgumentException();
+
             await context.TriggerTypingAsync();
 
             using (var db = new TagContext())
@@ -170,6 +172,8 @@ namespace OutcastBot.Commands
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task EditTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
+            if (String.IsNullOrEmpty(value)) throw new ArgumentException();
+
             await context.TriggerTypingAsync();
 
             using (var db = new TagContext())

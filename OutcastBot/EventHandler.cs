@@ -159,7 +159,7 @@ namespace OutcastBot
                 {          
                     Description = e.Message.Content,
                     Timestamp = e.Message.Timestamp,
-                    Color = new DiscordColor(255, 0, 0)
+                    Color = DiscordColor.Red
                 };
                 embed.WithAuthor($"{e.Message.Author.Username}#{e.Message.Author.Discriminator} in #{e.Channel.Name}", null, e.Message.Author.AvatarUrl);
 

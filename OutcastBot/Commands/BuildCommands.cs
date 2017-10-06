@@ -230,10 +230,10 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            var author = await context.Client.GetUserAsync(builds[0].AuthorId);
+            var author = (DiscordMember)await context.Client.GetUserAsync(builds[0].AuthorId);
 
             var embed = new DiscordEmbedBuilder();
-            embed.WithAuthor($"{author.Username}#{author.Discriminator}", null, author.AvatarUrl);
+            embed.WithAuthor($"{author.Nickname}", null, author.AvatarUrl);
 
             foreach (var build in builds)
             {

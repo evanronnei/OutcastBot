@@ -6,497 +6,497 @@ namespace OutcastBot.Enumerations
     {
         #region Soldier
         [Description("Markovian's Advantage")]
-        MarkoviansAdvantage = 361570930352324618,
+        MarkoviansAdvantage = 365648706541977603,
 
         [Description("Zolhan's Technique")]
-        ZolhansTechnique = 361570932117995520,
+        ZolhansTechnique = 365648707544285187,
 
         [Description("War Cry")]
-        WarCry = 361570930528354335,
+        WarCry = 365648706655223830,
 
         [Description("Break Morale")]
-        BreakMorale = 361570929962385410,
+        BreakMorale = 365648706046787585,
 
         [Description("Fighting Spirit")]
-        FightingSpirit = 365319602382700551,
+        FightingSpirit = 365648706701361153,
 
         [Description("Blade Arc")]
-        BladeArc = 361570930238947329,
+        BladeArc = 365648705979940865,
 
         [Description("Laceration")]
-        Laceration = 361570930360844298,
+        Laceration = 365648706885648384,
 
         [Description("Oleron's Rage")]
-        OleronsRage = 361570930352455690,
+        OleronsRage = 365648706512486413,
 
         [Description("Forcewave")]
-        Forcewave = 361570930129895425,
+        Forcewave = 365648706822733824,
 
         [Description("Rending Force")]
-        RendingForce = 361570929999872007,
+        RendingForce = 365648707527507968,
 
         [Description("Internal Trauma")]
-        InternalTrauma = 361570929983225858,
+        InternalTrauma = 365648707342958592,
 
         [Description("Blitz")]
-        Blitz = 361570930151129088,
+        Blitz = 365648706210365450,
 
         [Description("Blindside")]
-        Blindside = 361570930155061259,
+        Blindside = 365648706118352896,
 
         [Description("Counter Strike")]
-        CounterStrike = 361570930125963265,
+        CounterStrike = 365648706227273728,
 
         [Description("Cadence")]
-        Cadence = 361570929811259393,
+        Cadence = 365648706046918667,
 
         [Description("Fighting Form")]
-        FightingForm = 361570930243272704,
+        FightingForm = 365648706281799682,
 
         [Description("Deadly Momentum")]
-        DeadlyMomentum = 361570929924505602,
+        DeadlyMomentum = 365648706189524994,
 
         [Description("Menhir's Will")]
-        MenhirsWill = 365319602697142275,
+        MenhirsWill = 365648706701361165,
 
         [Description("Overguard")]
-        Overguard = 361570930012717070,
+        Overguard = 365648706709618699,
 
         [Description("Field Command")]
-        FieldCommand = 361570930209587200,
+        FieldCommand = 365648706038661121,
 
         [Description("Squad Tactics")]
-        SquadTactics = 361570930025168898,
+        SquadTactics = 365648706629795841,
 
         [Description("Menhir's Bulwark")]
-        MenhirsBulwark = 361570930306056192,
+        MenhirsBulwark = 365648706701361163,
 
         [Description("Military Conditioning")]
-        MilitaryConditioning = 365319602399477761,
+        MilitaryConditioning = 365648706651029506,
 
         [Description("Shield Training")]
-        ShieldTraining = 365319602718375937,
+        ShieldTraining = 365648706860482560,
 
         [Description("Veterancy")]
-        Veterancy = 365319602730827777,
+        Veterancy = 365648706831122432,
 
         [Description("Decorated Soldier")]
-        DecoratedSoldier = 365319602734891008,
+        DecoratedSoldier = 365648705971290113,
 
         [Description("Scars of Battle")]
-        ScarsOfBattle = 365319603443728384,
+        ScarsOfBattle = 365648706554298370,
         #endregion
 
         #region Demolitionist
         [Description("Flame Touched")]
-        FlameTouched = 361572097363017728,
+        FlameTouched = 365649788999434241,
 
         [Description("Temper")]
-        Temper = 361572097325006859,
+        Temper = 365649789406150668,
 
         [Description("Blast Shield")]
-        BlastShield = 365319870705041411,
+        BlastShield = 365649789032857610,
 
         [Description("Fire Strike")]
-        FireStrike = 361572097295646720,
+        FireStrike = 365649789108355082,
 
         [Description("Explosive Strike")]
-        ExplosiveStrike = 361572097010565121,
+        ExplosiveStrike = 365649788882124801,
 
         [Description("Static Strike")]
-        StaticStrike = 361572097509687296,
+        StaticStrike = 365649789423058945,
 
         [Description("Brimstone")]
-        Brimstone = 361572097253965824,
+        Brimstone = 365649788961816576,
 
         [Description("Blackwater Cocktail")]
-        BlackwaterCocktail = 361572096897318925,
+        BlackwaterCocktail = 365649789024468992,
 
         [Description("Demon Fire")]
-        DemonFire = 361572097308229632,
+        DemonFire = 365649788726673411,
 
         [Description("Agonizing Flames")]
-        AgonizingFlames = 361572097178468393,
+        AgonizingFlames = 365649788949233664,
 
         [Description("Stun Jacks")]
-        StunJacks = 361572097442447362,
+        StunJacks = 365649789330784258,
 
         [Description("Full Spread")]
-        FullSpread = 361572097618608138,
+        FullSpread = 365649789242572820,
 
         [Description("Cannister Bomb")]
-        CannisterBomb = 361572097249509376,
+        CannisterBomb = 365649788991045633,
 
         [Description("Improved Casing")]
-        ImprovedCasing = 361572098147352586,
+        ImprovedCasing = 365649789389373441,
 
         [Description("Thermite Mines")]
-        ThermiteMines = 361572097639710720,
+        ThermiteMines = 365649789557145610,
 
         [Description("Hellfire Mine")]
-        HellfireMine = 361572097220411393,
+        HellfireMine = 365649789221732353,
 
         [Description("Flashbang")]
-        Flashbang = 361572097341784064,
+        Flashbang = 365649789188177920,
 
         [Description("Searing Light")]
-        SearingLight = 361572097375469569,
+        SearingLight = 365649789276127234,
 
         [Description("Grenado")]
-        Grenado = 361572097480327169,
+        Grenado = 365649789532110848,
 
         [Description("Hight Impact")]
-        HighImpact = 361572097102708758,
+        HighImpact = 365649789368664065,
 
         [Description("Shattering Blast")]
-        ShatteringBlast = 361572097484652554,
+        ShatteringBlast = 365649789418864651,
 
         [Description("Vindictive Flame")]
-        VindictiveFlame = 362060392777646093,
+        VindictiveFlame = 365649789481648129,
 
         [Description("Ulzuin's Wrath")]
-        UlzuinsWrath = 362060392756674561,
+        UlzuinsWrath = 365649789582573568,
 
         [Description("Mortar Trap")]
-        MortarTrap = 361572097492779008,
+        MortarTrap = 365649789548888064,
 
-        [Description("Heavy Ordinance")]
-        HeavyOrdinance = 361572097148977153,
+        [Description("Heavy Ordnance")]
+        HeavyOrdnance = 365649789242703885,
 
         [Description("\"The Big One\"")]
-        TheBigOne = 361572097497235457,
+        TheBigOne = 365649789712465920,
         #endregion
 
         #region Occultist
         [Description("Sigil of Consumption")]
-        SigilOfConsumption = 361572549496143872,
+        SigilOfConsumption = 365650638375485450,
 
         [Description("Desctruction")]
-        Desctruction = 361572549177507841,
+        Desctruction = 365650638002192399,
 
         [Description("Doom Bolt")]
-        DoomBolt = 361572549211062293,
+        DoomBolt = 365650638111113226,
 
         [Description("Solael's Witchfire")]
-        SolaelsWitchfire = 361572549521571840,
+        SolaelsWitchfire = 365650638409039872,
 
         [Description("Second Rite")]
-        SecondRite = 361572549525766144,
+        SecondRite = 365650638249525259,
 
         [Description("Possesion")]
-        Possession = 361572549504663552,
+        Possession = 365650638329348126,
 
         [Description("Dreeg's Evil Eye")]
-        DreegsEvilEye = 361572549253136384,
+        DreegsEvilEye = 365650638237073409,
 
         [Description("Blood Burst")]
-        BloodBurst = 361572548921524235,
+        BloodBurst = 365650637951729679,
 
         [Description("Terrifying Gaze")]
-        TerrifyingGaze = 361572549567447040,
+        TerrifyingGaze = 365650638127890434,
 
         [Description("Vile Eruption")]
-        VileEruption = 361572549605326868,
+        VileEruption = 365650638199324694,
 
         [Description("Bloody Pox")]
-        BloodyPox = 361572548963467275,
+        BloodyPox = 365650637997998081,
 
         [Description("Wasting")]
-        Wasting = 361572549328371717,
+        Wasting = 365650638329348117,
 
         [Description("Black Death")]
-        BlackDeath = 361572548908941323,
+        BlackDeath = 365650637951729665,
 
         [Description("Curse of Frailty")]
-        CurseOfFrailty = 361572549211193344,
+        CurseOfFrailty = 365650637725237260,
 
         [Description("Vulnerability")]
-        Vulnerability = 361572549223514123,
+        Vulnerability = 365650638526349332,
 
         [Description("Blood of Dreeg")]
-        BloodOfDreeg = 361572549144084481,
+        BloodOfDreeg = 365650637758922753,
 
         [Description("Aspect of the Guardian")]
-        AspectOfTheGuardian = 361572549202804746,
+        AspectOfTheGuardian = 365650637851066369,
 
         [Description("Summon Familiar")]
-        SummonFamiliar = 361572549496143882,
+        SummonFamiliar = 365650638132084738,
 
         [Description("Mend Flesh")]
-        MendFlesh = 361572549210931201,
+        MendFlesh = 365650638786265109,
 
         [Description("Storm Spirit")]
-        StormSpirit = 361572549517377556,
+        StormSpirit = 365650638039810049,
 
         [Description("Lightning Strike")]
-        LightningStrike = 361572548929912834,
+        LightningStrike = 365650638224359424,
 
         [Description("Bonds of Bysmiel")]
-        BondsOfBysmiel = 361572549215125505,
+        BondsOfBysmiel = 365650637880426507,
 
         [Description("Manipulation")]
-        Manipulation = 361572549341085696,
+        Manipulation = 365650638073495553,
 
         [Description("Summon Hellhound")]
-        SummonHellhound = 361572549546606594,
+        SummonHellhound = 365650638693990401,
 
         [Description("Ember Claw")]
-        EmberClaw = 361572549290622976,
+        EmberClaw = 365650638148730891,
 
         [Description("Hellfire")]
-        Hellfire = 361572549324439552,
+        Hellfire = 365650637976764417,
 
         [Description("Infernal Breath")]
-        InfernalBreath = 361572549311725568,
+        InfernalBreath = 365650638207713280,
         #endregion
 
         #region Nightblade
         [Description("Dual Blades")]
-        DualBlades = 361573101571670017,
+        DualBlades = 365651547671232512,
 
         [Description("Belgothian's Shears")]
-        BelgothiansShears = 361573101386858496,
+        BelgothiansShears = 365651547276836866,
 
         [Description("Nidalla's Hidden Hand")]
-        NidallasHiddenHand = 361573101403766786,
+        NidallasHiddenHand = 365651547876753408,
 
         [Description("Amarasta's Quick Cut")]
-        AmarastasQuickCut = 361573101001113601,
+        AmarastasQuickCut = 365651547624964097,
 
         [Description("Whirling Death")]
-        WhirlingDeath = 361573102150221824,
+        WhirlingDeath = 365651548170354688,
 
         [Description("Execution")]
-        Execution = 361573101613613066,
+        Execution = 365651547528495105,
 
         [Description("Phantasmal Blades")]
-        PhantasmalBlades = 361573101810483201,
+        PhantasmalBlades = 365651547977154560,
 
         [Description("Heart Seeker")]
-        HeartSeeker = 361573101667876874,
+        HeartSeeker = 365651547520237579,
 
         [Description("Nether Edge")]
-        NetherEdge = 361573101449773058,
+        NetherEdge = 365651547708850187,
 
         [Description("Blade Spirit")]
-        BladeSpirit = 361573101458423808,
+        BladeSpirit = 365651547369242626,
 
         [Description("Amarasta's Blade Burst")]
-        AmarastasBladeBurst = 361573101374537728,
+        AmarastasBladeBurst = 365651547473838080,
 
         [Description("Lethal Assault")]
-        LethalAssault = 361573101688848384,
+        LethalAssault = 365651547792867333,
 
         [Description("Ring of Steel")]
-        RingOfSteel = 361573101928054784,
+        RingOfSteel = 365651547901657095,
 
         [Description("Circle of Slaughter")]
-        CircleOfSlaughter = 361573101391314945,
+        CircleOfSlaughter = 365651547444740098,
 
         [Description("Shadow Strike")]
-        ShadowStrike = 361573101860814849,
+        ShadowStrike = 365651548132474880,
 
         [Description("Nidalla's Justifiable Ends")]
-        NidallasJustifiableEnds = 361573101554630660,
+        NidallasJustifiableEnds = 365651547880947722,
 
         [Description("Nightfall")]
-        Nightfall = 361573101689110539,
+        Nightfall = 365651547897462784,
 
         [Description("Pneumatic Burst")]
-        PneumaticBurst = 361573101856620544,
+        PneumaticBurst = 365651547901919243,
 
         [Description("Shadow Dance")]
-        ShadowDance = 361573101840105493,
+        ShadowDance = 365651547855781900,
 
         [Description("Elemental Awakening")]
-        ElementalAwakening = 361573101286195202,
+        ElementalAwakening = 365651547537014785,
 
         [Description("Veil of Shadow")]
-        VeilOfShadow = 361573101835911169,
+        VeilOfShadow = 365651548111372288,
 
         [Description("Night's Chill")]
-        NightsChill = 361573101642711042,
+        NightsChill = 365651547956445185,
 
         [Description("Blade Barrier")]
-        BladeBarrier = 361573101089062916,
+        BladeBarrier = 365651547138555906,
 
         [Description("Blade Trap")]
-        BladeTrap = 361573101458292756,
+        BladeTrap = 365651547583021056,
 
         [Description("Devouring Blades")]
-        DevouringBlades = 361573101328400386,
+        DevouringBlades = 365651547675295744,
 
         [Description("Phantasmal Armor")]
-        PhantasmalArmor = 365320001831567360,
+        PhantasmalArmor = 365651547750793238,
 
         [Description("Anatomy of Murder")]
-        AnatomyOfMurder = 365320001558937602,
+        AnatomyOfMurder = 365651547171979267,
 
         [Description("Merciless Repertoire")]
-        MercilessRepertoire = 365320001684504577,
+        MercilessRepertoire = 365651547817902080,
         #endregion
 
         #region Arcanist
         [Description("Iskandra's Elemental Exchange")]
-        IskandrasElementalExchange = 361573594033029132,
+        IskandrasElementalExchange = 365652554358587403,
 
         [Description("Overload")]
-        Overload = 361573594163183619,
+        Overload = 365652554933338132,
 
         [Description("Elemental Balance")]
-        ElementalBalance = 361573594674888714,
+        ElementalBalance = 365652554471702528,
 
         [Description("Mirror of Eroctes")]
-        MirrorOfEroctes = 361573594280755200,
+        MirrorOfEroctes = 365652554929143834,
 
         [Description("Maiven's Sphere of Protection")]
-        MaivensSphereOfProtection = 361573594268172298,
+        MaivensSphereOfProtection = 365652554765434889,
 
         [Description("Conversion")]
-        Conversion = 361573593869713409,
+        Conversion = 365652554279026699,
 
         [Description("Reckless Power")]
-        RecklessPower = 361573594364379137,
+        RecklessPower = 365652554933338122,
 
         [Description("Callidor's Tempest")]
-        CallidorsTempest = 361573594117177344,
+        CallidorsTempest = 365652554316644373,
 
         [Description("Inferno")]
-        Inferno = 361573593949274114,
+        Inferno = 365652554555850763,
 
         [Description("Panetti's Replicating Missle")]
-        PanettisReplicatingMissle = 361573594326630410,
+        PanettisReplicatingMissle = 365652554929143814,
 
         [Description("Distortion")]
-        Distortion = 361573593903136771,
+        Distortion = 365652554350067714,
 
         [Description("Supercharged")]
-        Supercharged = 361573594486013953,
+        Supercharged = 365652555067555841,
 
         [Description("Proliferation")]
-        Proliferation = 361573594364379136,
+        Proliferation = 365652554908041217,
 
         [Description("Devastation")]
-        Devastation = 361573594133823488,
+        Devastation = 365652554383753236,
 
         [Description("Olexra's Flash Freeze")]
-        OlexrasFlashFreeze = 361573594268041216,
+        OlexrasFlashFreeze = 365652554694131713,
 
         [Description("Absolute Zero")]
-        AbsoluteZero = 361573593857130508,
+        AbsoluteZero = 365652554358587392,
 
         [Description("Albrecht's Aether Ray")]
-        AlbrechtsAetherRay = 361573594087555076,
+        AlbrechtsAetherRay = 365652554174038047,
 
         [Description("Disintegration")]
-        Disintegration = 361573594117046272,
+        Disintegration = 365652554392272896,
 
         [Description("Trozan's Sky Shard")]
-        TrozansSkyShard = 361573594150600718,
+        TrozansSkyShard = 365652555021287424,
 
         [Description("Frozen Core")]
-        FrozenCore = 361573594054131723,
+        FrozenCore = 365652554928881684,
 
         [Description("Shattered Star")]
-        ShatteredStar = 361573594385350666,
+        ShatteredStar = 365652554929012756,
 
         [Description("Star Pact")]
-        StarPact = 361573594372898846,
+        StarPact = 365652554979475467,
 
         [Description("Inner Focus")]
-        InnerFocus = 365320207155331072,
+        InnerFocus = 365652554929143824,
 
         [Description("Arcane Will")]
-        ArcaneWill = 365320207129903104,
+        ArcaneWill = 365652553959997461,
 
         [Description("Mental Alacrity")]
-        MentalAlacrity = 365320207113388032,
+        MentalAlacrity = 365652554924818432,
 
         [Description("Fabric of Reality")]
-        FabricOfReality = 365320206970650625,
+        FabricOfReality = 365652554933075984,
         #endregion
 
         #region Shaman
         [Description("Brute Force")]
-        BruteForce = 361574137472221204,
+        BruteForce = 365653511003963403,
 
         [Description("Feral Hunger")]
-        FeralHunger = 361574137224757259,
+        FeralHunger = 365653511507279882,
 
         [Description("Upheaval")]
-        Upheaval = 361574137648513045,
+        Upheaval = 365653511700086785,
 
         [Description("Wendigo Totem")]
-        WendigoTotem = 361574137480871937,
+        WendigoTotem = 365653511641235467,
 
         [Description("Blood Pact")]
-        BloodPact = 361574137250054147,
+        BloodPact = 365653510907494403,
 
         [Description("Primal Strike")]
-        PrimalStrike = 361574137732399105,
+        PrimalStrike = 365653511658143744,
 
         [Description("Torrent")]
-        Torrent = 361574137753370635,
+        Torrent = 365653511830110218,
 
         [Description("Storm Surge")]
-        StormSurge = 361574137678004224,
+        StormSurge = 365653511733772288,
 
         [Description("Storm Totem")]
-        StormTotem = 361574137690587137,
+        StormTotem = 365653511477919770,
 
         [Description("Stormcaller's Pact")]
-        StormcallersPact = 361574137937920010,
+        StormcallersPact = 365653511486308355,
 
         [Description("Savagery")]
-        Savagery = 361574137350586370,
+        Savagery = 365653511666532352,
 
         [Description("Tenacity of the Boar")]
-        TenacityOfTheBoar = 361574137879199754,
+        TenacityOfTheBoar = 365653511116947469,
 
         [Description("Storm Touched")]
-        StormTouched = 361574137942245376,
+        StormTouched = 365653511758938113,
 
         [Description("Wind Devil")]
-        WindDevil = 361574137602375692,
+        WindDevil = 365653512195014656,
 
         [Description("Raging Tempest")]
-        RagingTempest = 361574137594118146,
+        RagingTempest = 365653511477657631,
 
         [Description("Maelstrom")]
-        Maelstrom = 361574137686392832,
+        Maelstrom = 365653511138181121,
 
         [Description("Devouring Swarm")]
-        DevouringSwam = 361574137535135745,
+        DevouringSwam = 365653511016284161,
 
         [Description("Grasping Vines")]
-        GraspingVines = 361574137447055371,
+        GraspingVines = 365653511498891284,
 
         [Description("Entangling Vines")]
-        EntanglingVines = 361574137174556675,
+        EntanglingVines = 365653511263748097,
 
         [Description("Conjure Primal Spirit")]
-        ConjurePrimalSpirit = 361574137379946497,
+        ConjurePrimalSpirit = 365653511301496832,
 
         [Description("Summon Briarthorn")]
-        SummonBriarthorn = 361574137585467393,
+        SummonBriarthorn = 365653511867858944,
 
         [Description("Ground Slam")]
-        GroundSlam = 361574137522552838,
+        GroundSlam = 365653511372931073,
 
         [Description("Emboldening Roar")]
-        EmboldeningRoar = 361574137153716226,
+        EmboldeningRoar = 365653511222067211,
 
         [Description("Primal Bond")]
-        PrimalBond = 361574137614958592,
+        PrimalBond = 365653511418937345,
 
         [Description("Mogdrogden's Pact")]
-        MogdrogdensPact = 361574137602375691,
+        MogdrogdensPact = 365653511527989258,
 
         [Description("Heart of the Wild")]
-        HeartOfTheWild = 361574137564758016,
+        HeartOfTheWild = 365653511477657630,
 
         [Description("Oak Skin")]
-        OakSkin = 361574137598181376,
+        OakSkin = 365653511293370399,
         #endregion
 
         #region Inquisitor

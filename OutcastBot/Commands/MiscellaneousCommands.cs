@@ -87,7 +87,7 @@ namespace OutcastBot.Commands
             if (message == null)
             {
                 var error = await context.RespondAsync("Invalid message");
-                await Task.Delay(2500)
+                await Task.Delay(5000)
                     .ContinueWith(t => error.DeleteAsync())
                     .ContinueWith(t => context.Message.DeleteAsync());
                 return;

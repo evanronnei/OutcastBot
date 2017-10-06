@@ -26,7 +26,7 @@ namespace OutcastBot.Commands
                 {
                     var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
                         $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
                     return;
@@ -53,7 +53,7 @@ namespace OutcastBot.Commands
                 if (tag != null)
                 {
                     var error = await context.RespondAsync($"Tag `{key}` already exists");
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
                     return;
@@ -122,7 +122,7 @@ namespace OutcastBot.Commands
             if (tags.Count == 0)
             {
                 var error = await context.RespondAsync("There are no created tags");
-                await Task.Delay(2500)
+                await Task.Delay(5000)
                     .ContinueWith(t => error.DeleteAsync())
                     .ContinueWith(t => context.Message.DeleteAsync());
                 return;
@@ -153,7 +153,7 @@ namespace OutcastBot.Commands
                 if (tag != null)
                 {
                     var error = await context.RespondAsync($"Tag `{key}` already exists");
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
                     return;
@@ -184,7 +184,7 @@ namespace OutcastBot.Commands
                 {
                     var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
                         $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
                     return;
@@ -213,7 +213,7 @@ namespace OutcastBot.Commands
                 {
                     var error = await context.RespondAsync($"`{key}` is not a valid tag. " +
                         $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => error.DeleteAsync())
                         .ContinueWith(t => context.Message.DeleteAsync());
                     return;

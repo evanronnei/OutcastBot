@@ -47,7 +47,7 @@ namespace OutcastBot
                     var message = await e.Context.RespondAsync($"Invalid command. Type " +
                         $"`{Program.AppSettings.CommandPrefix}help` for a list of commands.");
 
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => message.DeleteAsync())
                         .ContinueWith(t => e.Context.Message.DeleteAsync());
                     return;
@@ -55,7 +55,7 @@ namespace OutcastBot
                     message = await e.Context.RespondAsync($"Invalid command arguments. " +
                         $"Type `{Program.AppSettings.CommandPrefix}help {e.Command.QualifiedName}` for more info.");
 
-                    await Task.Delay(2500)
+                    await Task.Delay(5000)
                         .ContinueWith(t => message.DeleteAsync())
                         .ContinueWith(t => e.Context.Message.DeleteAsync());
                     return;

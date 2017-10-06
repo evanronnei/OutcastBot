@@ -14,14 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.json" />
     <None Remove="Images\MobileDiscord.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
     <Content Include="Images\MobileDiscord.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

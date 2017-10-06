@@ -483,8 +483,8 @@ namespace OutcastBot.Enumerations
         [Description("Ground Slam")]
         GroundSlam = 365653511372931073,
 
-        [Description("Emboldening Roar")]
-        EmboldeningRoar = 365653511222067211,
+        [Description("Emboldening Presence")]
+        EmboldeningPresence = 361574137153716226,
 
         [Description("Primal Bond")]
         PrimalBond = 365653511418937345,

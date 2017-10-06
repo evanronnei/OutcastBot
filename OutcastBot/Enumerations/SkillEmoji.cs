@@ -635,7 +635,7 @@ namespace OutcastBot.Enumerations
         RaiseSkeletons = 365342577890820097,
 
         [Description("Undead Legion")]
-        UndeadLegion = 365342578037620738,
+        UndeadLegion = 365342578570297354,
 
         [Description("Will of the Crypt")]
         WillOfTheCrypt = 365342578310250498,

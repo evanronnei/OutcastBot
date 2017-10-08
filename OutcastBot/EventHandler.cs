@@ -186,7 +186,7 @@ namespace OutcastBot
         {
             if (e.Author.IsBot) return;
 
-            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(e.Message.Content);
+            var match = new Regex(@"(?<=(http://)?grimtools.com/calc/)[a-zA-Z0-9]{8}(?!>)").Match(e.Message.Content);
 
             if (!match.Success) return;
 

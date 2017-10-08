@@ -48,7 +48,7 @@ namespace OutcastBot.Commands
         [Command("f")]
         [Description("Pay respects")]
         [Aliases("payrespects")]
-        public async Task PayRespects(CommandContext context, [RemainingText, Description("Optional: thing to pay respects to")]string text)
+        public async Task PayRespects(CommandContext context, [Description("Optional: thing to pay respects to"), RemainingText]string text)
         {
             await context.TriggerTypingAsync();
 

@@ -238,7 +238,7 @@ namespace OutcastBot.Commands.CommandHelpers
 
         private static async Task<string> ValidateBuildUrlAsync(CommandContext context, string userInput)
         {
-            var match = new Regex(@"(?<=grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(userInput);
+            var match = new Regex(@"(?<=(http://)?grimtools.com/calc/)[a-zA-Z0-9]{8}(?!>)").Match(userInput);
 
             if (match.Success)
             {

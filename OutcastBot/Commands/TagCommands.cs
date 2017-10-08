@@ -167,6 +167,35 @@ namespace OutcastBot.Commands
             await context.RespondAsync($"Created tag `{key}`");
         }
 
+        [Command("rename")]
+        [Description("Rename the tag")]
+        [RequirePermissions(Permissions.ManageMessages)]
+        public async Task RenameTag(CommandContext context, [Description("Old tag name")]string oldKey, [Description("New tag name")]string newKey)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new TagContext())
+            {
+                var tag = db.Tags.FirstOrDefault(t => t.Key == oldKey);
+
+                if (tag == null)
+                {
+                    var error = await context.RespondAsync($"`{oldKey}` is not a valid tag. " +
+                        $"Type `{Program.AppSettings.CommandPrefix}tag list` for a list of tags.");
+                    await Task.Delay(5000)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
+                    return;
+                }
+
+                tag.Key = newKey;
+                db.Update(tag);
+                await db.SaveChangesAsync();
+            }
+
+            await context.RespondAsync($"Renamed tag `{oldKey}` tp `{newKey}`");
+        }
+
         [Command("edit")]
         [Description("Edits an existing tag.")]
         [RequirePermissions(Permissions.ManageMessages)]

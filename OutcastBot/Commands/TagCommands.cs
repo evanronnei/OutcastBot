@@ -20,7 +20,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == key.ToLower());
 
                 if (tag == null)
                 {
@@ -49,7 +49,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == key.ToLower());
                 if (tag != null)
                 {
                     var error = await context.RespondAsync($"Tag `{key}` already exists");
@@ -148,7 +148,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == key.ToLower());
 
                 if (tag != null)
                 {
@@ -176,7 +176,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == oldKey);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == oldKey.ToLower());
 
                 if (tag == null)
                 {
@@ -193,7 +193,7 @@ namespace OutcastBot.Commands
                 await db.SaveChangesAsync();
             }
 
-            await context.RespondAsync($"Renamed tag `{oldKey}` tp `{newKey}`");
+            await context.RespondAsync($"Renamed tag `{oldKey}` to `{newKey}`");
         }
 
         [Command("edit")]
@@ -207,7 +207,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == key.ToLower());
 
                 if (tag == null)
                 {
@@ -236,7 +236,7 @@ namespace OutcastBot.Commands
 
             using (var db = new TagContext())
             {
-                var tag = db.Tags.FirstOrDefault(t => t.Key == key);
+                var tag = db.Tags.FirstOrDefault(t => t.Key.ToLower() == key.ToLower());
 
                 if (tag == null)
                 {

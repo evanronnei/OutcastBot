@@ -99,8 +99,7 @@ namespace OutcastBot.Commands
                 Timestamp = message.Timestamp,
             };
 
-            var author = (DiscordMember)message.Author;
-            embed.WithAuthor($"{author.Nickname} in #{message.Channel.Name}", null, author.AvatarUrl);
+            embed.WithAuthor($"{message.Author.Username} in #{message.Channel.Name}", null, message.Author.AvatarUrl);
 
             await context.RespondAsync("", false, embed.Build());
         }

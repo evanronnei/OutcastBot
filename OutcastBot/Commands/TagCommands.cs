@@ -64,7 +64,7 @@ namespace OutcastBot.Commands
 
             var embed = new DiscordEmbedBuilder { Timestamp = context.Message.Timestamp };
 
-            embed.WithAuthor($"{context.User.Username}", "", context.Member.AvatarUrl);
+            embed.WithAuthor($"{context.User.Username}", "", context.User.AvatarUrl);
             embed.AddField("Key", $"`{key}`");
             embed.AddField("Value", value);
 

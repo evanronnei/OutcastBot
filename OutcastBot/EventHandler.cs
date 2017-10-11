@@ -169,19 +169,6 @@ namespace OutcastBot
             }
         }
 
-        public static async Task ExpansionWhenHandler(MessageCreateEventArgs e)
-        {
-            if (e.Author.IsBot) return;
-
-            var match = new Regex(@"\be?\s?x\s?p\s?a\s?((n\s?s\s?i\s?o\s?n)|c)\s?w\s?h\s?e\s?n\b")
-                .Match(e.Message.Content.ToLower());
-
-            if (match.Success)
-            {
-                await e.Message.RespondAsync("October 11th!\n\nhttps://youtu.be/03VZ9cUB3vg");
-            }
-        }
-
         public static async Task GrimToolsHandler(MessageCreateEventArgs e)
         {
             if (e.Author.IsBot) return;

@@ -41,6 +41,7 @@ namespace OutcastBot.Commands
         [Description("Create a new build.\n\n" +
             "Command will prompt you to fill in the following properties:\n" +
             "(REQUIRED) Patch Version\n" +
+            "(REQUIRED) Expansion (Y/N)\n" +
             "(REQUIRED) Title\n" +
             "(REQUIRED) Description\n" +
             "(REQUIRED) Build URL\n" +
@@ -221,16 +222,16 @@ namespace OutcastBot.Commands
                     : db.Builds.Where(b => b.AuthorId == member.Id).ToList();
             }
 
+            var author = member ?? await context.Client.GetUserAsync(builds[0].AuthorId);
+
             if (builds.Count == 0)
             {
-                var error = await context.RespondAsync($"{member.DisplayName} hasn't created any builds");
+                var error = await context.RespondAsync($"{author.Username} hasn't created any builds");
                 await Task.Delay(5000)
                     .ContinueWith(t => error.DeleteAsync())
                     .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
-
-            var author = member ?? await context.Client.GetUserAsync(builds[0].AuthorId);
 
             var embed = new DiscordEmbedBuilder();
             embed.WithAuthor($"{author.Username}", null, author.AvatarUrl);

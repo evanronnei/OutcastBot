@@ -25,11 +25,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _required;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the patch version of the build (i.e. 1.0.0.0).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id && 
@@ -112,11 +108,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _required;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the title of the build (256 characters maximum).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -174,11 +166,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _required;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the description of the build.");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -207,11 +195,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _required;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the http://www.grimtools.com/calc/ for the build");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -229,7 +213,7 @@ namespace OutcastBot.Commands.CommandHelpers
             await response.Message.DeleteAsync();
 
             var buildUrl = await ValidateBuildUrlAsync(context, response.Message.Content);
-            var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(buildUrl);
+            var grimToolsBuild = await GrimToolsCalc.GetGrimToolsCalcAsync(buildUrl);
 
             var mastery = grimToolsBuild.GetMasteryCombination();
 
@@ -272,16 +256,8 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            var suffix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _optional;
-            }
-            else
-            {
-                suffix = _delete;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var suffix = (callerMethodName == "EditProperty") ? _delete : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the forum URL for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -333,16 +309,8 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            var suffix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _optional;
-            }
-            else
-            {
-                suffix = _delete;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var suffix = (callerMethodName == "EditProperty") ? _delete : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the video URL for the build (YouTube or streamable).{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -399,16 +367,8 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = "";
-            var suffix = "";
-            if (callerMethodName == "NewBuild")
-            {
-                prefix = _optional;
-            }
-            else
-            {
-                suffix = _delete;
-            }
+            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var suffix = (callerMethodName == "EditProperty") ? _delete : "";
 
             var message = await context.RespondAsync($"{prefix}Upload an image for the build.{suffix}");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&

@@ -169,40 +169,40 @@ namespace OutcastBot
             }
         }
 
-        public static async Task GrimToolsHandler(MessageCreateEventArgs e)
+        public static async Task GrimToolsCalcHandler(MessageCreateEventArgs e)
         {
             if (e.Author.IsBot) return;
 
-            var match = new Regex(@"(?<=(http://)?grimtools.com/calc/)[a-zA-Z0-9]{8}(?!>)").Match(e.Message.Content);
+            var match = new Regex(@"(?<=(http://)?(www.)?grimtools.com/calc/)[a-zA-Z0-9]{8}(?!>)").Match(e.Message.Content);
 
             if (!match.Success) return;
 
             var url = $"http://www.grimtools.com/calc/{match.Value}";
 
-            var grimToolsBuild = await GrimToolsBuild.GetGrimToolsBuildAsync(url);
+            var calc = await GrimToolsCalc.GetGrimToolsCalcAsync(url);
 
-            var masteryCombo = grimToolsBuild.GetMasteryCombination();
+            var masteryCombo = calc.GetMasteryCombination();
 
             var embed = new DiscordEmbedBuilder
             {
                 Url = url,
                 ThumbnailUrl = masteryCombo.GetAttribute<MasteryInfoAttribute>().ImageUrl,
 
-                Title = $"Level {grimToolsBuild.BuildData.BuildInfo.Level} " +
+                Title = $"Level {calc.Data.Info.Level} " +
                     $"{Regex.Replace(masteryCombo.ToString(), @"(\B[A-Z])", " $1")}",
 
-                Description = $"`Physique` {((grimToolsBuild.BuildData.BuildInfo.Physique - 50) / 8).ToString()}\n" +
-                    $"`Cunning` {((grimToolsBuild.BuildData.BuildInfo.Cunning - 50) / 8).ToString()}\n" +
-                    $"`Spirit` {((grimToolsBuild.BuildData.BuildInfo.Spirit - 50) / 8).ToString()}"
+                Description = $"`Physique` {((calc.Data.Info.Physique - 50) / 8).ToString()}\n" +
+                    $"`Cunning` {((calc.Data.Info.Cunning - 50) / 8).ToString()}\n" +
+                    $"`Spirit` {((calc.Data.Info.Spirit - 50) / 8).ToString()}"
             };
 
-            foreach (var mastery in grimToolsBuild.BuildData.Masteries.OrderByDescending(m => m.Value))
+            foreach (var mastery in calc.Data.Masteries.OrderByDescending(m => m.Value))
             {
                 embed.AddField(mastery.Key.ToString(), mastery.Value.ToString(), true);
             }
 
             var sb = new StringBuilder();
-            var sortedSkills = grimToolsBuild.BuildData.Skills.OrderByDescending(s => s.Value).ToList();
+            var sortedSkills = calc.Data.Skills.OrderByDescending(s => s.Value).ToList();
             for (int i = 0; i < 10 && i < sortedSkills.Count; i++)
             {
                 try
@@ -219,7 +219,7 @@ namespace OutcastBot
 
             if (sb.Length > 0) embed.AddField("Top Skill(s)", sb.ToString());
 
-            embed.WithFooter($"Game version: {grimToolsBuild.GameVersion}");
+            embed.WithFooter($"Game version: {calc.GameVersion}");
 
             embed.WithColor(new DiscordColor(masteryCombo.GetAttribute<MasteryInfoAttribute>().Color));
 

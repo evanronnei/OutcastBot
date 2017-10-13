@@ -36,7 +36,7 @@ namespace OutcastBot.Enumerations
                         return (T)field.GetValue(null);
                 }
             }
-            throw new ArgumentException("Not found.", "description");
+            throw new ArgumentException($"{description} not found.", description);
         }
     }
 }

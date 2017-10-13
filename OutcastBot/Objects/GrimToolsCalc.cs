@@ -2,6 +2,7 @@
 using OutcastBot.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
@@ -10,10 +11,10 @@ using System.Threading.Tasks;
 namespace OutcastBot.Objects
 {
     [JsonObject]
-    public class GrimToolsBuild
+    public class GrimToolsCalc
     {
         [JsonProperty("data")]
-        public BuildData BuildData { get; set; }
+        public Data Data { get; set; }
 
         [JsonProperty("created_for_build")]
         public string GameVersion { get; set; }
@@ -21,9 +22,9 @@ namespace OutcastBot.Objects
         [JsonProperty("created_date")]
         public string CreatedDate { get; set; }
 
-        public static async Task<GrimToolsBuild> GetGrimToolsBuildAsync(string buildUrl)
+        public static async Task<GrimToolsCalc> GetGrimToolsCalcAsync(string calcUrl)
         {
-            var id = new Regex(@"(?<=http://www.grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(buildUrl);
+            var id = new Regex(@"(?<=http://www.grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(calcUrl);
 
             var client = new HttpClient
             {
@@ -32,27 +33,22 @@ namespace OutcastBot.Objects
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = await client.GetStringAsync($"get_build_info.php/?id={id.Value}");
-            var calc = JsonConvert.DeserializeObject<GrimToolsBuild>(response);
+            var calc = JsonConvert.DeserializeObject<GrimToolsCalc>(response);
 
             return calc;
         }
 
         public Mastery GetMasteryCombination()
         {
-            Mastery mastery = 0;
-            foreach (var key in BuildData.Masteries.Keys)
-            {
-                mastery |= key;
-            }
-            return mastery;
+            return Data.Masteries.Keys.Aggregate((masteryOne, masteryTwo) => masteryOne | masteryTwo);
         }
     }
 
     [JsonObject]
-    public class BuildData
+    public class Data
     {
         [JsonProperty("bio")]
-        public BuildInfo BuildInfo { get; set; }
+        public Info Info { get; set; }
 
         [JsonProperty("skills")]
         public Dictionary<string, int> Skills { get; set; }
@@ -62,7 +58,7 @@ namespace OutcastBot.Objects
     }
 
     [JsonObject]
-    public class BuildInfo
+    public class Info
     {
         [JsonProperty("level")]
         public int Level { get; set; }

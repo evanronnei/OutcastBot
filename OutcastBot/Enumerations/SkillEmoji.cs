@@ -183,7 +183,7 @@ namespace OutcastBot.Enumerations
         [Description("Second Rite")]
         SecondRite = 365650638249525259,
 
-        [Description("Possesion")]
+        [Description("Possession")]
         Possession = 365650638329348126,
 
         [Description("Dreeg's Evil Eye")]

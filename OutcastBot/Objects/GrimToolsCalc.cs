@@ -26,16 +26,15 @@ namespace OutcastBot.Objects
         {
             var id = new Regex(@"(?<=http://www.grimtools.com/calc/)[a-zA-Z0-9]{8}").Match(calcUrl);
 
-            var client = new HttpClient
+            using (var client = new HttpClient { BaseAddress = new Uri("http://www.grimtools.com/") })
             {
-                BaseAddress = new Uri("http://www.grimtools.com/")
-            };
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = await client.GetStringAsync($"get_build_info.php/?id={id.Value}");
-            var calc = JsonConvert.DeserializeObject<GrimToolsCalc>(response);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.GetStringAsync($"get_build_info.php/?id={id.Value}");
+                var calc = JsonConvert.DeserializeObject<GrimToolsCalc>(response);
 
-            return calc;
+                return calc;
+            }
         }
 
         public Mastery GetMasteryCombination()

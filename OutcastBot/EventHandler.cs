@@ -80,11 +80,11 @@ namespace OutcastBot
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                     if (build == null) return;
 
-                    if (e.Emoji.Equals(DiscordEmoji.FromName(Program.Client, ":arrow_up:")))
+                    if (e.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_up:"))
                     {
                         build.UpVotes++;
                     }
-                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Program.Client, ":arrow_down:")))
+                    else if (e.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_down:"))
                     {
                         build.DownVotes++;
                     }
@@ -110,11 +110,11 @@ namespace OutcastBot
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
                     if (build == null) return;
 
-                    if (e.Emoji.Equals(DiscordEmoji.FromName(Program.Client, ":arrow_up:")))
+                    if (e.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_up:"))
                     {
                         build.UpVotes--;
                     }
-                    else if (e.Emoji.Equals(DiscordEmoji.FromName(Program.Client, ":arrow_down:")))
+                    else if (e.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_down:"))
                     {
                         build.DownVotes--;
                     }

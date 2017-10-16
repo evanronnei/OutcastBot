@@ -106,15 +106,17 @@ namespace OutcastBot.Commands
 
         [Command("mobile")]
         [Description("Mobile Discord claims another victim")]
-        public async Task MobileDiscord(CommandContext context, [Description("@mention of the victim")]DiscordMember member)
+        public async Task MobileDiscord(CommandContext context, [Description("@mention/name of the victim")]DiscordMember member)
         {
             await context.TriggerTypingAsync();
 
             var avatarPath = $"Temp/{member.Id}_avatar.png";
             var outputPath = $"Temp/{member.Id}_mobile_discord.png";
 
-            var client = new WebClient();
-            client.DownloadFile(member.AvatarUrl, avatarPath);
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(member.AvatarUrl, avatarPath);
+            }
 
             using (var baseImage = Image.Load("Images/MobileDiscord.png"))
             using (var avatar = Image.Load(avatarPath))

@@ -144,16 +144,13 @@ namespace OutcastBot.Commands
         [Command("emojis")]
         public async Task Emojis(CommandContext context)
         {
-            var embed = new DiscordEmbedBuilder();
+            var embed = new DiscordEmbedBuilder
+            {
+                Description = String.Join("\n", 
+                    context.Guild.Emojis.Select(emoji => $"{emoji.Name} {emoji} `{emoji.Id}`"))
+            };
 
             embed.WithAuthor($"{context.Guild.Name} Emojis", "", context.Guild.IconUrl);
-
-            var sb = new StringBuilder();
-            foreach (var emoji in context.Guild.Emojis)
-            {
-                sb.AppendLine($"{emoji.Name} {emoji} `{emoji.Id}`");
-            }
-            embed.WithDescription(sb.ToString());
 
             await context.RespondAsync("", false, embed.Build());
         }

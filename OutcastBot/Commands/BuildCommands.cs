@@ -97,42 +97,38 @@ namespace OutcastBot.Commands
         {
             await context.TriggerTypingAsync();
 
-            var build = new Build();
             using (var db = new BuildContext())
             {
-                build = db.Builds.FirstOrDefault(b => b.BuildId == id);
-            }
+                var build = db.Builds.FirstOrDefault(b => b.BuildId == id);
 
-            if (build == null)
-            {
-                var error = await context.RespondAsync($"`{id}` is not a valid build ID");
-                await Task.Delay(5000)
-                    .ContinueWith(t => error.DeleteAsync())
-                    .ContinueWith(t => context.Message.DeleteAsync());
-                return;
-            }
+                if (build == null)
+                {
+                    var error = await context.RespondAsync($"`{id}` is not a valid build ID");
+                    await Task.Delay(5000)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
+                    return;
+                }
 
-            if (!context.Member.IsOwner &&
-                context.Member.Roles.FirstOrDefault(r => r.Name == "Moderator") == null &&
-                build.AuthorId != context.User.Id)
-            {
-                var error = await context.RespondAsync("That build does not belong to you");
-                await Task.Delay(5000)
-                    .ContinueWith(t => error.DeleteAsync())
-                    .ContinueWith(t => context.Message.DeleteAsync());
-                return;
-            }
+                if (!context.Member.IsOwner &&
+                    context.Member.Roles.FirstOrDefault(r => r.Name == "Moderator") == null &&
+                    build.AuthorId != context.User.Id)
+                {
+                    var error = await context.RespondAsync("That build does not belong to you");
+                    await Task.Delay(5000)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
+                    return;
+                }
 
-            await EditBuildHelper.EditProperty(context, build);
+                await EditBuildHelper.EditProperty(context, build);
 
-            var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
-            if (channel == null) return;
+                var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
+                if (channel == null) return;
 
-            var buildMessage = await channel.GetMessageAsync(build.MessageId);
-            await buildMessage.ModifyAsync("", await build.GetEmbed());
+                var buildMessage = await channel.GetMessageAsync(build.MessageId);
+                await buildMessage.ModifyAsync("", await build.GetEmbed());
 
-            using (var db = new BuildContext())
-            {
                 db.Builds.Update(build);
                 await db.SaveChangesAsync();
             }

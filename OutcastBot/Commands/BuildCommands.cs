@@ -112,7 +112,9 @@ namespace OutcastBot.Commands
                 return;
             }
 
-            if (build.AuthorId != context.User.Id)
+            if (!context.Member.IsOwner &&
+                context.Member.Roles.FirstOrDefault(r => r.Name == "Moderator") == null &&
+                build.AuthorId != context.User.Id)
             {
                 var error = await context.RespondAsync("That build does not belong to you");
                 await Task.Delay(5000)

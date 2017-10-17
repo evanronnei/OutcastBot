@@ -25,7 +25,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var prefix = (callerMethodName == "NewBuild") ? _required : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the patch version of the build (i.e. 1.0.0.0).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id && 
@@ -108,7 +108,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var prefix = (callerMethodName == "NewBuild") ? _required : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the title of the build (256 characters maximum).");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -166,7 +166,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var prefix = (callerMethodName == "NewBuild") ? _required : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the description of the build.");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&
@@ -195,7 +195,7 @@ namespace OutcastBot.Commands.CommandHelpers
         {
             await context.TriggerTypingAsync();
 
-            var prefix = (callerMethodName == "NewBuild") ? _optional : "";
+            var prefix = (callerMethodName == "NewBuild") ? _required : "";
 
             var message = await context.RespondAsync($"{prefix}Enter the http://www.grimtools.com/calc/ for the build");
             var response = await Program.Interactivity.WaitForMessageAsync(m => m.Author.Id == context.User.Id &&

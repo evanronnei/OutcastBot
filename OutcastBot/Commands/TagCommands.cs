@@ -198,6 +198,7 @@ namespace OutcastBot.Commands
 
         [Command("edit")]
         [Description("Edits an existing tag.")]
+        [Aliases("modify")]
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task EditTag(CommandContext context, [Description("Tag name")]string key, [Description("Tag value"), RemainingText]string value)
         {
@@ -229,6 +230,7 @@ namespace OutcastBot.Commands
 
         [Command("delete")]
         [Description("Deletes an existing tag")]
+        [Aliases("remove")]
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task DeleteTag(CommandContext context, [Description("Tag name")]string key)
         {

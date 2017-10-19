@@ -132,6 +132,14 @@ namespace OutcastBot
                 using (var db = new BuildContext())
                 {
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
+
+                    var author = await e.Guild.GetMemberAsync(build.AuthorId);
+                    await author.SendMessageAsync(
+                        $"{DiscordEmoji.FromUnicode("❌")} Your build has been deleted due to a large negative score " +
+                            $"(+{(build.UpVotes - 1)} | -{(build.DownVotes - 1)}).",
+                        false,
+                        await build.GetEmbed());
+
                     db.Remove(build);
                     await db.SaveChangesAsync();
                 }

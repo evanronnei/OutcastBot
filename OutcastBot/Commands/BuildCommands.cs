@@ -93,6 +93,7 @@ namespace OutcastBot.Commands
 
         [Command("edit")]
         [Description("Edit an existing build")]
+        [Aliases("modify")]
         public async Task EditBuild(CommandContext context, [Description("ID of the build to edit")]int id)
         {
             await context.TriggerTypingAsync();
@@ -136,6 +137,7 @@ namespace OutcastBot.Commands
 
         [Command("delete")]
         [Description("Delete an existing build")]
+        [Aliases("remove")]
         public async Task DeleteBuild(CommandContext context, [Description("ID of the build to delete")]int id)
         {
             await context.TriggerTypingAsync();

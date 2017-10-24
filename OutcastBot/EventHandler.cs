@@ -132,6 +132,7 @@ namespace OutcastBot
                 using (var db = new BuildContext())
                 {
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == e.Message.Id);
+                    if (build == null) return;
 
                     var author = await e.Guild.GetMemberAsync(build.AuthorId);
                     await author.SendMessageAsync(

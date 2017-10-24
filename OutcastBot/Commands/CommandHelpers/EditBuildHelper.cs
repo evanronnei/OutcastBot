@@ -31,7 +31,10 @@ namespace OutcastBot.Commands.CommandHelpers
             {
                 await message.DeleteAsync();
                 await context.TriggerTypingAsync();
-                await context.RespondAsync("Command Timeout");
+                message = await context.RespondAsync("Command Timeout");
+                await Task.Delay(5000)
+                        .ContinueWith(t => message.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 
@@ -41,7 +44,10 @@ namespace OutcastBot.Commands.CommandHelpers
             if (index == null)
             {
                 await context.TriggerTypingAsync();
-                await context.RespondAsync("Command Timeout");
+                message = await context.RespondAsync("Command Timeout");
+                await Task.Delay(5000)
+                        .ContinueWith(t => message.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
                 return;
             }
 

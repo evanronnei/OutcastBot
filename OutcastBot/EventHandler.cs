@@ -174,7 +174,7 @@ namespace OutcastBot
 
                 var channel = e.Guild.Channels.FirstOrDefault(c => c.Name == "broomcloset");
                 if (channel == null) return;
-                await channel.SendMessageAsync($"Deleted message:", false, embed.Build());
+                await channel.SendMessageAsync("", false, embed.Build());
             }
         }
 

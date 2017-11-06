@@ -54,6 +54,7 @@ namespace OutcastBot
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefix = AppSettings.CommandPrefix,
+                CaseSensitive = false,
                 EnableDms = false
             });
 

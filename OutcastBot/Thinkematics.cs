@@ -223,6 +223,13 @@ namespace OutcastBot
 
                     await e.Message.DeleteAsync();
                 }
+                else if (temp.StartsWith("🍿"))
+                {
+                    await e.Message.RespondAsync(DiscordEmoji.FromGuildEmote(
+                        Program.Client, (ulong)ThinkingEmoji.ThinkCorn).ToString());
+
+                    await e.Message.DeleteAsync();
+                }
             }
         }
     }

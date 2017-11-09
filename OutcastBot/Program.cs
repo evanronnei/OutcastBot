@@ -55,7 +55,8 @@ namespace OutcastBot
             {
                 StringPrefix = AppSettings.CommandPrefix,
                 CaseSensitive = false,
-                EnableDms = false
+                EnableDms = false,
+                EnableMentionPrefix = false
             });
 
             Commands.RegisterCommands<MiscellaneousCommands>();

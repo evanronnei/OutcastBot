@@ -40,7 +40,7 @@ namespace OutcastBot.Commands
 
         [Command("new")]
         [Description("Create a new build.\n\n" +
-            "Command will prompt you to fill in the following properties:\n" +
+            "The command will prompt you to fill in the following properties:\n" +
             "(REQUIRED) Patch Version\n" +
             "(REQUIRED) Expansion (Y/N)\n" +
             "(REQUIRED) Title\n" +
@@ -48,7 +48,7 @@ namespace OutcastBot.Commands
             "(REQUIRED) Build URL\n" +
             "(OPTIONAL) Forum URL\n" +
             "(OPTIONAL) Video URL\n" +
-            "(OPTIONAL) Build Image")]
+            "(OPTIONAL) Image")]
         public async Task NewBuild(CommandContext context)
         {
             var build = new Build()
@@ -246,7 +246,7 @@ namespace OutcastBot.Commands
         }
 
         [Command("syncvotes")]
-        [Description("Synchronizes votes between the database and the channel in the event of desynchronization.")]
+        [Description("Synchronizes votes between the database and the channel messages in the event of desynchronization.")]
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task SyncVotes(CommandContext context)
         {
@@ -255,9 +255,9 @@ namespace OutcastBot.Commands
 
             var messages = await channel.GetMessagesAsync();
 
-            foreach (var message in messages)
+            using (var db = new BuildContext())
             {
-                using (var db = new BuildContext())
+                foreach (var message in messages)
                 {
                     var build = db.Builds.FirstOrDefault(b => b.MessageId == message.Id);
                     if (build == null) continue;

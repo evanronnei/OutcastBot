@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using OutcastBot.Commands.CommandHelpers;
@@ -242,6 +243,54 @@ namespace OutcastBot.Commands
             }
 
             await context.RespondAsync("", false, embed.Build());
+        }
+
+        [Command("syncvotes")]
+        [Description("Synchronizes votes between the database and the channel in the event of desynchronization.")]
+        [RequirePermissions(Permissions.ManageMessages)]
+        public async Task SyncVotes(CommandContext context)
+        {
+            var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
+            if (channel == null) return;
+
+            var messages = await channel.GetMessagesAsync();
+
+            foreach (var message in messages)
+            {
+                using (var db = new BuildContext())
+                {
+                    var build = db.Builds.FirstOrDefault(b => b.MessageId == message.Id);
+                    if (build == null) continue;
+
+                    var upvotes = message.Reactions.FirstOrDefault(r => r.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_up:"));
+                    var downvotes = message.Reactions.FirstOrDefault(r => r.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_down:"));
+
+                    if (upvotes == null || !upvotes.IsMe)
+                    {
+                        await message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":arrow_up:"));
+                        upvotes = message.Reactions.FirstOrDefault(r => r.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_up:"));
+                    }
+                    if (downvotes == null || !downvotes.IsMe)
+                    {
+                        await message.CreateReactionAsync(DiscordEmoji.FromName(Program.Client, ":arrow_down:"));
+                        downvotes = message.Reactions.FirstOrDefault(r => r.Emoji == DiscordEmoji.FromName(Program.Client, ":arrow_down:"));
+                    }
+
+                    if (build.UpVotes != upvotes.Count)
+                    {
+                        build.UpVotes = upvotes.Count;
+                    }
+                    if (build.DownVotes != downvotes.Count)
+                    {
+                        build.DownVotes = downvotes.Count;
+                    }
+
+                    db.Update(build);
+                    await db.SaveChangesAsync();
+                }
+            }
+
+            await context.RespondAsync("Synchronized build votes");
         }
     }
 }

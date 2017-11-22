@@ -19,7 +19,7 @@ namespace OutcastBot.Enumerations
         [Description("👏")]
         Clapking = 359798826388815889,
 
-        [Description("✝️")]
+        [Description("✝")]
         ThinkusVult = 359798826581753858,
 
         [Description("🤷")]

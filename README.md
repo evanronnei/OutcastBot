@@ -13,6 +13,7 @@ The Outcast is bot for the Grim Dawn Discord server developed with [DSharp+](htt
 * `build mybuilds <optional: DiscordMember member>` - Displays all builds by the command user, or by the mentioned member.
 * `build top <optional: int count(1-5)>` - Displays the top 5 builds, or the top `count` builds.
 * `build syncvotes` - Synchronize the votes in the event that the database differs from the channel.
+* `build transfer <int id> <DiscordMember newOwner>` - Transfers ownership of a build to another user.
 * `tag <string key>` - Retrives the value with the given key.
 * `tag submit <string key> <sting[] value>` - Submits a new tag for moderator approval in `#moderation`
 * `tag list` - Retrieves a list of all tags.

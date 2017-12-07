@@ -250,6 +250,8 @@ namespace OutcastBot.Commands
         [RequirePermissions(Permissions.ManageMessages)]
         public async Task SyncVotes(CommandContext context)
         {
+            await context.TriggerTypingAsync();
+
             var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
             if (channel == null) return;
 
@@ -291,6 +293,40 @@ namespace OutcastBot.Commands
             }
 
             await context.RespondAsync("Synchronized build votes");
+        }
+
+        [Command("transfer")]
+        [Description("Transfer ownership of a build")]
+        [RequirePermissions(Permissions.ManageMessages)]
+        public async Task TransferOwnership(CommandContext context, int id, [Description("The new owner of the build")]DiscordMember newOwner)
+        {
+            await context.TriggerTypingAsync();
+
+            using (var db = new BuildContext())
+            {
+                var channel = context.Guild.Channels.FirstOrDefault(ch => ch.Name == "builds");
+                if (channel == null) return;
+
+                var build = db.Builds.FirstOrDefault(b => b.BuildId == id);
+
+                if (build == null)
+                {
+                    var error = await context.RespondAsync($"{id} is not a valid build ID");
+                    await Task.Delay(5000)
+                        .ContinueWith(t => error.DeleteAsync())
+                        .ContinueWith(t => context.Message.DeleteAsync());
+                    return;
+                }
+
+                build.AuthorId = newOwner.Id;
+                db.Update(build);
+                await db.SaveChangesAsync();
+
+                var message = await channel.GetMessageAsync(build.MessageId);
+                await message.ModifyAsync("", await build.GetEmbed());
+            }
+
+            await context.RespondAsync($"Transferred ownership of build {id} to {newOwner.Nickname}");
         }
     }
 }

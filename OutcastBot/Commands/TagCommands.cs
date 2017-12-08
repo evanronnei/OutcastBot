@@ -66,7 +66,7 @@ namespace OutcastBot.Commands
 
             var author = context.User as DiscordMember;
 
-            embed.WithAuthor($"{author.Nickname}", "", author.AvatarUrl);
+            embed.WithAuthor($"{author.Nickname ?? author.Username}", "", author.AvatarUrl);
             embed.AddField("Key", $"`{key}`");
             embed.AddField("Value", value);
 

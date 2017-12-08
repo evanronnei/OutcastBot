@@ -100,7 +100,7 @@ namespace OutcastBot.Commands
 
             var author = message.Author as DiscordMember;
 
-            embed.WithAuthor($"{author.Nickname} in #{message.Channel.Name}", null, author.AvatarUrl);
+            embed.WithAuthor($"{author.Nickname ?? author.Username} in #{message.Channel.Name}", null, author.AvatarUrl);
 
             await context.RespondAsync("", false, embed.Build());
         }
